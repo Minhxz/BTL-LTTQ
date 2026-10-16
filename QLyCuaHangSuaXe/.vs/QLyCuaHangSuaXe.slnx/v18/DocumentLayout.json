@@ -1,10 +1,30 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\buiqu\\Desktop\\BTL-LTTQ\\QLyCuaHangSuaXe\\",
+  "WorkspaceRootPath": "C:\\Users\\buiqu\\Desktop\\BTL-LTTQ\\BTL-LTTQ\\QLyCuaHangSuaXe\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{7746BF1F-178B-4F59-9DBA-17035FDD1DC2}|QLyCuaHangSuaXe\\QLyCuaHangSuaXe.csproj|c:\\users\\buiqu\\desktop\\btl-lttq\\qlycuahangsuaxe\\qlycuahangsuaxe\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "AbsoluteMoniker": "D:0:0:{7746BF1F-178B-4F59-9DBA-17035FDD1DC2}|QLyCuaHangSuaXe\\QLyCuaHangSuaXe.csproj|c:\\users\\buiqu\\desktop\\btl-lttq\\btl-lttq\\qlycuahangsuaxe\\qlycuahangsuaxe\\danhmuc\\frmdangnhap.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7746BF1F-178B-4F59-9DBA-17035FDD1DC2}|QLyCuaHangSuaXe\\QLyCuaHangSuaXe.csproj|solutionrelative:qlycuahangsuaxe\\danhmuc\\frmdangnhap.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7746BF1F-178B-4F59-9DBA-17035FDD1DC2}|QLyCuaHangSuaXe\\QLyCuaHangSuaXe.csproj|c:\\users\\buiqu\\desktop\\btl-lttq\\btl-lttq\\qlycuahangsuaxe\\qlycuahangsuaxe\\danhmuc\\frmdangnhap.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{7746BF1F-178B-4F59-9DBA-17035FDD1DC2}|QLyCuaHangSuaXe\\QLyCuaHangSuaXe.csproj|solutionrelative:qlycuahangsuaxe\\danhmuc\\frmdangnhap.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7746BF1F-178B-4F59-9DBA-17035FDD1DC2}|QLyCuaHangSuaXe\\QLyCuaHangSuaXe.csproj|C:\\Users\\buiqu\\Desktop\\BTL-LTTQ\\BTL-LTTQ\\QLyCuaHangSuaXe\\qlycuahangsuaxe\\classes\\function.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7746BF1F-178B-4F59-9DBA-17035FDD1DC2}|QLyCuaHangSuaXe\\QLyCuaHangSuaXe.csproj|solutionrelative:qlycuahangsuaxe\\classes\\function.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7746BF1F-178B-4F59-9DBA-17035FDD1DC2}|QLyCuaHangSuaXe\\QLyCuaHangSuaXe.csproj|C:\\Users\\buiqu\\Desktop\\BTL-LTTQ\\BTL-LTTQ\\QLyCuaHangSuaXe\\qlycuahangsuaxe\\classes\\dataprocessor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7746BF1F-178B-4F59-9DBA-17035FDD1DC2}|QLyCuaHangSuaXe\\QLyCuaHangSuaXe.csproj|solutionrelative:qlycuahangsuaxe\\classes\\dataprocessor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7746BF1F-178B-4F59-9DBA-17035FDD1DC2}|QLyCuaHangSuaXe\\QLyCuaHangSuaXe.csproj|C:\\Users\\buiqu\\Desktop\\BTL-LTTQ\\BTL-LTTQ\\QLyCuaHangSuaXe\\qlycuahangsuaxe\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
       "RelativeMoniker": "D:0:0:{7746BF1F-178B-4F59-9DBA-17035FDD1DC2}|QLyCuaHangSuaXe\\QLyCuaHangSuaXe.csproj|solutionrelative:qlycuahangsuaxe\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7746BF1F-178B-4F59-9DBA-17035FDD1DC2}|QLyCuaHangSuaXe\\QLyCuaHangSuaXe.csproj|C:\\Users\\buiqu\\Desktop\\BTL-LTTQ\\BTL-LTTQ\\QLyCuaHangSuaXe\\qlycuahangsuaxe\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7746BF1F-178B-4F59-9DBA-17035FDD1DC2}|QLyCuaHangSuaXe\\QLyCuaHangSuaXe.csproj|solutionrelative:qlycuahangsuaxe\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -31,14 +51,75 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "frmDangNhap.cs",
+              "DocumentMoniker": "C:\\Users\\buiqu\\Desktop\\BTL-LTTQ\\BTL-LTTQ\\QLyCuaHangSuaXe\\QLyCuaHangSuaXe\\DanhMuc\\frmDangNhap.cs",
+              "RelativeDocumentMoniker": "QLyCuaHangSuaXe\\DanhMuc\\frmDangNhap.cs",
+              "ToolTip": "C:\\Users\\buiqu\\Desktop\\BTL-LTTQ\\BTL-LTTQ\\QLyCuaHangSuaXe\\QLyCuaHangSuaXe\\DanhMuc\\frmDangNhap.cs",
+              "RelativeToolTip": "QLyCuaHangSuaXe\\DanhMuc\\frmDangNhap.cs",
+              "ViewState": "AgIAAAgAAAAAAAAAAAAIwBcAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-10-16T17:15:12.725Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "frmDangNhap.cs [Design]",
+              "DocumentMoniker": "C:\\Users\\buiqu\\Desktop\\BTL-LTTQ\\BTL-LTTQ\\QLyCuaHangSuaXe\\QLyCuaHangSuaXe\\DanhMuc\\frmDangNhap.cs",
+              "RelativeDocumentMoniker": "QLyCuaHangSuaXe\\DanhMuc\\frmDangNhap.cs",
+              "ToolTip": "C:\\Users\\buiqu\\Desktop\\BTL-LTTQ\\BTL-LTTQ\\QLyCuaHangSuaXe\\QLyCuaHangSuaXe\\DanhMuc\\frmDangNhap.cs [Design]",
+              "RelativeToolTip": "QLyCuaHangSuaXe\\DanhMuc\\frmDangNhap.cs [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-10-16T17:11:53.667Z",
+              "EditorCaption": " [Design]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Function.cs",
+              "DocumentMoniker": "C:\\Users\\buiqu\\Desktop\\BTL-LTTQ\\BTL-LTTQ\\QLyCuaHangSuaXe\\QLyCuaHangSuaXe\\Classes\\Function.cs",
+              "RelativeDocumentMoniker": "QLyCuaHangSuaXe\\Classes\\Function.cs",
+              "ToolTip": "C:\\Users\\buiqu\\Desktop\\BTL-LTTQ\\BTL-LTTQ\\QLyCuaHangSuaXe\\QLyCuaHangSuaXe\\Classes\\Function.cs",
+              "RelativeToolTip": "QLyCuaHangSuaXe\\Classes\\Function.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-10-16T17:09:11.187Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "DataProcessor.cs",
+              "DocumentMoniker": "C:\\Users\\buiqu\\Desktop\\BTL-LTTQ\\BTL-LTTQ\\QLyCuaHangSuaXe\\QLyCuaHangSuaXe\\Classes\\DataProcessor.cs",
+              "RelativeDocumentMoniker": "QLyCuaHangSuaXe\\Classes\\DataProcessor.cs",
+              "ToolTip": "C:\\Users\\buiqu\\Desktop\\BTL-LTTQ\\BTL-LTTQ\\QLyCuaHangSuaXe\\QLyCuaHangSuaXe\\Classes\\DataProcessor.cs*",
+              "RelativeToolTip": "QLyCuaHangSuaXe\\Classes\\DataProcessor.cs*",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-10-16T17:09:11.187Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
               "Title": "Form1.cs [Design]",
-              "DocumentMoniker": "C:\\Users\\buiqu\\Desktop\\BTL-LTTQ\\QLyCuaHangSuaXe\\QLyCuaHangSuaXe\\Form1.cs",
+              "DocumentMoniker": "C:\\Users\\buiqu\\Desktop\\BTL-LTTQ\\BTL-LTTQ\\QLyCuaHangSuaXe\\QLyCuaHangSuaXe\\Form1.cs",
               "RelativeDocumentMoniker": "QLyCuaHangSuaXe\\Form1.cs",
-              "ToolTip": "C:\\Users\\buiqu\\Desktop\\BTL-LTTQ\\QLyCuaHangSuaXe\\QLyCuaHangSuaXe\\Form1.cs [Design]",
+              "ToolTip": "C:\\Users\\buiqu\\Desktop\\BTL-LTTQ\\BTL-LTTQ\\QLyCuaHangSuaXe\\QLyCuaHangSuaXe\\Form1.cs [Design]",
               "RelativeToolTip": "QLyCuaHangSuaXe\\Form1.cs [Design]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-10-16T16:51:42.811Z",
-              "EditorCaption": " [Design]"
+              "WhenOpened": "2026-10-16T16:56:32.34Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Form1.cs",
+              "DocumentMoniker": "C:\\Users\\buiqu\\Desktop\\BTL-LTTQ\\BTL-LTTQ\\QLyCuaHangSuaXe\\QLyCuaHangSuaXe\\Form1.cs",
+              "RelativeDocumentMoniker": "QLyCuaHangSuaXe\\Form1.cs",
+              "ToolTip": "C:\\Users\\buiqu\\Desktop\\BTL-LTTQ\\BTL-LTTQ\\QLyCuaHangSuaXe\\QLyCuaHangSuaXe\\Form1.cs",
+              "RelativeToolTip": "QLyCuaHangSuaXe\\Form1.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-10-16T16:54:12.406Z"
             }
           ]
         },

@@ -1,0 +1,10 @@
+C:\Users\buiqu\Desktop\BTL-LTTQ\BTL-LTTQ\QLyCuaHangSuaXe\QLyCuaHangSuaXe\bin\Debug\QLyCuaHangSuaXe.exe.config
+C:\Users\buiqu\Desktop\BTL-LTTQ\BTL-LTTQ\QLyCuaHangSuaXe\QLyCuaHangSuaXe\bin\Debug\QLyCuaHangSuaXe.exe
+C:\Users\buiqu\Desktop\BTL-LTTQ\BTL-LTTQ\QLyCuaHangSuaXe\QLyCuaHangSuaXe\bin\Debug\QLyCuaHangSuaXe.pdb
+C:\Users\buiqu\Desktop\BTL-LTTQ\BTL-LTTQ\QLyCuaHangSuaXe\QLyCuaHangSuaXe\obj\Debug\QLyCuaHangSuaXe.csproj.AssemblyReference.cache
+C:\Users\buiqu\Desktop\BTL-LTTQ\BTL-LTTQ\QLyCuaHangSuaXe\QLyCuaHangSuaXe\obj\Debug\QLyCuaHangSuaXe.Properties.Resources.resources
+C:\Users\buiqu\Desktop\BTL-LTTQ\BTL-LTTQ\QLyCuaHangSuaXe\QLyCuaHangSuaXe\obj\Debug\QLyCuaHangSuaXe.csproj.GenerateResource.cache
+C:\Users\buiqu\Desktop\BTL-LTTQ\BTL-LTTQ\QLyCuaHangSuaXe\QLyCuaHangSuaXe\obj\Debug\QLyCuaHangSuaXe.csproj.CoreCompileInputs.cache
+C:\Users\buiqu\Desktop\BTL-LTTQ\BTL-LTTQ\QLyCuaHangSuaXe\QLyCuaHangSuaXe\obj\Debug\QLyCuaHangSuaXe.exe
+C:\Users\buiqu\Desktop\BTL-LTTQ\BTL-LTTQ\QLyCuaHangSuaXe\QLyCuaHangSuaXe\obj\Debug\QLyCuaHangSuaXe.pdb
+C:\Users\buiqu\Desktop\BTL-LTTQ\BTL-LTTQ\QLyCuaHangSuaXe\QLyCuaHangSuaXe\obj\Debug\QLyCuaHangSuaXe.DanhMuc.frmDangNhap.resources
