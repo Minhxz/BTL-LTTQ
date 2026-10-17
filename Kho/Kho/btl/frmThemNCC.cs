@@ -10,7 +10,7 @@ namespace btl
 {
 	public partial class frmThemNCC : Form
 	{
-		Classes.DatabaseProcess dtbase = new Classes.DatabaseProcess();
+		Classes.DatabaseProcessor dtbase = new Classes.DatabaseProcessor();
 		Classes.Function function = new Classes.Function();
 		public frmThemNCC()
 		{

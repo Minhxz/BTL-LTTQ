@@ -6,7 +6,7 @@ using System.Data;
 
 namespace btl.Classes
 {
-	public class DatabaseProcess
+	public class DatabaseProcessor
 	{
 		string strConnect = "Data Source=localhost; Database=QuanLyNhapKho; User ID=sa; Password=1234$; Integrated Security=false;";
 		SqlConnection sqlConnect = null;

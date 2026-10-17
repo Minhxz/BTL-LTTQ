@@ -1,12 +1,13 @@
 using System.Data;
+using System.Linq;
 
 namespace btl
 {
-	public partial class frmKho : Form
+	public partial class frmNhapPhieuNhap : Form
 	{
-		Classes.DatabaseProcess dtbase = new Classes.DatabaseProcess();
+		Classes.DatabaseProcessor dtbase = new Classes.DatabaseProcessor();
 		Classes.Function function = new Classes.Function();
-		public frmKho()
+		public frmNhapPhieuNhap()
 		{
 			InitializeComponent();
 		}
@@ -31,11 +32,11 @@ namespace btl
 			btnXoaNCC.Enabled = false;
 			btnSuaPhuTung.Enabled = false;
 			btnXoaPhuTung.Enabled = false;
+			btnHuyPhuTung.Enabled = false;
 		}
 
 		private void ResetForm()
 		{
-			txtMaPhieuNhap.Clear();
 			txtMaNVNhap.Clear();
 			cbNhaCungCap.SelectedIndex = -1;
 			cbNhaCungCap.Text = "";
@@ -46,15 +47,6 @@ namespace btl
 			txtSoLuongNhap.Clear();
 			txtDonGiaNhap.Clear();
 			txtThanhTien.Clear();
-		}
-
-		private string GetSqlSelectPhuTung()
-		{
-			return "Select pn.MaPhieuNhap, ncc.TenNCC, pn.NgayNhap, pt.MaPhuTung, pt.TenPhuTung, ctpn.SoLuong, ctpn.DonGiaNhap, ctpn.ThanhTien, ctpn.HanSuDung, pn.NguoiNhap " +
-			"From PhieuNhap pn Join ChiTietPhieuNhap ctpn On pn.MaPhieuNhap = ctpn.MaPhieuNhap " +
-			"Join PhuTung pt On pt.MaPhuTung = ctpn.MaPhuTung " +
-			"Join NhaCungCap ncc On ncc.MaNCC = pn.MaNCC " +
-			"Where pn.MaPhieuNhap = '" + txtMaPhieuNhap.Text + "'";
 		}
 
 		private void btnThemNCC_Click(object sender, EventArgs e)
@@ -123,6 +115,7 @@ namespace btl
 				);
 
 			ResetForm();
+			txtMaPhieuNhap.Enabled = false;
 			btnXoaNCC.Enabled = false;
 		}
 
@@ -173,6 +166,7 @@ namespace btl
 
 			btnSuaPhuTung.Enabled = true;
 			btnXoaPhuTung.Enabled = true;
+			btnHuyPhuTung.Enabled = true;
 			btnThemPhuTung.Enabled = false;
 			btnXoaNCC.Enabled = false;
 
@@ -212,6 +206,9 @@ namespace btl
 				ResetForm();
 
 				btnThemPhuTung.Enabled = true;
+				btnSuaPhuTung.Enabled = false;
+				btnXoaPhuTung.Enabled = false;
+				btnHuyPhuTung.Enabled = false;
 				btnXoaNCC.Enabled = false;
 			}
 			else
@@ -227,7 +224,7 @@ namespace btl
 				return;
 			}
 
-			if(MessageBox.Show("Xác nhận xóa?","Thông báo", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+			if (MessageBox.Show("Xác nhận xóa?", "Thông báo", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
 			{
 				dgvPhuTung.Rows.RemoveAt(selectedRowIndex);
 
@@ -235,8 +232,94 @@ namespace btl
 
 				btnSuaPhuTung.Enabled = false;
 				btnXoaPhuTung.Enabled = false;
+				btnHuyPhuTung.Enabled = false;
 				btnThemPhuTung.Enabled = true;
-			} 
+			}
+
+			if (dgvPhuTung.Rows.Count == 0)
+			{
+				txtMaPhieuNhap.Enabled = true;
+			}
+		}
+
+		private void btnHuyPhuTung_Click(object sender, EventArgs e)
+		{
+			selectedRowIndex = -1;
+
+			btnSuaPhuTung.Enabled = false;
+			btnXoaPhuTung.Enabled = false;
+			btnHuyPhuTung.Enabled = false;
+			btnThemPhuTung.Enabled = true;
+
+			dgvPhuTung.ClearSelection();
+		}
+
+		private void btnLamMoiPhuTung_Click(object sender, EventArgs e)
+		{
+			cbMaPhuTung.SelectedIndex = -1;
+			cbMaPhuTung.Text = "";
+			txtTenPhuTung.Clear();
+			dtpHanSuDung.Value = DateTime.Now;
+			txtSoLuongNhap.Clear();
+			txtDonGiaNhap.Clear();
+			txtThanhTien.Clear();
+		}
+
+		private void btnLuuPhieu_Click(object sender, EventArgs e)
+		{
+			var rows = dgvPhuTung.Rows.Cast<DataGridViewRow>().Where(row => !row.IsNewRow).ToList();
+
+			if (rows.Count == 0)
+			{
+				MessageBox.Show("Thêm thông tin phiếu nhập trước!", "Thông báo");
+				return;
+			}
+
+			try
+			{
+				string maPhieuNhap = rows[0].Cells["colMaPhieu"].Value.ToString();
+
+				string tenNCC = rows[0].Cells["colTenNCC"].Value.ToString();
+				DataTable data = dtbase.ReadData("Select MaNCC From NhaCungCap Where TenNCC = N'" + tenNCC + "'");
+				string maNCC = data.Rows[0]["MaNCC"].ToString();
+
+				DateTime ngayNhap = Convert.ToDateTime(rows[0].Cells["colNgayNhap"].Value);
+				string maNV = rows[0].Cells["colMaNVNhap"].Value.ToString();
+
+				string sqlPhieu = "Insert Into PhieuNhap (MaPhieuNhap, MaNCC, NgayNhap, NguoiNhap) " +
+					"Values('" + maPhieuNhap + "', '" + maNCC + "', '" + ngayNhap + "', '" + maNV + "')";
+
+				dtbase.ChangeData(sqlPhieu);
+
+				foreach (DataGridViewRow row in rows)
+				{
+					string sqlChiTietPhieuNhap = "Insert Into ChiTietPhieuNhap (MaPhieuNhap, MaPhuTung, SoLuong, DonGiaNhap, hanSuDung) Values" +
+						"('" + row.Cells["colMaPhieu"].Value.ToString() + "', " +
+						"'" + row.Cells["colMaPhuTung"].Value.ToString() + "', " +
+						"'" + Convert.ToInt32(row.Cells["colSoLuongNhap"].Value.ToString()) + "', " +
+						"'" + Convert.ToDecimal(row.Cells["colDonGiaNhap"].Value.ToString()) + "', " +
+						"'" + Convert.ToDateTime(row.Cells["colHanSuDung"].Value) + "')";
+
+					dtbase.ChangeData(sqlChiTietPhieuNhap);
+				}
+
+				MessageBox.Show("Lưu phiếu nhập thành công!", "Thông báo");
+
+				ResetForm();
+				txtMaPhieuNhap.Clear();
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show("Lỗi khi lưu phiếu nhập: " + ex.Message, "Thông báo");
+			}
+		}
+
+		private void btnThoat_Click(object sender, EventArgs e)
+		{
+			if(MessageBox.Show("Chắc chắn muốn thoát?", "Thông báo", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+			{
+				this.Close();
+			}
 		}
 	}
 }

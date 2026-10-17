@@ -1,6 +1,6 @@
 ﻿namespace btl
 {
-	partial class frmKho
+	partial class frmNhapPhieuNhap
 	{
 		/// <summary>
 		///  Required designer variable.
@@ -41,6 +41,7 @@
 			label1 = new Label();
 			panel1 = new Panel();
 			groupBox2 = new GroupBox();
+			btnHuyPhuTung = new Button();
 			btnLamMoiPhuTung = new Button();
 			btnXoaPhuTung = new Button();
 			btnSuaPhuTung = new Button();
@@ -69,12 +70,8 @@
 			colHanSuDung = new DataGridViewTextBoxColumn();
 			colMaNVNhap = new DataGridViewTextBoxColumn();
 			panel2 = new Panel();
-			btnInPhieu = new Button();
-			btnSuaPhieu = new Button();
 			btnThoat = new Button();
-			btnXoaPhieu = new Button();
 			btnLuuPhieu = new Button();
-			btnLamMoi = new Button();
 			groupBox1.SuspendLayout();
 			panel1.SuspendLayout();
 			groupBox2.SuspendLayout();
@@ -124,7 +121,7 @@
 			// 
 			// txtMaNVNhap
 			// 
-			txtMaNVNhap.Location = new Point(1020, 26);
+			txtMaNVNhap.Location = new Point(1020, 30);
 			txtMaNVNhap.Name = "txtMaNVNhap";
 			txtMaNVNhap.Size = new Size(250, 27);
 			txtMaNVNhap.TabIndex = 7;
@@ -140,7 +137,7 @@
 			// 
 			// dtpNgayNhap
 			// 
-			dtpNgayNhap.Location = new Point(580, 25);
+			dtpNgayNhap.Location = new Point(580, 29);
 			dtpNgayNhap.Name = "dtpNgayNhap";
 			dtpNgayNhap.Size = new Size(250, 27);
 			dtpNgayNhap.TabIndex = 5;
@@ -200,6 +197,7 @@
 			// 
 			// groupBox2
 			// 
+			groupBox2.Controls.Add(btnHuyPhuTung);
 			groupBox2.Controls.Add(btnLamMoiPhuTung);
 			groupBox2.Controls.Add(btnXoaPhuTung);
 			groupBox2.Controls.Add(btnSuaPhuTung);
@@ -224,14 +222,25 @@
 			groupBox2.TabStop = false;
 			groupBox2.Text = "Thông tin phụ tùng";
 			// 
+			// btnHuyPhuTung
+			// 
+			btnHuyPhuTung.Location = new Point(589, 165);
+			btnHuyPhuTung.Name = "btnHuyPhuTung";
+			btnHuyPhuTung.Size = new Size(141, 46);
+			btnHuyPhuTung.TabIndex = 20;
+			btnHuyPhuTung.Text = "Hủy";
+			btnHuyPhuTung.UseVisualStyleBackColor = true;
+			btnHuyPhuTung.Click += btnHuyPhuTung_Click;
+			// 
 			// btnLamMoiPhuTung
 			// 
-			btnLamMoiPhuTung.Location = new Point(589, 165);
+			btnLamMoiPhuTung.Location = new Point(774, 165);
 			btnLamMoiPhuTung.Name = "btnLamMoiPhuTung";
 			btnLamMoiPhuTung.Size = new Size(141, 46);
 			btnLamMoiPhuTung.TabIndex = 19;
 			btnLamMoiPhuTung.Text = "Làm mới";
 			btnLamMoiPhuTung.UseVisualStyleBackColor = true;
+			btnLamMoiPhuTung.Click += btnLamMoiPhuTung_Click;
 			// 
 			// btnXoaPhuTung
 			// 
@@ -445,73 +454,35 @@
 			// 
 			// panel2
 			// 
-			panel2.Controls.Add(btnInPhieu);
-			panel2.Controls.Add(btnSuaPhieu);
 			panel2.Controls.Add(btnThoat);
-			panel2.Controls.Add(btnXoaPhieu);
 			panel2.Controls.Add(btnLuuPhieu);
-			panel2.Controls.Add(btnLamMoi);
 			panel2.Dock = DockStyle.Bottom;
 			panel2.Location = new Point(0, 701);
 			panel2.Name = "panel2";
 			panel2.Size = new Size(1295, 100);
 			panel2.TabIndex = 3;
 			// 
-			// btnInPhieu
-			// 
-			btnInPhieu.Location = new Point(336, 24);
-			btnInPhieu.Name = "btnInPhieu";
-			btnInPhieu.Size = new Size(123, 57);
-			btnInPhieu.TabIndex = 5;
-			btnInPhieu.Text = "In phiếu";
-			btnInPhieu.UseVisualStyleBackColor = true;
-			// 
-			// btnSuaPhieu
-			// 
-			btnSuaPhieu.Location = new Point(484, 24);
-			btnSuaPhieu.Name = "btnSuaPhieu";
-			btnSuaPhieu.Size = new Size(123, 57);
-			btnSuaPhieu.TabIndex = 4;
-			btnSuaPhieu.Text = "Sửa phiếu";
-			btnSuaPhieu.UseVisualStyleBackColor = true;
-			// 
 			// btnThoat
 			// 
-			btnThoat.Location = new Point(774, 24);
+			btnThoat.Location = new Point(192, 24);
 			btnThoat.Name = "btnThoat";
 			btnThoat.Size = new Size(123, 57);
 			btnThoat.TabIndex = 3;
 			btnThoat.Text = "Thoát";
 			btnThoat.UseVisualStyleBackColor = true;
-			// 
-			// btnXoaPhieu
-			// 
-			btnXoaPhieu.Location = new Point(627, 24);
-			btnXoaPhieu.Name = "btnXoaPhieu";
-			btnXoaPhieu.Size = new Size(123, 57);
-			btnXoaPhieu.TabIndex = 2;
-			btnXoaPhieu.Text = "Xóa phiếu";
-			btnXoaPhieu.UseVisualStyleBackColor = true;
+			btnThoat.Click += btnThoat_Click;
 			// 
 			// btnLuuPhieu
 			// 
-			btnLuuPhieu.Location = new Point(185, 24);
+			btnLuuPhieu.Location = new Point(31, 24);
 			btnLuuPhieu.Name = "btnLuuPhieu";
 			btnLuuPhieu.Size = new Size(123, 57);
 			btnLuuPhieu.TabIndex = 1;
 			btnLuuPhieu.Text = "Lưu phiếu";
 			btnLuuPhieu.UseVisualStyleBackColor = true;
+			btnLuuPhieu.Click += btnLuuPhieu_Click;
 			// 
-			// btnLamMoi
-			// 
-			btnLamMoi.Location = new Point(28, 24);
-			btnLamMoi.Name = "btnLamMoi";
-			btnLamMoi.Size = new Size(123, 57);
-			btnLamMoi.TabIndex = 0;
-			btnLamMoi.Text = "Làm mới";
-			btnLamMoi.UseVisualStyleBackColor = true;
-			// 
-			// frmKho
+			// frmNhapPhieuNhap
 			// 
 			AutoScaleDimensions = new SizeF(8F, 20F);
 			AutoScaleMode = AutoScaleMode.Font;
@@ -521,8 +492,8 @@
 			Controls.Add(groupBox1);
 			FormBorderStyle = FormBorderStyle.FixedSingle;
 			MaximizeBox = false;
-			Name = "frmKho";
-			Text = "Form Kho";
+			Name = "frmNhapPhieuNhap";
+			Text = "Form nhập phiếu";
 			Load += frmKho_Load;
 			groupBox1.ResumeLayout(false);
 			groupBox1.PerformLayout();
@@ -548,12 +519,8 @@
 		private Panel panel1;
 		private DataGridView dgvPhuTung;
 		private Panel panel2;
-		private Button btnLamMoi;
 		private Button btnThoat;
-		private Button btnXoaPhieu;
 		private Button btnLuuPhieu;
-		private Button btnInPhieu;
-		private Button btnSuaPhieu;
 		private Button btnXoaNCC;
 		private Button btnThemNCC;
 		private DataGridViewTextBoxColumn colMaPhieu;
@@ -583,5 +550,6 @@
 		private ComboBox cbMaPhuTung;
 		private Label label5;
 		private Button btnLamMoiPhuTung;
+		private Button btnHuyPhuTung;
 	}
 }
