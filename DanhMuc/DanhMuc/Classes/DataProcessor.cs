@@ -7,8 +7,8 @@ namespace DanhMuc.Classes
 {
     public class DataProcessor
     {
-        // Chuỗi kết nối tới CSDL SQL Server
-        private string strConnect = @"Data Source=.;Initial Catalog=QuanLyGara;Integrated Security=True";
+        // Chuỗi kết nối tới CSDL SQL Server (AutoFixDb)
+        private string strConnect = @"Data Source=.;Initial Catalog=AutoFixDb;Integrated Security=True";
         private SqlConnection sqlConnect = null;
 
         // Phương thức mở kết nối
