@@ -1,13 +1,14 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
 using System.Globalization;
 using System.Reflection;
 using System.Windows.Forms;
 using QLyCuaHangSuaXe.DanhMuc.TiepNhan;
 using Form1 = QLyCuaHangSuaXe.DanhMuc.TiepNhan.frmTiepNhan;
+using LoginForm = QLyCuaHangSuaXe.DanhMuc.DangNhap.frmDangNhap;
 
-// Separate verification tool. This file is not part of the student application.
 internal static class Verify
 {
     private static int passed;
@@ -20,6 +21,8 @@ internal static class Verify
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             CheckSharedShellWorkflow();
+            CheckLinkedFormsWorkflow();
+            CheckTemporaryLoginWorkflow();
             CheckTicketTotal();
             CheckSingleFormWorkflow();
             CheckModalPaymentWorkflow();
@@ -46,7 +49,6 @@ internal static class Verify
             Assert(launchers.Length == 1 && launchers[0] is Button && launchers[0].Enabled,
                 "The shared main form has one enabled reception launcher button.");
             Button launcher = (Button)launchers[0];
-            // Runs after the production Click handler, before the next message-loop turn.
             launcher.Click += delegate
             {
                 Form1 reception = FindOpenReception(shell);
@@ -92,13 +94,352 @@ internal static class Verify
 
     private static int CountOpenReceptions(QLyCuaHangSuaXe.Form1 shell)
     {
-        // Changing ShowInTaskbar on a visible .NET Framework form recreates its handle.
-        // OwnedForms remains reliable after that; Application.OpenForms may drop it.
         int count = 0;
         foreach (Form form in shell.OwnedForms)
             if (form is Form1 && !form.IsDisposed) count++;
         return count;
     }
+
+    private static void CheckLinkedFormsWorkflow()
+    {
+        using (QLyCuaHangSuaXe.Form1 shell = new QLyCuaHangSuaXe.Form1())
+        {
+            PrepareOffscreen(shell);
+            shell.Show();
+            Form services = CheckOwnedNavigation(shell, "btnMoDanhMucDichVu",
+                "formDanhMucDichVu", "DanhMuc.frmDanhMucDichVu");
+            FindControl<Button>(services, "btnDong").PerformClick();
+            Application.DoEvents();
+            Assert(services.IsDisposed && !shell.IsDisposed && shell.Visible,
+                "The service Close button returns to the shared main form.");
+
+            CheckAccountFormsWorkflow(shell);
+
+            Form warehouse = CheckOwnedNavigation(shell, "btnMoKho", "formKho", "btl.frmKho");
+            Form receipts = CheckOwnedNavigation(warehouse, "btnPhieuNhap",
+                "formPhieuNhap", "btl.frmPhieuNhap");
+            Form receiptEntry = CheckOwnedNavigation(receipts, "btnThemPhieuNhap",
+                "formNhapPhieuNhap", "btl.frmNhapPhieuNhap");
+            CheckSupplierDialog(receiptEntry);
+            FindControl<Button>(receipts, "btnThoat").PerformClick();
+            Application.DoEvents();
+            Assert(receipts.IsDisposed && receiptEntry.IsDisposed && warehouse.Visible,
+                "Closing receipt management also closes its owned entry form and leaves the warehouse open.");
+            FindControl<Button>(warehouse, "btnPhieuNhap").PerformClick();
+            Application.DoEvents();
+            Form reopenedReceipts = CachedForm(warehouse, "formPhieuNhap");
+            Assert(reopenedReceipts != null && !Object.ReferenceEquals(receipts, reopenedReceipts)
+                && reopenedReceipts.Visible && Object.ReferenceEquals(reopenedReceipts.Owner, warehouse),
+                "The warehouse creates fresh receipt management after its previous instance closes.");
+            PrepareOffscreen(reopenedReceipts);
+            shell.Close();
+            Application.DoEvents();
+            Assert(warehouse.IsDisposed && reopenedReceipts.IsDisposed,
+                "Closing the shared main form closes the owned warehouse and receipt windows.");
+        }
+    }
+
+    private static void CheckAccountFormsWorkflow(QLyCuaHangSuaXe.Form1 shell)
+    {
+        Form login = CheckOwnedNavigation(shell, "btnMoDangNhap",
+            "formDangNhap", "QLyCuaHangSuaXe.DanhMuc.DangNhap.frmDangNhap");
+        TextBox password = FindControl<TextBox>(login, "txtMatKhau");
+        CheckBox showPassword = FindControl<CheckBox>(login, "chkHienMatKhau");
+        Assert(password.UseSystemPasswordChar,
+            "The linked login form initially masks its password.");
+        showPassword.Checked = true;
+        Assert(!password.UseSystemPasswordChar,
+            "The actual show-password checkbox reveals the login password.");
+        showPassword.Checked = false;
+        Assert(password.UseSystemPasswordChar,
+            "Clearing the show-password checkbox masks the login password again.");
+
+        FindControl<TextBox>(login, "txtTenDangNhap").Text = "minh";
+        password.Text = "123";
+        FindControl<Button>(login, "btnDangNhap").PerformClick();
+        Application.DoEvents();
+        Assert(!login.IsDisposed && login.Visible && ((LoginForm)login).TenDangNhap == "minh",
+            "Account navigation begins from a successful login that remains open.");
+
+        Form changePassword = CheckOwnedNavigation(login, "btnMoDoiMatKhau",
+            "formDoiMatKhau", "QLyCuaHangSuaXe.DanhMuc.DangNhap.frmDoiMatKhau");
+        TextBox currentPassword = FindControl<TextBox>(changePassword, "txtMatKhauHienTai");
+        TextBox newPassword = FindControl<TextBox>(changePassword, "txtMatKhauMoi");
+        TextBox confirmPassword = FindControl<TextBox>(changePassword, "txtXacNhanMatKhauMoi");
+        CheckBox showChangedPasswords = FindControl<CheckBox>(changePassword, "chkHienMatKhau");
+        Assert(currentPassword.UseSystemPasswordChar && newPassword.UseSystemPasswordChar
+            && confirmPassword.UseSystemPasswordChar,
+            "Password change initially masks all three password fields.");
+        showChangedPasswords.Checked = true;
+        Assert(!currentPassword.UseSystemPasswordChar && !newPassword.UseSystemPasswordChar
+            && !confirmPassword.UseSystemPasswordChar,
+            "The password-change checkbox reveals all three password fields together.");
+        showChangedPasswords.Checked = false;
+        Assert(currentPassword.UseSystemPasswordChar && newPassword.UseSystemPasswordChar
+            && confirmPassword.UseSystemPasswordChar,
+            "The password-change checkbox masks all three password fields again.");
+        Form accounts = CheckOwnedNavigation(login, "btnMoQuanLyTaiKhoan",
+            "formQuanLyTaiKhoan", "QLyCuaHangSuaXe.DanhMuc.DangNhap.frmQuanLyTaiKhoan");
+
+        FindControl<Button>(changePassword, "btnDong").PerformClick();
+        FindControl<Button>(accounts, "btnDong").PerformClick();
+        Application.DoEvents();
+        Assert(changePassword.IsDisposed && accounts.IsDisposed && login.Visible && shell.Visible,
+            "Each account child Close button returns to login while leaving the shared main form open.");
+        Form reopenedChangePassword = ReopenOwnedForm(login, "btnMoDoiMatKhau", "formDoiMatKhau", changePassword);
+        Form reopenedAccounts = ReopenOwnedForm(login, "btnMoQuanLyTaiKhoan", "formQuanLyTaiKhoan", accounts);
+        FindControl<Button>(login, "btnThoat").PerformClick();
+        Application.DoEvents();
+        Assert(login.IsDisposed && reopenedChangePassword.IsDisposed && reopenedAccounts.IsDisposed && shell.Visible,
+            "Login Exit closes its owned password and account windows and returns to the shared main form.");
+        Form reopenedLogin = ReopenOwnedForm(shell, "btnMoDangNhap", "formDangNhap", login);
+        Assert(string.IsNullOrEmpty(((LoginForm)reopenedLogin).TenDangNhap)
+            && !FindControl<Button>(reopenedLogin, "btnMoDoiMatKhau").Enabled
+            && !FindControl<Button>(reopenedLogin, "btnMoQuanLyTaiKhoan").Enabled,
+            "Reopening login starts a fresh unauthenticated form with account navigation disabled.");
+        FindControl<Button>(reopenedLogin, "btnThoat").PerformClick();
+        Application.DoEvents();
+        Assert(reopenedLogin.IsDisposed && shell.Visible,
+            "The reopened login Exit button closes only its own window hierarchy.");
+    }
+
+    private static Form ReopenOwnedForm(Form owner, string launcherName, string fieldName, Form previous)
+    {
+        FindControl<Button>(owner, launcherName).PerformClick();
+        Application.DoEvents();
+        Form reopened = CachedForm(owner, fieldName);
+        Assert(reopened != null && !Object.ReferenceEquals(previous, reopened) && !reopened.IsDisposed
+            && reopened.Visible && Object.ReferenceEquals(reopened.Owner, owner)
+            && CountOwnedForms(owner, previous.GetType()) == 1,
+            launcherName + " creates one fresh owned form after its previous instance closes.");
+        return reopened;
+    }
+
+    private static void CheckTemporaryLoginWorkflow()
+    {
+        using (QLyCuaHangSuaXe.Form1 shell = new QLyCuaHangSuaXe.Form1())
+        {
+            PrepareOffscreen(shell);
+            shell.Show();
+            Button launcher = FindControl<Button>(shell, "btnMoDangNhap");
+            launcher.Click += delegate
+            {
+                Form current = CachedForm(shell, "formDangNhap");
+                if (current != null && !current.IsDisposed) PrepareOffscreen(current);
+            };
+            launcher.PerformClick();
+            Application.DoEvents();
+            LoginForm login = (LoginForm)CachedForm(shell, "formDangNhap");
+            Assert(login != null && login.Visible && Object.ReferenceEquals(login.Owner, shell),
+                "The real main-form launcher creates the login form used for authentication.");
+            TextBox username = FindControl<TextBox>(login, "txtTenDangNhap");
+            TextBox password = FindControl<TextBox>(login, "txtMatKhau");
+            Button submit = FindControl<Button>(login, "btnDangNhap");
+            CheckBox showPassword = FindControl<CheckBox>(login, "chkHienMatKhau");
+            Button changePasswordLauncher = FindControl<Button>(login, "btnMoDoiMatKhau");
+            Button accountsLauncher = FindControl<Button>(login, "btnMoQuanLyTaiKhoan");
+            Label loginMessage = FindControl<Label>(login, "lblMoTa");
+            Label mainStatus = FindControl<Label>(shell, "lblHuongDan");
+            string initialStatus = mainStatus.Text;
+            int successCount = 0;
+            object successSender = null;
+            string successUsername = null;
+            login.DangNhapThanhCong += delegate(object sender, EventArgs e)
+            {
+                successCount++;
+                successSender = sender;
+                successUsername = login.TenDangNhap;
+            };
+            Assert(!changePasswordLauncher.Enabled && !accountsLauncher.Enabled,
+                "Password change and account management are disabled before login.");
+            changePasswordLauncher.PerformClick();
+            accountsLauncher.PerformClick();
+            Application.DoEvents();
+            Assert(CachedForm(login, "formDoiMatKhau") == null && CachedForm(login, "formQuanLyTaiKhoan") == null,
+                "Disabled account launchers cannot open their forms before login.");
+
+            string missingInput = "Vui lòng nhập tên đăng nhập và mật khẩu.";
+            string wrongCredentials = "Tên đăng nhập hoặc mật khẩu không đúng.";
+            string[,] rejectedInputs = {
+                { "", "", missingInput },
+                { "minh", "", missingInput },
+                { "", "123", missingInput },
+                { "Minh", "123", wrongCredentials },
+                { "minh", "123 ", wrongCredentials },
+                { "minh", "wrong", wrongCredentials }
+            };
+            for (int index = 0; index < rejectedInputs.GetLength(0); index++)
+            {
+                username.Text = rejectedInputs[index, 0];
+                password.Text = rejectedInputs[index, 1];
+                submit.PerformClick();
+                Application.DoEvents();
+                Assert(!login.IsDisposed && login.Visible && successCount == 0
+                    && string.IsNullOrEmpty(login.TenDangNhap) && mainStatus.Text == initialStatus
+                    && !changePasswordLauncher.Enabled && !accountsLauncher.Enabled
+                    && loginMessage.Text == rejectedInputs[index, 2],
+                    "Rejected login case " + (index + 1) + " stays open, reports its error and keeps account navigation disabled.");
+            }
+
+            username.Text = " minh ";
+            password.Text = "123";
+            submit.PerformClick();
+            Application.DoEvents();
+            Assert(successCount == 1 && Object.ReferenceEquals(successSender, login) && successUsername == "minh",
+                "The valid temporary credentials raise one success event with the normalized username.");
+            Assert(!login.IsDisposed && login.Visible && password.Text.Length == 0
+                && changePasswordLauncher.Enabled && accountsLauncher.Enabled
+                && loginMessage.Text == "Đăng nhập thành công.",
+                "Successful login clears the password, stays open and enables both account launchers.");
+            Assert(!username.Enabled && !password.Enabled && !showPassword.Enabled && !submit.Enabled,
+                "Successful login locks credential input and the login button for the current form session.");
+            Assert(!shell.IsDisposed && shell.Visible
+                && mainStatus.Text == "Đã đăng nhập: minh (tài khoản tạm)",
+                "The real main form handles login success and displays the signed-in temporary account.");
+            submit.PerformClick();
+            launcher.PerformClick();
+            Application.DoEvents();
+            Assert(successCount == 1 && Object.ReferenceEquals(login, CachedForm(shell, "formDangNhap"))
+                && changePasswordLauncher.Enabled && accountsLauncher.Enabled,
+                "Repeated login and main launcher clicks keep the authenticated form and raise no second success event.");
+
+            changePasswordLauncher.Click += delegate
+            {
+                Form current = CachedForm(login, "formDoiMatKhau");
+                if (current != null && !current.IsDisposed) PrepareOffscreen(current);
+            };
+            accountsLauncher.Click += delegate
+            {
+                Form current = CachedForm(login, "formQuanLyTaiKhoan");
+                if (current != null && !current.IsDisposed) PrepareOffscreen(current);
+            };
+            changePasswordLauncher.PerformClick();
+            accountsLauncher.PerformClick();
+            Application.DoEvents();
+            Form changePassword = CachedForm(login, "formDoiMatKhau");
+            Form accounts = CachedForm(login, "formQuanLyTaiKhoan");
+            Assert(changePassword != null && changePassword.Visible && Object.ReferenceEquals(changePassword.Owner, login)
+                && accounts != null && accounts.Visible && Object.ReferenceEquals(accounts.Owner, login),
+                "Both enabled account launchers open their real owned forms after login.");
+            FindControl<Button>(login, "btnThoat").PerformClick();
+            Application.DoEvents();
+            Assert(login.IsDisposed && changePassword.IsDisposed && accounts.IsDisposed && shell.Visible,
+                "Exit closes the authenticated login and its child forms while leaving the main form open.");
+            shell.Close();
+        }
+    }
+
+    private static Form CheckOwnedNavigation(Form owner, string launcherName, string fieldName, string typeName)
+    {
+        Type formType = typeof(Form1).Assembly.GetType(typeName, true);
+        Form child = (Form)Activator.CreateInstance(formType);
+        PrepareOffscreen(child);
+        RemoveLoadHandlers(child);
+        FieldInfo field = owner.GetType().GetField(fieldName, BindingFlags.Instance | BindingFlags.NonPublic);
+        if (field == null) throw new MissingFieldException(owner.GetType().FullName, fieldName);
+        field.SetValue(owner, child);
+        Button launcher = FindControl<Button>(owner, launcherName);
+        launcher.Click += delegate
+        {
+            Form current = CachedForm(owner, fieldName);
+            if (current != null && !current.IsDisposed) PrepareOffscreen(current);
+        };
+        Assert(launcher.Enabled, launcherName + " is enabled on its parent form.");
+        launcher.PerformClick();
+        Application.DoEvents();
+        Assert(child.Visible && Object.ReferenceEquals(child.Owner, owner) && CountOwnedForms(owner, formType) == 1,
+            launcherName + " opens the expected form with the correct owner.");
+        launcher.PerformClick();
+        Application.DoEvents();
+        Assert(Object.ReferenceEquals(child, CachedForm(owner, fieldName)) && CountOwnedForms(owner, formType) == 1,
+            launcherName + " reuses its open form without duplicates.");
+        child.WindowState = FormWindowState.Minimized;
+        launcher.PerformClick();
+        Application.DoEvents();
+        Assert(child.WindowState == FormWindowState.Normal && child.Visible,
+            launcherName + " restores its minimized form.");
+        child.Hide();
+        launcher.PerformClick();
+        Application.DoEvents();
+        Assert(child.Visible && Object.ReferenceEquals(child, CachedForm(owner, fieldName))
+            && CountOwnedForms(owner, formType) == 1,
+            launcherName + " shows its hidden form again without replacing it.");
+        return child;
+    }
+
+    private static void CheckSupplierDialog(Form receiptEntry)
+    {
+        using (Timer driver = new Timer())
+        {
+            Form supplier = null;
+            Exception driverError = null;
+            driver.Interval = 75;
+            driver.Tick += delegate
+            {
+                foreach (Form openForm in Application.OpenForms)
+                    if (openForm.GetType().FullName == "btl.frmThemNCC") supplier = openForm;
+                if (supplier == null) return;
+                driver.Stop();
+                try
+                {
+                    PrepareOffscreen(supplier);
+                    Assert(supplier.Modal && Object.ReferenceEquals(supplier.Owner, receiptEntry),
+                        "The supplier button opens the actual supplier dialog owned by receipt entry.");
+                }
+                catch (Exception error) { driverError = error; }
+                finally { supplier.Close(); }
+            };
+            driver.Start();
+            FindControl<Button>(receiptEntry, "btnThemNCC").PerformClick();
+            driver.Stop();
+            if (driverError != null) throw new InvalidOperationException("Supplier navigation failed.", driverError);
+            Assert(supplier != null && supplier.IsDisposed && receiptEntry.Visible && receiptEntry.Enabled,
+                "Closing the supplier dialog disposes it and returns control to receipt entry.");
+        }
+    }
+
+    private static void RemoveLoadHandlers(Form form)
+    {
+        PropertyInfo eventsProperty = typeof(Component).GetProperty("Events", BindingFlags.Instance | BindingFlags.NonPublic);
+        FieldInfo loadKeyField = typeof(Form).GetField("EVENT_LOAD", BindingFlags.Static | BindingFlags.NonPublic);
+        if (eventsProperty == null || loadKeyField == null)
+            throw new InvalidOperationException("The .NET Framework form Load event could not be isolated for navigation verification.");
+        EventHandlerList events = (EventHandlerList)eventsProperty.GetValue(form, null);
+        object loadKey = loadKeyField.GetValue(null);
+        Delegate handlers = events[loadKey];
+        if (handlers != null) events.RemoveHandler(loadKey, handlers);
+    }
+
+    private static Form CachedForm(Form owner, string fieldName)
+    {
+        FieldInfo field = owner.GetType().GetField(fieldName, BindingFlags.Instance | BindingFlags.NonPublic);
+        if (field == null) throw new MissingFieldException(owner.GetType().FullName, fieldName);
+        return (Form)field.GetValue(owner);
+    }
+
+    private static int CountOwnedForms(Form owner, Type formType)
+    {
+        int count = 0;
+        foreach (Form form in owner.OwnedForms)
+            if (form.GetType() == formType && !form.IsDisposed) count++;
+        return count;
+    }
+
+    private static T FindControl<T>(Form form, string name) where T : Control
+    {
+        Control[] controls = form.Controls.Find(name, true);
+        if (controls.Length != 1 || !(controls[0] is T))
+            throw new InvalidOperationException("Expected one " + typeof(T).Name + " named " + name + " on " + form.GetType().FullName + ".");
+        return (T)controls[0];
+    }
+
+    private static void PrepareOffscreen(Form form)
+    {
+        form.ShowInTaskbar = false;
+        form.StartPosition = FormStartPosition.Manual;
+        form.Location = new System.Drawing.Point(-10000, -10000);
+    }
+
     private static void CheckTicketTotal()
     {
         PhieuSuaChua ticket = new PhieuSuaChua();

@@ -54,5 +54,10 @@ namespace btl
 				this.Close();
 			}
 		}
-	}
+
+        private void frmThemNCC_Load_1(object sender, EventArgs e)
+        {
+
+        }
+    }
 }

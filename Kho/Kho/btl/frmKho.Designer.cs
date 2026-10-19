@@ -1,5 +1,8 @@
 ﻿namespace btl
 {
+	using System.Drawing;
+	using System.Windows.Forms;
+
 	partial class frmKho
 	{
 		/// <summary>
@@ -28,158 +31,173 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
-			panel1 = new Panel();
-			label1 = new Label();
-			groupBox1 = new GroupBox();
-			btnPhieuNhap = new Button();
-			btnHuyPhuTung = new Button();
-			btnXoaPhuTung = new Button();
-			dgvPhuTung = new DataGridView();
-			panel2 = new Panel();
-			colMaPhuTung = new DataGridViewTextBoxColumn();
-			colTenPhuTung = new DataGridViewTextBoxColumn();
-			colSoLuongTon = new DataGridViewTextBoxColumn();
-			colTenNCC = new DataGridViewTextBoxColumn();
-			colHanSuDung = new DataGridViewTextBoxColumn();
-			panel1.SuspendLayout();
-			groupBox1.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)dgvPhuTung).BeginInit();
-			panel2.SuspendLayout();
-			SuspendLayout();
-			// 
-			// panel1
-			// 
-			panel1.Controls.Add(label1);
-			panel1.Location = new Point(12, 12);
-			panel1.Name = "panel1";
-			panel1.Size = new Size(958, 58);
-			panel1.TabIndex = 0;
-			// 
-			// label1
-			// 
-			label1.AutoSize = true;
-			label1.Location = new Point(19, 19);
-			label1.Name = "label1";
-			label1.Size = new Size(35, 20);
-			label1.TabIndex = 0;
-			label1.Text = "Kho";
-			// 
-			// groupBox1
-			// 
-			groupBox1.Controls.Add(btnPhieuNhap);
-			groupBox1.Controls.Add(btnHuyPhuTung);
-			groupBox1.Controls.Add(btnXoaPhuTung);
-			groupBox1.Controls.Add(dgvPhuTung);
-			groupBox1.Location = new Point(3, 3);
-			groupBox1.Name = "groupBox1";
-			groupBox1.Size = new Size(955, 361);
-			groupBox1.TabIndex = 0;
-			groupBox1.TabStop = false;
-			groupBox1.Text = "Danh sách phụ tùng";
-			// 
-			// btnPhieuNhap
-			// 
-			btnPhieuNhap.Location = new Point(16, 296);
-			btnPhieuNhap.Name = "btnPhieuNhap";
-			btnPhieuNhap.Size = new Size(127, 49);
-			btnPhieuNhap.TabIndex = 14;
-			btnPhieuNhap.Text = "Phiếu nhập";
-			btnPhieuNhap.UseVisualStyleBackColor = true;
-			// 
-			// btnHuyPhuTung
-			// 
-			btnHuyPhuTung.Location = new Point(789, 296);
-			btnHuyPhuTung.Name = "btnHuyPhuTung";
-			btnHuyPhuTung.Size = new Size(127, 49);
-			btnHuyPhuTung.TabIndex = 13;
-			btnHuyPhuTung.Text = "Hủy";
-			btnHuyPhuTung.UseVisualStyleBackColor = true;
-			// 
-			// btnXoaPhuTung
-			// 
-			btnXoaPhuTung.Location = new Point(639, 296);
-			btnXoaPhuTung.Name = "btnXoaPhuTung";
-			btnXoaPhuTung.Size = new Size(127, 49);
-			btnXoaPhuTung.TabIndex = 12;
-			btnXoaPhuTung.Text = "Xóa";
-			btnXoaPhuTung.UseVisualStyleBackColor = true;
-			// 
-			// dgvPhuTung
-			// 
-			dgvPhuTung.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-			dgvPhuTung.Columns.AddRange(new DataGridViewColumn[] { colMaPhuTung, colTenPhuTung, colSoLuongTon, colTenNCC, colHanSuDung });
-			dgvPhuTung.Location = new Point(6, 26);
-			dgvPhuTung.Name = "dgvPhuTung";
-			dgvPhuTung.RowHeadersWidth = 51;
-			dgvPhuTung.Size = new Size(943, 250);
-			dgvPhuTung.TabIndex = 0;
-			// 
-			// panel2
-			// 
-			panel2.Controls.Add(groupBox1);
-			panel2.Location = new Point(12, 76);
-			panel2.Name = "panel2";
-			panel2.Size = new Size(958, 367);
-			panel2.TabIndex = 1;
-			// 
-			// colMaPhuTung
-			// 
-			colMaPhuTung.DataPropertyName = "MaPhuTung";
-			colMaPhuTung.HeaderText = "Mã phụ tùng";
-			colMaPhuTung.MinimumWidth = 6;
-			colMaPhuTung.Name = "colMaPhuTung";
-			colMaPhuTung.Width = 125;
-			// 
-			// colTenPhuTung
-			// 
-			colTenPhuTung.DataPropertyName = "TenPhuTung";
-			colTenPhuTung.HeaderText = "Tên phụ tùng";
-			colTenPhuTung.MinimumWidth = 6;
-			colTenPhuTung.Name = "colTenPhuTung";
-			colTenPhuTung.Width = 250;
-			// 
-			// colSoLuongTon
-			// 
-			colSoLuongTon.DataPropertyName = "SoLuongTon";
-			colSoLuongTon.HeaderText = "Số lượng tồn";
-			colSoLuongTon.MinimumWidth = 6;
-			colSoLuongTon.Name = "colSoLuongTon";
-			colSoLuongTon.Width = 125;
-			// 
-			// colTenNCC
-			// 
-			colTenNCC.DataPropertyName = "TenNCC";
-			colTenNCC.HeaderText = "Nhà cung cấp";
-			colTenNCC.MinimumWidth = 6;
-			colTenNCC.Name = "colTenNCC";
-			colTenNCC.Width = 250;
-			// 
-			// colHanSuDung
-			// 
-			colHanSuDung.DataPropertyName = "HanSuDung";
-			colHanSuDung.HeaderText = "Hạn sử dụng";
-			colHanSuDung.MinimumWidth = 6;
-			colHanSuDung.Name = "colHanSuDung";
-			colHanSuDung.Width = 178;
-			// 
-			// frmKho
-			// 
-			AutoScaleDimensions = new SizeF(8F, 20F);
-			AutoScaleMode = AutoScaleMode.Font;
-			ClientSize = new Size(982, 457);
-			Controls.Add(panel2);
-			Controls.Add(panel1);
-			FormBorderStyle = FormBorderStyle.FixedSingle;
-			MaximizeBox = false;
-			Name = "frmKho";
-			Text = "frmKho";
-			Load += frmKho_Load;
-			panel1.ResumeLayout(false);
-			panel1.PerformLayout();
-			groupBox1.ResumeLayout(false);
-			((System.ComponentModel.ISupportInitialize)dgvPhuTung).EndInit();
-			panel2.ResumeLayout(false);
-			ResumeLayout(false);
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.label1 = new System.Windows.Forms.Label();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.btnPhieuNhap = new System.Windows.Forms.Button();
+            this.btnHuyPhuTung = new System.Windows.Forms.Button();
+            this.btnXoaPhuTung = new System.Windows.Forms.Button();
+            this.dgvPhuTung = new System.Windows.Forms.DataGridView();
+            this.colMaPhuTung = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colTenPhuTung = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colSoLuongTon = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colTenNCC = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colHanSuDung = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.panel1.SuspendLayout();
+            this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvPhuTung)).BeginInit();
+            this.panel2.SuspendLayout();
+            this.SuspendLayout();
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.label1);
+            this.panel1.Location = new System.Drawing.Point(12, 10);
+            this.panel1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(958, 46);
+            this.panel1.TabIndex = 0;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(19, 15);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(30, 16);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "Kho";
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.btnPhieuNhap);
+            this.groupBox1.Controls.Add(this.btnHuyPhuTung);
+            this.groupBox1.Controls.Add(this.btnXoaPhuTung);
+            this.groupBox1.Controls.Add(this.dgvPhuTung);
+            this.groupBox1.Location = new System.Drawing.Point(3, 2);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.groupBox1.Size = new System.Drawing.Size(955, 289);
+            this.groupBox1.TabIndex = 0;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Danh sách phụ tùng";
+            // 
+            // btnPhieuNhap
+            // 
+            this.btnPhieuNhap.Location = new System.Drawing.Point(16, 237);
+            this.btnPhieuNhap.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.btnPhieuNhap.Name = "btnPhieuNhap";
+            this.btnPhieuNhap.Size = new System.Drawing.Size(127, 39);
+            this.btnPhieuNhap.TabIndex = 14;
+            this.btnPhieuNhap.Text = "Phiếu nhập";
+            this.btnPhieuNhap.UseVisualStyleBackColor = true;
+            // 
+            // btnHuyPhuTung
+            // 
+            this.btnHuyPhuTung.Location = new System.Drawing.Point(789, 237);
+            this.btnHuyPhuTung.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.btnHuyPhuTung.Name = "btnHuyPhuTung";
+            this.btnHuyPhuTung.Size = new System.Drawing.Size(127, 39);
+            this.btnHuyPhuTung.TabIndex = 13;
+            this.btnHuyPhuTung.Text = "Hủy";
+            this.btnHuyPhuTung.UseVisualStyleBackColor = true;
+            // 
+            // btnXoaPhuTung
+            // 
+            this.btnXoaPhuTung.Location = new System.Drawing.Point(639, 237);
+            this.btnXoaPhuTung.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.btnXoaPhuTung.Name = "btnXoaPhuTung";
+            this.btnXoaPhuTung.Size = new System.Drawing.Size(127, 39);
+            this.btnXoaPhuTung.TabIndex = 12;
+            this.btnXoaPhuTung.Text = "Xóa";
+            this.btnXoaPhuTung.UseVisualStyleBackColor = true;
+            // 
+            // dgvPhuTung
+            // 
+            this.dgvPhuTung.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvPhuTung.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.colMaPhuTung,
+            this.colTenPhuTung,
+            this.colSoLuongTon,
+            this.colTenNCC,
+            this.colHanSuDung});
+            this.dgvPhuTung.Location = new System.Drawing.Point(6, 21);
+            this.dgvPhuTung.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.dgvPhuTung.Name = "dgvPhuTung";
+            this.dgvPhuTung.RowHeadersWidth = 51;
+            this.dgvPhuTung.Size = new System.Drawing.Size(943, 200);
+            this.dgvPhuTung.TabIndex = 0;
+            // 
+            // colMaPhuTung
+            // 
+            this.colMaPhuTung.DataPropertyName = "MaPhuTung";
+            this.colMaPhuTung.HeaderText = "Mã phụ tùng";
+            this.colMaPhuTung.MinimumWidth = 6;
+            this.colMaPhuTung.Name = "colMaPhuTung";
+            this.colMaPhuTung.Width = 125;
+            // 
+            // colTenPhuTung
+            // 
+            this.colTenPhuTung.DataPropertyName = "TenPhuTung";
+            this.colTenPhuTung.HeaderText = "Tên phụ tùng";
+            this.colTenPhuTung.MinimumWidth = 6;
+            this.colTenPhuTung.Name = "colTenPhuTung";
+            this.colTenPhuTung.Width = 250;
+            // 
+            // colSoLuongTon
+            // 
+            this.colSoLuongTon.DataPropertyName = "SoLuongTon";
+            this.colSoLuongTon.HeaderText = "Số lượng tồn";
+            this.colSoLuongTon.MinimumWidth = 6;
+            this.colSoLuongTon.Name = "colSoLuongTon";
+            this.colSoLuongTon.Width = 125;
+            // 
+            // colTenNCC
+            // 
+            this.colTenNCC.DataPropertyName = "TenNCC";
+            this.colTenNCC.HeaderText = "Nhà cung cấp";
+            this.colTenNCC.MinimumWidth = 6;
+            this.colTenNCC.Name = "colTenNCC";
+            this.colTenNCC.Width = 250;
+            // 
+            // colHanSuDung
+            // 
+            this.colHanSuDung.DataPropertyName = "HanSuDung";
+            this.colHanSuDung.HeaderText = "Hạn sử dụng";
+            this.colHanSuDung.MinimumWidth = 6;
+            this.colHanSuDung.Name = "colHanSuDung";
+            this.colHanSuDung.Width = 178;
+            // 
+            // panel2
+            // 
+            this.panel2.Controls.Add(this.groupBox1);
+            this.panel2.Location = new System.Drawing.Point(12, 61);
+            this.panel2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(958, 294);
+            this.panel2.TabIndex = 1;
+            // 
+            // frmKho
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.ClientSize = new System.Drawing.Size(982, 366);
+            this.Controls.Add(this.panel2);
+            this.Controls.Add(this.panel1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.MaximizeBox = false;
+            this.Name = "frmKho";
+            this.Text = "frmKho";
+            this.Load += new System.EventHandler(this.frmKho_Load_1);
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
+            this.groupBox1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgvPhuTung)).EndInit();
+            this.panel2.ResumeLayout(false);
+            this.ResumeLayout(false);
+
 		}
 
 		#endregion

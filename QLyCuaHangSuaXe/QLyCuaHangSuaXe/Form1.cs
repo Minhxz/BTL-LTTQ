@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace QLyCuaHangSuaXe
@@ -13,6 +6,9 @@ namespace QLyCuaHangSuaXe
     public partial class Form1 : Form
     {
         private DanhMuc.TiepNhan.frmTiepNhan formTiepNhan;
+        private global::DanhMuc.frmDanhMucDichVu formDanhMucDichVu;
+        private btl.frmKho formKho;
+        private DanhMuc.DangNhap.frmDangNhap formDangNhap;
 
         public Form1()
         {
@@ -21,14 +17,55 @@ namespace QLyCuaHangSuaXe
 
         private void btnMoTiepNhan_Click(object sender, EventArgs e)
         {
-            if (formTiepNhan == null || formTiepNhan.IsDisposed)
+            MoForm(ref formTiepNhan);
+        }
+
+        private void btnMoDanhMucDichVu_Click(object sender, EventArgs e)
+        {
+            MoForm(ref formDanhMucDichVu);
+        }
+
+        private void btnMoKho_Click(object sender, EventArgs e)
+        {
+            MoForm(ref formKho);
+        }
+
+        private void btnMoDangNhap_Click(object sender, EventArgs e)
+        {
+            if (formDangNhap == null || formDangNhap.IsDisposed)
+                formDangNhap = new DanhMuc.DangNhap.frmDangNhap();
+            formDangNhap.DangNhapThanhCong -= frmDangNhap_DangNhapThanhCong;
+            formDangNhap.DangNhapThanhCong += frmDangNhap_DangNhapThanhCong;
+            MoForm(ref formDangNhap);
+        }
+
+        private void frmDangNhap_DangNhapThanhCong(object sender, EventArgs e)
+        {
+            DanhMuc.DangNhap.frmDangNhap dangNhap = (DanhMuc.DangNhap.frmDangNhap)sender;
+            lblHuongDan.Text = "Đã đăng nhập: " + dangNhap.TenDangNhap + " (tài khoản tạm)";
+            if (WindowState == FormWindowState.Minimized)
+                WindowState = FormWindowState.Normal;
+            Activate();
+        }
+
+        private void btnThoat_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        // Giữ một cửa sổ cho mỗi chức năng; đóng rồi mở lại sẽ tạo form mới.
+        private void MoForm<T>(ref T form) where T : Form, new()
+        {
+            if (form == null || form.IsDisposed)
+                form = new T();
+            if (!form.Visible)
             {
-                formTiepNhan = new DanhMuc.TiepNhan.frmTiepNhan();
-                formTiepNhan.Show(this);
+                form.StartPosition = FormStartPosition.CenterScreen;
+                form.Show(this);
             }
-            if (formTiepNhan.WindowState == FormWindowState.Minimized)
-                formTiepNhan.WindowState = FormWindowState.Normal;
-            formTiepNhan.Activate();
+            if (form.WindowState == FormWindowState.Minimized)
+                form.WindowState = FormWindowState.Normal;
+            form.Activate();
         }
     }
 }

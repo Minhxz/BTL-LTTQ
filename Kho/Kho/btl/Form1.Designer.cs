@@ -1,5 +1,8 @@
 ﻿namespace btl
 {
+	using System.Drawing;
+	using System.Windows.Forms;
+
 	partial class frmNhapPhieuNhap
 	{
 		/// <summary>

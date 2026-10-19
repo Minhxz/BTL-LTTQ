@@ -1,5 +1,8 @@
 using System.Data;
 using System.Linq;
+using System;
+using System.Data.SqlClient;
+using System.Windows.Forms;
 
 namespace btl
 {
@@ -20,19 +23,36 @@ namespace btl
 			txtThanhTien.Enabled = false;
 			dtpNgayNhap.Enabled = false;
 
-			function.AddComboBox(cbNhaCungCap, dtbase.ReadData("Select TenNCC, MaNCC From NhaCungCap"), "TenNCC", "MaNCC");
-			cbNhaCungCap.SelectedIndex = -1;
-			function.AddComboBox(cbMaPhuTung, dtbase.ReadData("Select MaPhuTung From PhuTung"), "MaPhuTung", "MaPhuTung");
-			cbMaPhuTung.SelectedIndex = -1;
-
 			dgvPhuTung.AutoGenerateColumns = false;
 			dgvPhuTung.DataSource = null;
 			dgvPhuTung.Rows.Clear();
 
-			btnXoaNCC.Enabled = false;
 			btnSuaPhuTung.Enabled = false;
 			btnXoaPhuTung.Enabled = false;
 			btnHuyPhuTung.Enabled = false;
+
+			try
+			{
+				function.AddComboBox(cbNhaCungCap, dtbase.ReadData("Select TenNCC, MaNCC From NhaCungCap"), "TenNCC", "MaNCC");
+				cbNhaCungCap.SelectedIndex = -1;
+				function.AddComboBox(cbMaPhuTung, dtbase.ReadData("Select MaPhuTung From PhuTung"), "MaPhuTung", "MaPhuTung");
+				cbMaPhuTung.SelectedIndex = -1;
+			}
+			catch (SqlException ex)
+			{
+				ThongBaoLoiTaiDuLieu(ex);
+			}
+			catch (InvalidOperationException ex)
+			{
+				ThongBaoLoiTaiDuLieu(ex);
+			}
+			btnXoaNCC.Enabled = false;
+		}
+
+		private void ThongBaoLoiTaiDuLieu(Exception error)
+		{
+			MessageBox.Show(this, "Không thể tải danh sách nhà cung cấp hoặc phụ tùng. Vui lòng kiểm tra kết nối SQL Server và cơ sở dữ liệu QuanLyNhapKho.\n" + error.Message,
+				"Lỗi kết nối dữ liệu", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 		}
 
 		private void ResetForm()
@@ -51,13 +71,13 @@ namespace btl
 
 		private void btnThemNCC_Click(object sender, EventArgs e)
 		{
-			frmThemNCC form = new frmThemNCC();
-			form.ShowDialog();
-
-			if (form.DialogResult == DialogResult.OK)
+			using (frmThemNCC form = new frmThemNCC())
 			{
-				function.AddComboBox(cbNhaCungCap, dtbase.ReadData("Select TenNCC, MaNCC From NhaCungCap"), "TenNCC", "MaNCC");
-				cbNhaCungCap.SelectedIndex = -1;
+				if (form.ShowDialog(this) == DialogResult.OK)
+				{
+					function.AddComboBox(cbNhaCungCap, dtbase.ReadData("Select TenNCC, MaNCC From NhaCungCap"), "TenNCC", "MaNCC");
+					cbNhaCungCap.SelectedIndex = -1;
+				}
 			}
 		}
 

@@ -2,9 +2,16 @@ C:\Users\buiqu\Desktop\BTL-LTTQ\BTL-LTTQ\QLyCuaHangSuaXe\QLyCuaHangSuaXe\bin\Deb
 C:\Users\buiqu\Desktop\BTL-LTTQ\BTL-LTTQ\QLyCuaHangSuaXe\QLyCuaHangSuaXe\bin\Debug\QLyCuaHangSuaXe.exe
 C:\Users\buiqu\Desktop\BTL-LTTQ\BTL-LTTQ\QLyCuaHangSuaXe\QLyCuaHangSuaXe\bin\Debug\QLyCuaHangSuaXe.pdb
 C:\Users\buiqu\Desktop\BTL-LTTQ\BTL-LTTQ\QLyCuaHangSuaXe\QLyCuaHangSuaXe\obj\Debug\QLyCuaHangSuaXe.csproj.AssemblyReference.cache
+C:\Users\buiqu\Desktop\BTL-LTTQ\BTL-LTTQ\QLyCuaHangSuaXe\QLyCuaHangSuaXe\obj\Debug\QLyCuaHangSuaXe.DanhMuc.DangNhap.frmDangNhap.resources
+C:\Users\buiqu\Desktop\BTL-LTTQ\BTL-LTTQ\QLyCuaHangSuaXe\QLyCuaHangSuaXe\obj\Debug\QLyCuaHangSuaXe.DanhMuc.DangNhap.frmDoiMatKhau.resources
+C:\Users\buiqu\Desktop\BTL-LTTQ\BTL-LTTQ\QLyCuaHangSuaXe\QLyCuaHangSuaXe\obj\Debug\QLyCuaHangSuaXe.DanhMuc.DangNhap.frmQuanLyTaiKhoan.resources
+C:\Users\buiqu\Desktop\BTL-LTTQ\BTL-LTTQ\QLyCuaHangSuaXe\QLyCuaHangSuaXe\obj\Debug\QLyCuaHangSuaXe.DanhMuc.TiepNhan.frmTiepNhan.resources
 C:\Users\buiqu\Desktop\BTL-LTTQ\BTL-LTTQ\QLyCuaHangSuaXe\QLyCuaHangSuaXe\obj\Debug\QLyCuaHangSuaXe.Properties.Resources.resources
+C:\Users\buiqu\Desktop\BTL-LTTQ\BTL-LTTQ\QLyCuaHangSuaXe\QLyCuaHangSuaXe\obj\Debug\btl.frmKho.resources
+C:\Users\buiqu\Desktop\BTL-LTTQ\BTL-LTTQ\QLyCuaHangSuaXe\QLyCuaHangSuaXe\obj\Debug\btl.frmPhieuNhap.resources
+C:\Users\buiqu\Desktop\BTL-LTTQ\BTL-LTTQ\QLyCuaHangSuaXe\QLyCuaHangSuaXe\obj\Debug\btl.frmNhapPhieuNhap.resources
+C:\Users\buiqu\Desktop\BTL-LTTQ\BTL-LTTQ\QLyCuaHangSuaXe\QLyCuaHangSuaXe\obj\Debug\btl.frmThemNCC.resources
 C:\Users\buiqu\Desktop\BTL-LTTQ\BTL-LTTQ\QLyCuaHangSuaXe\QLyCuaHangSuaXe\obj\Debug\QLyCuaHangSuaXe.csproj.GenerateResource.cache
 C:\Users\buiqu\Desktop\BTL-LTTQ\BTL-LTTQ\QLyCuaHangSuaXe\QLyCuaHangSuaXe\obj\Debug\QLyCuaHangSuaXe.csproj.CoreCompileInputs.cache
 C:\Users\buiqu\Desktop\BTL-LTTQ\BTL-LTTQ\QLyCuaHangSuaXe\QLyCuaHangSuaXe\obj\Debug\QLyCuaHangSuaXe.exe
 C:\Users\buiqu\Desktop\BTL-LTTQ\BTL-LTTQ\QLyCuaHangSuaXe\QLyCuaHangSuaXe\obj\Debug\QLyCuaHangSuaXe.pdb
-C:\Users\buiqu\Desktop\BTL-LTTQ\BTL-LTTQ\QLyCuaHangSuaXe\QLyCuaHangSuaXe\obj\Debug\QLyCuaHangSuaXe.DanhMuc.frmDangNhap.resources
