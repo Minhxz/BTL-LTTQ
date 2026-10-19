@@ -13,7 +13,7 @@
 `Form1.cs` nằm ở gốc project **QLyCuaHangSuaXe** và là màn hình chính được chạy từ `Program.cs`. Màn hình này có 5 nhóm chức năng:
 
 - **Đăng nhập & Phân quyền** → form đăng nhập gọn → **Đổi mật khẩu** hoặc **Quản lý tài khoản**. Form quản lý có hai tab **Tài khoản** và **Phân quyền**.
-- **Tiếp nhận & Sửa chữa xe** → form tiếp nhận.
+- **Tiếp nhận xe** → lập phiếu, ghi tình trạng xe và phân công thợ.
 - **Danh mục Dịch vụ (Tiền công)** → form quản lý dịch vụ.
 - **Nhập kho phụ tùng** → Kho → **Phiếu nhập** → **Thêm phiếu nhập** → form lập phiếu → **Thêm nhà cung cấp**.
 - **Báo cáo & Thống kê** → nút chờ, ghi **Chưa xây dựng**, chưa mở form vì module này chưa có.
@@ -37,9 +37,17 @@ Danh mục dịch vụ sử dụng SQL Server `.` với database `AutoFixDb`; Kh
 
 Mã nguồn nằm trong [DanhMuc/TiepNhan](QLyCuaHangSuaXe/QLyCuaHangSuaXe/DanhMuc/TiepNhan), đã ghép vào project chung. Không cần chạy project `tiepnhan` riêng.
 
-Bản mới chỉ có một form: nhập thông tin khách và xe, thêm/xóa phụ tùng và dịch vụ, tính tiền, lưu và mở lại phiếu ngay trên cùng form. Màn hình chính mở một cửa sổ tiếp nhận; bấm lại nút sẽ quay về cửa sổ đang mở.
+Form tiếp nhận dùng một cửa sổ: tìm kiếm ở trên, thông tin khách/xe và thợ ở giữa, danh sách phiếu đã lưu ở dưới. Có các nút **Thêm mới**, **Sửa**, **Xóa**, **Lưu**, **Thoát**.
 
-Dữ liệu lưu trong bộ nhớ đến khi đóng cửa sổ tiếp nhận, chưa có database. **Chuyển thanh toán** kiểm tra, tự lưu phiếu và chuẩn bị `PhieuChuyenThanhToan`; form thu ngân thật sẽ do thành viên khác ghép sau.
+Mã phiếu hiển thị tự động ngay khi bấm **Thêm mới**. Nút **Lưu** giữ nguyên mã đang hiện; mã và ngày nhận không cho nhập tay.
+
+Lưu phiếu mới sẽ hiện hộp thông báo **Lưu phiếu thành công.** Chọn phiếu, bấm **Sửa** rồi **Lưu** sẽ báo **Sửa phiếu thành công.** Nút **Thoát** đóng form tiếp nhận để quay về màn hình chính và chọn chức năng khác.
+
+Danh sách phía dưới là control **DataGridView** thật, tên `dgvPhieu`. Dữ liệu tạm nằm trong một `DataTable` ở `frmTiepNhan.cs`; các nút dùng sự kiện `Click` để thêm, sửa, xóa và tìm kiếm. Code tập trung trong form để dễ đọc khi mới học Windows Forms.
+
+Phần tiếp nhận hiện **không dùng CSDL** và không có cấu trúc SQL chuẩn bị sẵn. Có dữ liệu mẫu để thử giao diện; **Lưu** chỉ cập nhật danh sách trong bộ nhớ. Đóng form rồi mở lại sẽ trở về dữ liệu mẫu. Nhóm sẽ thống nhất và làm CSDL sau; danh sách thợ hiện cũng chỉ là tên mẫu.
+
+Sau khi nhóm ghép CSDL chung, form hóa đơn do thành viên khác làm sẽ tìm lại phiếu tiếp nhận theo mã phiếu, lấy thông tin khách/xe rồi bổ sung phụ tùng, tiền công và thanh toán. Hiện chưa có form hóa đơn hoặc chức năng chuyển dữ liệu sang hóa đơn.
 
 - [Hướng dẫn chạy thử và bàn giao](QLyCuaHangSuaXe/QLyCuaHangSuaXe/DanhMuc/TiepNhan/README.md)
 - [Giải thích code](docs/tiepnhan/HUONG_DAN_GIAI_THICH_CODE.md)
@@ -47,6 +55,8 @@ Dữ liệu lưu trong bộ nhớ đến khi đóng cửa sổ tiếp nhận, ch
 
 ## Kiểm tra và ảnh chạy thử
 
-Chạy `powershell -ExecutionPolicy Bypass -File .\checks\Run.ps1` để biên dịch, kiểm tra module tiếp nhận và điều hướng giữa các form. Công cụ kiểm tra nằm ngoài project ứng dụng; dữ liệu kiểm tra không xuất hiện khi chạy F5. Kiểm tra điều hướng bỏ qua truy vấn database khi tải form, không thay đổi dữ liệu SQL Server.
+Nhấn **F5**, mở **Tiếp nhận xe** và thử thêm, sửa, tìm kiếm, xóa phiếu ngay với dữ liệu mẫu. Chọn một dòng trong DataGridView để xem thông tin trên các ô nhập.
 
-[Màn hình chính](docs/tiepnhan/ManHinhChinh.png) · [Form trống](docs/tiepnhan/TiepNhan-Trong.png) · [Form có phiếu đã lưu](docs/tiepnhan/TiepNhan-Tu-ManHinhChinh.png)
+Chạy `powershell -ExecutionPolicy Bypass -File .\checks\Run.ps1` để biên dịch và kiểm tra phần tiếp nhận, không cần kết nối SQL.
+
+[Màn hình chính](docs/tiepnhan/ManHinhChinh.png)

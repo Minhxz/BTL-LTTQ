@@ -1,7 +1,8 @@
 param(
     [ValidateSet('Debug', 'Release')]
     [string]$Configuration = 'Debug',
-    [switch]$SkipBuild
+    [switch]$SkipBuild,
+    [switch]$LegacyNavigation
 )
 
 $ErrorActionPreference = 'Stop'
@@ -20,8 +21,13 @@ if (-not $SkipBuild) {
 $assembly = Join-Path $output 'QLyCuaHangSuaXe.exe'
 if (-not (Test-Path -LiteralPath $assembly)) { throw "Build output does not exist: $assembly" }
 $compiler = Join-Path $env:WINDIR 'Microsoft.NET\Framework64\v4.0.30319\csc.exe'
-$verification = Join-Path $output 'VerifyShared.exe'
-& $compiler /nologo /target:exe "/out:$verification" "/reference:$assembly" /reference:System.dll /reference:System.Core.dll /reference:System.Data.dll /reference:System.Drawing.dll /reference:System.Windows.Forms.dll (Join-Path $PSScriptRoot 'Verify.cs')
-if ($LASTEXITCODE -ne 0) { throw "Verification compile failed (exit $LASTEXITCODE)." }
-& $verification
-if ($LASTEXITCODE -ne 0) { throw "Verification failed (exit $LASTEXITCODE)." }
+$verificationSources = @('VerifyTiepNhan.cs')
+if ($LegacyNavigation) { $verificationSources += 'Verify.cs' }
+foreach ($sourceName in $verificationSources) {
+    $verificationName = if ($sourceName -eq 'Verify.cs') { 'VerifyShared.exe' } else { 'VerifyTiepNhan.exe' }
+    $verification = Join-Path $output $verificationName
+    & $compiler /nologo /target:exe "/out:$verification" "/reference:$assembly" /reference:System.dll /reference:System.Core.dll /reference:System.Data.dll /reference:System.Drawing.dll /reference:System.Windows.Forms.dll (Join-Path $PSScriptRoot $sourceName)
+    if ($LASTEXITCODE -ne 0) { throw "Verification compile failed for $sourceName (exit $LASTEXITCODE)." }
+    & $verification
+    if ($LASTEXITCODE -ne 0) { throw "Verification failed for $sourceName (exit $LASTEXITCODE)." }
+}

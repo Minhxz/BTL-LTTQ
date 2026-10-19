@@ -1,91 +1,45 @@
-﻿# Toolbox của form tiếp nhận
+# Toolbox của form tiếp nhận
 
-Trong Visual Studio, chọn frmTiepNhan.cs rồi nhấn Shift + F7 để mở Designer. Ctrl + Alt + X mở Toolbox; F4 mở Properties. (Name) là tên dùng trong C#, Text là chữ hiển thị. Các control đều là thành phần Windows Forms tiêu chuẩn.
+Chọn `frmTiepNhan.cs`, nhấn **Shift + F7** để mở Designer. **Ctrl + Alt + X** mở Toolbox; **F4** mở Properties. `(Name)` là tên dùng trong code, `Text` là chữ hiển thị.
 
-Bản này chỉ có một form. Khách, xe, phụ tùng và dịch vụ đều nhập trực tiếp. Danh sách phiếu đã lưu nằm trên cùng, không mở thêm form phụ. Các ô tiền chỉ đọc; các nút Click đã được gắn trong Designer.
-
-| Control | (Name) | Text hoặc tiêu đề |
+| Control | Tên trong code | Công dụng |
 |---|---|---|
-| Panel | pnlNoiDung |  |
-| Panel | pnlBieuMau |  |
-| Label | lblTieuDe | TIẾP NHẬN VÀ SỬA CHỮA XE |
-| Panel | pnlPhieuDaLuu |  |
-| Label | lblPhieuDaLuu | Phiếu đã lưu: |
-| ComboBox | cboPhieuDaLuu |  |
-| Button | btnMoPhieu | Mở phiếu |
-| GroupBox | grpThongTinPhieu | Thông tin phiếu |
-| Label | lblMaPhieu | Mã phiếu: |
-| TextBox | txtMaPhieu |  |
-| Label | lblNgayNhan | Ngày nhận: |
-| DateTimePicker | dtpNgayNhan |  |
-| Label | lblNguoiTiepNhan | Người tiếp nhận: |
-| TextBox | txtNguoiTiepNhan |  |
-| Label | lblTrangThai | Trạng thái: |
-| ComboBox | cboTrangThai |  |
-| GroupBox | grpKhachHangXe | Khách hàng và xe |
-| Label | lblKhachHang | Khách hàng: |
-| TextBox | txtKhachHang |  |
-| Label | lblDienThoai | Điện thoại: |
-| TextBox | txtDienThoai |  |
-| Label | lblBienSoXe | Biển số xe: |
-| TextBox | txtBienSoXe |  |
-| Label | lblDongXe | Dòng xe: |
-| TextBox | txtDongXe |  |
-| Label | lblSoKm | Số km: |
-| NumericUpDown | nudSoKm |  |
-| Label | lblDonViKm | km |
-| GroupBox | grpThongTinSuaChua | Thông tin sửa chữa |
-| Label | lblTinhTrangXe | Tình trạng xe / lỗi ban đầu: |
-| TextBox | txtTinhTrangXe |  |
-| Label | lblThoPhuTrach | Thợ phụ trách: |
-| TextBox | txtThoPhuTrach |  |
-| Label | lblHenTraXe | Hẹn trả xe: |
-| DateTimePicker | dtpHenTraXe |  |
-| GroupBox | grpPhuTung | Phụ tùng thay thế |
-| Label | lblTenPhuTung | Tên phụ tùng: |
-| TextBox | txtTenPhuTung |  |
-| Label | lblDonViTinh | ĐVT: |
-| TextBox | txtDonViTinh |  |
-| Label | lblSoLuongPhuTung | SL: |
-| NumericUpDown | nudSoLuongPhuTung |  |
-| Label | lblDonGiaPhuTung | Đơn giá (đ): |
-| NumericUpDown | nudDonGiaPhuTung |  |
-| Button | btnThemPhuTung | Thêm |
-| Button | btnXoaPhuTung | Xóa dòng |
-| DataGridView | dgvPhuTung |  |
-| DataGridViewTextBoxColumn | colMaPhuTung | Mã PT |
-| DataGridViewTextBoxColumn | colTenPhuTung | Tên phụ tùng |
-| DataGridViewTextBoxColumn | colDonViTinh | ĐVT |
-| DataGridViewTextBoxColumn | colSoLuongPhuTung | SL |
-| DataGridViewTextBoxColumn | colDonGiaPhuTung | Đơn giá |
-| DataGridViewTextBoxColumn | colThanhTienPhuTung | Thành tiền |
-| GroupBox | grpDichVu | Dịch vụ / Tiền công |
-| Label | lblTenDichVu | Tên dịch vụ: |
-| TextBox | txtTenDichVu |  |
-| Label | lblSoLuongDichVu | SL: |
-| NumericUpDown | nudSoLuongDichVu |  |
-| Label | lblDonGiaDichVu | Đơn giá (đ): |
-| NumericUpDown | nudDonGiaDichVu |  |
-| Button | btnThemDichVu | Thêm |
-| Button | btnXoaDichVu | Xóa dòng |
-| DataGridView | dgvDichVu |  |
-| DataGridViewTextBoxColumn | colMaDichVu | Mã DV |
-| DataGridViewTextBoxColumn | colTenDichVu | Tên dịch vụ |
-| DataGridViewTextBoxColumn | colSoLuongDichVu | SL |
-| DataGridViewTextBoxColumn | colDonGiaDichVu | Đơn giá |
-| DataGridViewTextBoxColumn | colThanhTienDichVu | Thành tiền |
-| GroupBox | grpNoiDungSuaChua | Nội dung sửa chữa |
-| TextBox | txtNoiDungSuaChua |  |
-| Panel | pnlTongTien |  |
-| Label | lblTienPhuTung | Tiền phụ tùng: |
-| TextBox | txtTienPhuTung |  |
-| Label | lblTienCong | Tiền công: |
-| TextBox | txtTienCong |  |
-| Label | lblTongCong | TỔNG CỘNG: |
-| TextBox | txtTongCong |  |
-| Button | btnPhieuMoi | Phiếu mới |
-| Button | btnLuuPhieu | Lưu phiếu |
-| Button | btnChuyenThanhToan | Chuyển thanh toán |
-| Button | btnDong | Đóng |
+| `TextBox` | `txtTimKiem` | Nhập mã phiếu, biển số hoặc tên khách cần tìm |
+| `Button` | `btnTimKiem` | Tìm phiếu; cũng gọi bằng Enter trong ô tìm |
+| `TextBox` | `txtMaPhieu` | Mã tự hiện khi bấm Thêm mới, chỉ xem |
+| `TextBox` | `txtNgayNhan` | Ngày giờ nhận tự điền, chỉ xem |
+| `TextBox` | `txtBienSoXe` | Biển số bắt buộc, tối đa 20 ký tự |
+| `ComboBox` | `cboLoaiXe` | Xe số, Xe ga, Xe côn tay |
+| `TextBox` | `txtKhachHang` | Tên khách, tối đa 100 ký tự |
+| `TextBox` | `txtDienThoai` | Điện thoại, có thể bỏ trống |
+| `ComboBox` | `cboThoPhuTrach` | Tên thợ mẫu hoặc Chưa phân công |
+| `ComboBox` | `cboTrangThai` | Chờ khám, Đang sửa, Hoàn thành |
+| `RichTextBox` | `rtbTinhTrangXe` | Ghi lỗi ban đầu/yêu cầu của khách |
+| `Button` | `btnThemMoi`, `btnSua`, `btnXoa`, `btnLuu` | Các thao tác với phiếu |
+| `Button` | `btnThoat` | Đóng form tiếp nhận để quay về màn hình chính |
+| `Label` | `lblThongBao` | Hướng dẫn, kết quả hoặc lỗi nhập liệu |
+| `DataGridView` | `dgvPhieu` | Danh sách phiếu; chọn dòng để đưa lên các ô nhập |
 
-Số lượng từ 1 đến 999, đơn giá nhập bằng NumericUpDown và phải lớn hơn 0 khi thêm. Hai bảng chỉ cho chọn dòng để xóa, không cho gõ trực tiếp vào ô. Ngày dùng định dạng dd/MM/yyyy HH:mm. Tổng tiền tính từ DataTable, không nhập thủ công.
+## Bảng phía dưới
+
+Đây là control **DataGridView** chuẩn của Windows Forms. Các thuộc tính chính:
+
+- `ReadOnly = true`: không sửa trực tiếp trong ô bảng.
+- `SelectionMode = FullRowSelect`: bấm ô sẽ chọn cả dòng.
+- `MultiSelect = false`: mỗi lần chọn một phiếu.
+- `AutoGenerateColumns = false`: dùng bảy cột đã đặt trong Designer.
+- `DataSource`: nhận dữ liệu từ DataTable tạm của form.
+
+Bảy cột hiển thị gồm mã phiếu, ngày nhận, biển số, khách hàng, loại xe, thợ và trạng thái. Mỗi cột có `DataPropertyName` trùng tên cột dữ liệu để hiển thị đúng giá trị.
+
+## Ô chọn và sự kiện
+
+ComboBox dùng `DropDownList` để chọn trong danh sách. Ô thợ dùng `Items` chứa các tên mẫu, chưa đọc từ CSDL.
+
+Các khung `TableLayoutPanel` chia giao diện thành hàng và cột, giúp các ô thẳng hàng khi đổi kích thước cửa sổ. Đây là control có sẵn trong Toolbox; chỉ dùng để sắp xếp giao diện, không xử lý dữ liệu.
+
+File `.Designer.cs` nối các nút với sự kiện `Click`; nội dung xử lý nằm trong `frmTiepNhan.cs`. Khi đổi `(Name)`, kiểm tra cả nơi dùng tên đó trong code. Đặt `TabIndex` theo thứ tự nhập để di chuyển bằng Tab.
+
+Nút **Lưu** hiện hộp thoại bằng `MessageBox.Show(...)` khi lưu mới hoặc sửa thành công. `MessageBox` được gọi trong code, không cần kéo thêm control từ Toolbox. Nút **Thoát** nối với `btnThoat_Click` và gọi `Close()`; nút này luôn được bật.
+
+Nhấn **F5** để thử trên form thật. Phần tiếp nhận hiện không cần CSDL; đóng form rồi mở lại sẽ nạp dữ liệu mẫu ban đầu.

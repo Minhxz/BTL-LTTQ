@@ -75,7 +75,6 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
-    <Compile Include="DanhMuc\TiepNhan\PhieuSuaChua.cs" />
     <Compile Include="DanhMuc\TiepNhan\frmTiepNhan.cs">
       <SubType>Form</SubType>
     </Compile>

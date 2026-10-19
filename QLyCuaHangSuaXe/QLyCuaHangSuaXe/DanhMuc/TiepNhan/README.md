@@ -1,50 +1,33 @@
-﻿# Tiếp nhận và sửa chữa xe
+# Tiếp nhận xe
 
-Module thuộc project `QLyCuaHangSuaXe`, namespace `QLyCuaHangSuaXe.DanhMuc.TiepNhan`.
-
-## Mở form
-
-Nhấn F5 trong project chung rồi bấm **Tiếp nhận và sửa chữa xe**. Màn hình chính giữ một cửa sổ tiếp nhận; bấm lại nút sẽ kích hoạt cửa sổ có sẵn.
-
-Trong Solution Explorer, mở **DanhMuc → TiepNhan**, chuột phải **frmTiepNhan.cs → View Designer** hoặc nhấn **Shift + F7** để sửa bằng Toolbox.
+Form nằm trong project `QLyCuaHangSuaXe`, namespace `QLyCuaHangSuaXe.DanhMuc.TiepNhan`. Bố cục gồm tìm kiếm phía trên, thông tin tiếp nhận ở giữa, các nút thao tác và danh sách phiếu ở dưới.
 
 ## Chạy thử
 
-1. Nhập người tiếp nhận, khách hàng, điện thoại, biển số, dòng xe, tình trạng xe và thợ phụ trách. Hẹn trả phải từ ngày nhận trở đi.
-2. Nhập tên phụ tùng, đơn vị, số lượng và giá rồi bấm **Thêm**. Nhập dịch vụ tương tự. Cùng tên, đơn vị và giá thì cộng số lượng; khác giá tạo dòng riêng.
-3. Chọn dòng rồi bấm **Xóa dòng** để xóa; tiền tự cập nhật.
-4. Bấm **Lưu phiếu**, mã phiếu sẽ xuất hiện trong ô **Phiếu đã lưu**.
-5. Bấm **Phiếu mới**, sau đó chọn phiếu cũ và bấm **Mở phiếu** để xem lại trên cùng form. Sửa và lưu sẽ cập nhật theo mã.
-6. Điền nội dung sửa chữa, thêm ít nhất một phụ tùng hoặc dịch vụ, rồi bấm **Chuyển thanh toán**. Phiếu được tự lưu với trạng thái **Chờ thanh toán**, thông tin nằm trong `PhieuChuyenThanhToan`.
+1. Mở project chính trong Visual Studio, nhấn **F5**.
+2. Trên màn hình chính, chọn **Tiếp nhận xe**.
+3. Thử thao tác với dữ liệu mẫu. Phần tiếp nhận không cần tạo hoặc cấu hình CSDL.
 
-Chưa ghép form thu ngân nên nút chuyển chỉ thông báo đã chuẩn bị phiếu, giữ cửa sổ tiếp nhận mở. Dữ liệu đang lưu trong bộ nhớ và mất khi đóng cửa sổ tiếp nhận. Chạy lại bắt đầu từ `TN-0001`.
+Bảng phía dưới là control **DataGridView** thật, tên `dgvPhieu`. Một `DataTable` trong form giữ dữ liệu tạm để bảng hiển thị. **Lưu** cập nhật dữ liệu trong bộ nhớ; đóng form rồi mở lại sẽ trở về dữ liệu mẫu. Nhóm sẽ thống nhất CSDL và làm phần lưu dữ liệu lâu dài sau.
 
-## Các file chính
+## Các nút làm gì?
 
-| File | Vai trò |
-|---|---|
-| `frmTiepNhan.cs` | Sự kiện nút bấm, kiểm tra, thêm/xóa, tính tiền, lưu/mở và chuẩn bị thanh toán |
-| `frmTiepNhan.Designer.cs`, `frmTiepNhan.resx` | Giao diện Toolbox và tài nguyên của form |
-| `PhieuSuaChua.cs` | Gom thông tin một phiếu để lưu và truyền giữa các form |
+- **Tìm kiếm:** nhập mã phiếu, biển số hoặc tên khách rồi bấm **Tìm kiếm** hoặc Enter. Xóa từ khóa rồi tìm lại để hiện toàn bộ phiếu.
+- **Thêm mới:** làm trống ô nhập, điền ngày hiện tại và hiện ngay mã phiếu tự động (ví dụ `TN-0005`). Nhập xong bấm **Lưu**; mã vừa hiện được giữ nguyên và xuất hiện thông báo **Lưu phiếu thành công.** Lưu chưa hợp lệ không làm tăng số phiếu.
+- **Sửa:** chọn một dòng trong DataGridView, bấm **Sửa**, thay thông tin rồi **Lưu**. Mã phiếu và ngày nhận giữ nguyên; lưu xong báo **Sửa phiếu thành công.** Bấm Sửa chỉ mở ô nhập, chưa báo thành công.
+- **Thoát:** đóng form tiếp nhận, quay lại màn hình chính để chọn chức năng khác. Nút này dùng được cả khi đang thêm hoặc sửa. Vì dữ liệu hiện chỉ giữ tạm trong form, đóng form sẽ mất các thay đổi đã lưu và chưa lưu.
+- **Xóa:** chọn phiếu, bấm **Xóa** và xác nhận trước khi bỏ khỏi danh sách.
 
-Dùng `DataTable` cho hai bảng chi tiết, `List<PhieuSuaChua>` cho các phiếu đã lưu. Xem [giải thích từng phần](../../../../docs/tiepnhan/HUONG_DAN_GIAI_THICH_CODE.md) và [tên control](../../../../docs/tiepnhan/HUONG_DAN_TOOLBOX.md).
+Biển số bắt buộc. Điện thoại được bỏ trống; nếu nhập thì phải có 8–15 chữ số. Loại xe, thợ và trạng thái chọn bằng `ComboBox`. Phiếu **Chờ khám** có thể chưa phân công thợ; **Đang sửa** hoặc **Hoàn thành** cần chọn thợ. Danh sách thợ dùng tên mẫu để chọn thủ công, chưa liên kết với tài khoản hoặc xử lý lịch rảnh/bận.
 
-## Ghép form thu ngân sau này
+Form này quản lý thông tin tiếp nhận, lỗi ban đầu, thợ và trạng thái. Khi nhóm làm CSDL chung, form hóa đơn do thành viên khác làm sẽ tìm phiếu tiếp nhận bằng mã phiếu, lấy thông tin khách/xe rồi thêm phụ tùng, tiền công và tính tiền thanh toán. Nhóm cần thống nhất mã liên kết giữa phiếu và hóa đơn khi thiết kế CSDL. Hiện chưa có form hóa đơn hay chức năng bàn giao dữ liệu thật; nút Thoát chỉ đóng cửa sổ tiếp nhận.
 
-Khi đã có `FrmThuNgan` nhận `PhieuSuaChua`, có thể đổi nút mở trên màn hình chính sang đoạn minh họa sau. Lấy phiếu trước khi giải phóng form tiếp nhận:
+## Đọc và sửa giao diện
 
-```csharp
-using (DanhMuc.TiepNhan.frmTiepNhan form = new DanhMuc.TiepNhan.frmTiepNhan())
-{
-    if (form.ShowDialog(this) == DialogResult.OK)
-    {
-        DanhMuc.TiepNhan.PhieuSuaChua phieu = form.PhieuChuyenThanhToan;
-        using (FrmThuNgan thuNgan = new FrmThuNgan(phieu))
-        {
-            thuNgan.ShowDialog(this);
-        }
-    }
-}
-```
+- `frmTiepNhan.cs`: một `DataTable`, các hàm xử lý và sự kiện của nút.
+- `frmTiepNhan.Designer.cs`: tạo các control, đặt vị trí và nối sự kiện.
+- `frmTiepNhan.resx`: tài nguyên của form.
 
-Đây là ví dụ để ghép bài; `FrmThuNgan` chưa tồn tại trong project. Khi có database, nhóm sẽ dùng chung nguồn dữ liệu thay cho danh sách trong bộ nhớ.
+Chọn `frmTiepNhan.cs`, nhấn **Shift + F7** để mở Designer. Không cần đọc lớp xử lý SQL hoặc lớp mô hình riêng để hiểu phần tiếp nhận hiện tại.
+
+Xem thêm [giải thích code](../../../../docs/tiepnhan/HUONG_DAN_GIAI_THICH_CODE.md) và [Toolbox](../../../../docs/tiepnhan/HUONG_DAN_TOOLBOX.md).

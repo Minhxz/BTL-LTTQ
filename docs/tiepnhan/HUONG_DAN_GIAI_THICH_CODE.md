@@ -1,126 +1,52 @@
-﻿# Hiểu và giải thích code form tiếp nhận
+# Hiểu code tiếp nhận xe
 
-## Chức năng của bài
+Code xử lý nằm trong `frmTiepNhan.cs`. Có thể đọc theo luồng: **bấm nút → kiểm tra ô nhập → cập nhật dữ liệu tạm → hiện lại DataGridView**.
 
-Form này tiếp nhận xe, ghi thông tin sửa chữa, tính tiền phụ tùng và tiền công, lưu phiếu để mở lại trong lần chạy hiện tại. Khi hoàn tất sửa chữa, form chuẩn bị phiếu cho bộ phận thu ngân. Việc thu tiền và lập hóa đơn thuộc form của thành viên khác.
+## DataGridView và DataTable khác nhau thế nào?
 
-Chương trình dùng các kiến thức C# và Windows Forms cơ bản: biến, `if`, vòng lặp `for`/`foreach`, hàm, lớp có thuộc tính, `List`, `DataTable` và sự kiện bấm nút.
+`dgvPhieu` là control **DataGridView** kéo từ Toolbox, dùng để hiển thị và chọn phiếu. `DataTable` là bảng giữ dữ liệu trong bộ nhớ. Gán `DataSource` giúp DataGridView hiển thị các dòng của DataTable.
 
-## Chỉ cần đọc những file nào?
+Bảng dữ liệu có các cột: `MaPhieu`, `NgayNhan`, `BienSoXe`, `KhachHang`, `DienThoai`, `LoaiXe`, `TenTho`, `TrangThai`, `TinhTrangXe`. Giao diện chỉ hiện bảy cột chính. Điện thoại và tình trạng xe được đưa lên ô nhập khi chọn một dòng.
 
-| File | Vai trò |
+Phần này chưa dùng CSDL. Nút **Lưu** chỉ cập nhật bảng trong bộ nhớ; đóng form sẽ mất thay đổi. Danh sách thợ hiện là các tên mẫu trong ComboBox.
+
+## Đọc các hàm theo thứ tự
+
+| Hàm | Công việc |
 |---|---|
-| `frmTiepNhan.cs` | Các hàm xử lý khi bấm nút; đọc ô nhập, thêm/xóa dòng, tính tiền, lưu và mở phiếu |
-| `frmTiepNhan.Designer.cs` | Code Visual Studio sinh để tạo giao diện và đặt tên control; sửa bố cục bằng Designer |
-| `frmTiepNhan.resx` | Tài nguyên đi cùng form |
-| `PhieuSuaChua.cs` | Lớp gom thông tin của một phiếu để lưu và chuyển cho form khác |
-| `Program.cs` | Điểm bắt đầu chương trình, mở màn hình chính `Form1` |
+| `TaoBangPhieu()` | Tạo các cột và dữ liệu mẫu cho bảng tạm |
+| `TaiDanhSach(...)` | Đưa danh sách phiếu lên DataGridView |
+| `HienThiPhieu()` | Đưa thông tin phiếu đang chọn lên các ô |
+| `DatCheDo(...)` | Mở/khóa ô nhập và bật/tắt nút khi xem, thêm hoặc sửa |
+| `TaoPhieuMoi()` | Làm trống ô nhập và hiện ngay mã phiếu tiếp theo |
+| `KiemTraThongTin()` | Kiểm tra ô nhập trước khi lưu |
+| `LuuPhieu()` | Thêm dòng mới hoặc sửa dòng đã chọn rồi cập nhật bảng |
 
-Không cần tạo thêm form khách hàng, form danh sách phiếu hay form nhận thanh toán thử.
+Các hàm `btn..._Click` xử lý khi bấm nút. Ví dụ, **Lưu** gọi `LuuPhieu()`; **Tìm kiếm** đọc từ khóa rồi gọi hàm tải danh sách. Tìm kiếm chỉ kiểm tra mã phiếu, biển số và tên khách.
 
-## Dữ liệu trên form
+**Mã phiếu tự động:** bấm **Thêm mới** sẽ hiện ngay mã như `TN-0005`. **Lưu** giữ đúng mã đang hiển thị rồi tăng số cho phiếu tiếp theo. Nhập sai chưa làm tăng số; khi sửa thì mã cũ giữ nguyên.
 
-`dtPhuTung` và `dtDichVu` là hai `DataTable`. Có thể hiểu mỗi bảng gồm các cột và các dòng, giống một bảng nhỏ đang nằm trong bộ nhớ.
+**Thông báo thành công:** `LuuPhieu()` dùng `MessageBox.Show(...)` sau khi dữ liệu hợp lệ và đã được cập nhật. Lưu mới báo **Lưu phiếu thành công.**; lưu sau khi sửa báo **Sửa phiếu thành công.** Bấm Sửa chỉ chuyển sang chế độ nhập, chưa thay dữ liệu nên chưa báo thành công.
 
-- Một dòng phụ tùng có mã, tên, đơn vị tính, số lượng, đơn giá và thành tiền.
-- Một dòng dịch vụ có mã, tên, số lượng, đơn giá và thành tiền.
-- `DataGridView.DataSource` trỏ đến `DataTable`, nên bảng trên giao diện hiển thị các dòng dữ liệu đó.
-- Tiền dùng kiểu `decimal`, số lượng và số km dùng số nguyên; không lấy chuỗi đã định dạng tiền trên màn hình để tính lại.
+**Thoát form:** sự kiện `btnThoat_Click` gọi `Close()` để đóng cửa sổ tiếp nhận. Màn hình chính vẫn mở để chọn chức năng khác. Nút Thoát luôn dùng được; dữ liệu tạm của form sẽ mất khi đóng, kể cả các phiếu vừa bấm Lưu.
 
-`danhSachPhieu` là một `List<PhieuSuaChua>`, nghĩa là danh sách chứa các phiếu đã lưu. Chưa có SQL Server nên danh sách chỉ tồn tại khi form còn mở.
+`phieuDangChon` giữ dòng đang xem để sửa/xóa đúng phiếu. `dangThem` và `dangSua` cho biết chế độ hiện tại. `dangNapDuLieu` tránh xử lý chọn dòng khi chương trình đang gán lại danh sách cho DataGridView.
 
-## Thêm, xóa và tính tiền hoạt động thế nào?
+## Những thao tác dữ liệu cần hiểu
 
-Khi bấm **Thêm phụ tùng**, chương trình đọc tên, đơn vị, số lượng và giá từ các control. Sau khi kiểm tra ô nhập, chương trình duyệt các dòng đang có:
+- Thêm: tạo một `DataRow`, gán giá trị từng cột rồi thêm vào bảng.
+- Sửa: lấy dòng đang chọn rồi gán lại các cột cần thay.
+- Xóa: bỏ dòng đã chọn sau khi người dùng xác nhận.
+- Tìm kiếm: dùng vòng lặp kiểm tra từng phiếu, đưa các dòng phù hợp lên bảng.
 
-- Nếu trùng tên, đơn vị và đơn giá thì cộng số lượng.
-- Nếu chưa có dòng phù hợp thì thêm dòng mới.
-- Nếu tổng số lượng vượt 999 thì yêu cầu người dùng sửa lại.
+Khi bấm một dòng trong DataGridView, thông tin của dòng đó xuất hiện ở các ô phía trên. Muốn sửa thì bấm **Sửa**; bảng không cho sửa trực tiếp trong ô.
 
-Dịch vụ thực hiện tương tự, không có cột đơn vị tính.
+Biển số không được trống. Điện thoại có thể bỏ qua; nếu nhập thì phải có 8–15 chữ số. Các ô chọn dùng danh sách có sẵn để hạn chế nhập sai. Phiếu **Chờ khám** chưa cần thợ; **Đang sửa** hoặc **Hoàn thành** phải chọn thợ.
 
-Khi bấm **Xóa dòng**, chương trình lấy dòng đang được chọn ở bảng tương ứng và xóa khỏi dữ liệu. Các nút thêm và xóa đều gọi `TinhTongTien()` sau khi thay đổi bảng.
+## Tự chạy từng bước
 
-Công thức:
+Đặt điểm dừng trong sự kiện nút **Lưu**. Nhấn F10 để theo dõi kiểm tra thông tin, cập nhật dòng, hiển thị lại danh sách và báo thành công. Thử thêm phiếu, sửa tên khách, tìm theo biển số rồi bấm **Thoát**. Mở lại form để thấy dữ liệu mẫu được nạp lại.
 
-```text
-Thành tiền từng dòng = Số lượng × Đơn giá
-Tiền phụ tùng       = Cộng thành tiền các dòng phụ tùng
-Tiền công           = Cộng thành tiền các dòng dịch vụ
-Tổng cộng           = Tiền phụ tùng + Tiền công
-```
+## Sau này nối với hóa đơn
 
-## Lưu và mở phiếu hoạt động thế nào?
-
-`LayThongTinPhieu()` đọc các ô nhập và hai bảng để tạo một đối tượng `PhieuSuaChua`. Đối tượng này gom thông tin của cả phiếu vào một chỗ.
-
-`LuuPhieu(bool deThanhToan)` kiểm tra thông tin rồi tìm mã phiếu trong danh sách:
-
-- Chưa có mã đó: thêm phiếu mới vào danh sách.
-- Đã có mã đó: thay thông tin phiếu đang lưu bằng thông tin vừa sửa.
-
-Tham số `deThanhToan` cho biết đang lưu bình thường hay chuẩn bị thanh toán. Khi chuyển thanh toán, chương trình kiểm tra thêm nội dung sửa chữa và các dòng cần tính tiền.
-
-`CapNhatDanhSachPhieu(...)` đưa các phiếu đã lưu lên `ComboBox`. Hàm `ToString()` trong lớp `PhieuSuaChua` quyết định chữ hiển thị cho mỗi phiếu: mã phiếu, tên khách và biển số xe. Chọn mã rồi bấm **Mở phiếu**, chương trình tìm phiếu và gọi `HienThiPhieu(...)` để điền lại các ô và hai bảng.
-
-`TaoPhieuMoi()` xóa thông tin đang nhập, tạo mã mới, đặt ngày nhận/hẹn trả và đưa tiền về 0. Hàm này không xóa những phiếu đã lưu trong danh sách.
-
-## Những biến đánh dấu thay đổi có tác dụng gì?
-
-`coThayDoi` cho biết phiếu đang nhập đã được sửa nhưng chưa lưu hay chưa. `dangNapDuLieu` giúp việc tự điền phiếu cũ lên giao diện không bị hiểu là người dùng đang sửa. Hai biến này chỉ có giá trị `true` hoặc `false`, dùng trong câu lệnh `if` để quyết định có hỏi lưu trước khi đổi phiếu hay không.
-
-`daKhoiTao` giúp form chỉ chuẩn bị dữ liệu một lần khi mở. `dangChuyenThanhToan` giúp đóng hộp thoại để trả phiếu cho màn hình gọi mà không hỏi đóng mất dữ liệu lần nữa.
-
-## Vì sao phải sao chép hai bảng?
-
-Nếu phiếu đã lưu và phiếu đang sửa cùng dùng một bảng thì khi xóa dòng trên màn hình, dữ liệu đã lưu cũng đổi theo dù chưa bấm **Lưu phiếu**.
-
-`DataTable.Copy()` tạo một bảng riêng có cùng dữ liệu. Hai hàm `LayThongTinPhieu()` và `HienThiPhieu(...)` dùng cách này cho hai bảng, để phiếu đã lưu và phiếu đang sửa không ảnh hưởng lẫn nhau ngoài ý muốn.
-
-## Các hàm quan trọng để tự đọc trong code
-
-| Hàm | Hiểu ngắn gọn |
-|---|---|
-| `frmTiepNhan_Load`, `TaoBangChiTiet` | Chuẩn bị các cột của hai bảng và tạo phiếu trống khi mở form |
-| `btnThemPhuTung_Click`, `btnThemDichVu_Click` | Đọc ô nhập rồi thêm hoặc cộng số lượng vào bảng |
-| `btnXoaPhuTung_Click`, `btnXoaDichVu_Click` | Xóa dòng đang chọn |
-| `TinhTienBang`, `TinhTongTien` | Duyệt các dòng, cộng tiền rồi hiển thị tổng |
-| `KiemTraThongTin` | Trả về chuỗi lỗi đầu tiên; trả chuỗi rỗng nếu hợp lệ |
-| `LayThongTinPhieu` | Gom dữ liệu trên form thành một phiếu |
-| `LuuPhieu` | Thêm mới hoặc cập nhật phiếu theo mã |
-| `HienThiPhieu` | Đưa dữ liệu của phiếu trở lại giao diện |
-| `CapNhatDanhSachPhieu` | Cập nhật các mã trong ô chọn phiếu đã lưu |
-| `TaoPhieuMoi` | Đặt lại giao diện cho phiếu tiếp theo |
-| `ChuanBiChuyenThanhToan` | Kiểm tra, lưu và chuẩn bị dữ liệu bàn giao |
-
-Các hàm có đuôi `_Click` là hàm được gọi khi người dùng bấm nút tương ứng. Visual Studio gắn nút với hàm trong code Designer. Một nút có thể gọi thêm hàm riêng để không phải viết lại cùng một đoạn code nhiều lần.
-
-## Ghép với form thu ngân sau này
-
-`PhieuChuyenThanhToan` là thuộc tính công khai của form tiếp nhận. Nó giữ phiếu đã được chuẩn bị cho thanh toán. `private set` nghĩa là form khác đọc được thông tin này, còn việc gán phiếu do form tiếp nhận thực hiện.
-
-Nếu màn hình chính mở tiếp nhận bằng `ShowDialog()`, bấm **Chuyển thanh toán** sẽ trả về `DialogResult.OK`. Màn hình chính lấy phiếu rồi mở form thu ngân. Trong project chung hiện tại, màn hình chính mở tiếp nhận bằng `Show(this)` nên cửa sổ tiếp nhận vẫn mở và thông báo đã chuẩn bị phiếu; form thu ngân sẽ ghép sau.
-
-Ví dụ bên dưới chỉ dùng sau khi nhóm đã có `FrmThuNgan` nhận một `PhieuSuaChua`; chưa đưa vào dự án vì form thu ngân do bạn khác làm:
-
-```csharp
-using (frmTiepNhan formTiepNhan = new frmTiepNhan())
-{
-    if (formTiepNhan.ShowDialog() == DialogResult.OK)
-    {
-        PhieuSuaChua phieu = formTiepNhan.PhieuChuyenThanhToan;
-        FrmThuNgan formThuNgan = new FrmThuNgan(phieu);
-        formThuNgan.ShowDialog();
-    }
-}
-```
-
-Hai người cần thống nhất lớp `PhieuSuaChua` và các cột trong hai bảng. Khi có database, thay các thao tác thêm/tìm/cập nhật trong danh sách bằng câu lệnh SQL; vẫn giữ kiểm tra thông tin và công thức tính tiền.
-
-## Cách tự kiểm tra mình đã hiểu
-
-Hãy đặt điểm dừng ở `btnThemPhuTung_Click` và bấm **Thêm**, rồi nhấn F10 để xem từng bước. Quan sát số lượng và đơn giá trước khi tính thành tiền. Làm tương tự với `LuuPhieu` để thấy khác nhau giữa thêm mã mới và cập nhật mã cũ.
-
-Bạn nên giải thích được bằng lời của mình: dữ liệu đang ở control hay trong bảng; nút vừa bấm gọi hàm nào; hàm thay đổi dữ liệu gì; vì sao phải kiểm tra và sao chép bảng. Không cần học thuộc nguyên văn tài liệu này.
-
-
+Khi có CSDL chung, form hóa đơn sẽ đọc lại phiếu tiếp nhận theo mã phiếu và lấy thông tin khách/xe. Người làm form hóa đơn sẽ xử lý phụ tùng, tiền công và thanh toán. Phần tiếp nhận hiện chỉ minh họa thao tác bằng DataTable; chưa lưu lâu dài hoặc chuyển dữ liệu sang form hóa đơn.

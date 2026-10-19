@@ -76,7 +76,7 @@ namespace QLyCuaHangSuaXe
             this.btnMoTiepNhan.Name = "btnMoTiepNhan";
             this.btnMoTiepNhan.Size = new System.Drawing.Size(332, 48);
             this.btnMoTiepNhan.TabIndex = 3;
-            this.btnMoTiepNhan.Text = "Tiếp nhận && Sửa chữa xe";
+            this.btnMoTiepNhan.Text = "Tiếp nhận xe";
             this.btnMoTiepNhan.UseVisualStyleBackColor = false;
             this.btnMoTiepNhan.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnMoTiepNhan.Click += new System.EventHandler(this.btnMoTiepNhan_Click);
@@ -86,7 +86,7 @@ namespace QLyCuaHangSuaXe
             this.lblMoTaTiepNhan.Name = "lblMoTaTiepNhan";
             this.lblMoTaTiepNhan.Size = new System.Drawing.Size(332, 34);
             this.lblMoTaTiepNhan.TabIndex = 9;
-            this.lblMoTaTiepNhan.Text = "Tiếp nhận xe, lập và theo dõi phiếu sửa chữa.";
+            this.lblMoTaTiepNhan.Text = "Lập phiếu, ghi tình trạng xe và phân công thợ.";
             // btnMoDanhMucDichVu
             this.btnMoDanhMucDichVu.BackColor = System.Drawing.Color.FromArgb(40, 91, 145);
             this.btnMoDanhMucDichVu.FlatAppearance.BorderSize = 0;
