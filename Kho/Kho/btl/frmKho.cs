@@ -34,7 +34,9 @@ namespace btl
 		private void btnDanhSachPhieuNhap_Click(object sender, EventArgs e)
 		{
 			frmPhieuNhap formPhieuNhap = new frmPhieuNhap();
-			formPhieuNhap.Show();
+			formPhieuNhap.ShowDialog();
+
+			frmKho_Load(sender, e);
 		}
 
 		private void btnThoat_Click(object sender, EventArgs e)

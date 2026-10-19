@@ -24,7 +24,7 @@ namespace btl
 
 		private void frmPhieuNhap_Load(object sender, EventArgs e)
 		{
-			string sqlPhieuNhap = "Select pn.MaPhieuNhap, pn.NgayNhap, Sum(ct.SoLuong) AsTongSoLuongNhap, Sum(ct.ThanhTien) As ThanhTien, NguoiNhap " +
+			string sqlPhieuNhap = "Select pn.MaPhieuNhap, pn.NgayNhap, Sum(ct.SoLuong) As TongSoLuongNhap, Sum(ct.ThanhTien) As ThanhTien, NguoiNhap " +
 				"From PhieuNhap pn Join ChiTietPhieuNhap ct On pn.MaPhieuNhap = ct.MaPhieuNhap " +
 				"Group By pn.MaPhieuNhap, pn.NgayNhap, pn.NguoiNhap " +
 				"Order By pn.MaPhieuNhap Asc";
