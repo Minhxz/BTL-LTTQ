@@ -131,64 +131,6 @@
       <Link>Modules\DichVu\frmDanhMucDichVu.Designer.cs</Link>
       <DependentUpon>frmDanhMucDichVu.cs</DependentUpon>
     </Compile>
-    <Compile Include="..\..\Kho\Kho\btl\Classes\DatabaseProcessor.cs">
-      <Link>Modules\Kho\Classes\DatabaseProcessor.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Kho\Kho\btl\Classes\Function.cs">
-      <Link>Modules\Kho\Classes\Function.cs</Link>
-    </Compile>
-    <Compile Include="..\..\Kho\Kho\btl\frmKho.cs">
-      <Link>Modules\Kho\frmKho.cs</Link>
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="..\..\Kho\Kho\btl\frmKho.Designer.cs">
-      <Link>Modules\Kho\frmKho.Designer.cs</Link>
-      <DependentUpon>frmKho.cs</DependentUpon>
-    </Compile>
-    <Compile Include="..\..\Kho\Kho\btl\frmPhieuNhap.cs">
-      <Link>Modules\Kho\frmPhieuNhap.cs</Link>
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="..\..\Kho\Kho\btl\frmPhieuNhap.Designer.cs">
-      <Link>Modules\Kho\frmPhieuNhap.Designer.cs</Link>
-      <DependentUpon>frmPhieuNhap.cs</DependentUpon>
-    </Compile>
-    <Compile Include="..\..\Kho\Kho\btl\Form1.cs">
-      <Link>Modules\Kho\Form1.cs</Link>
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="..\..\Kho\Kho\btl\Form1.Designer.cs">
-      <Link>Modules\Kho\Form1.Designer.cs</Link>
-      <DependentUpon>Form1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="..\..\Kho\Kho\btl\frmThemNCC.cs">
-      <Link>Modules\Kho\frmThemNCC.cs</Link>
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="..\..\Kho\Kho\btl\frmThemNCC.Designer.cs">
-      <Link>Modules\Kho\frmThemNCC.Designer.cs</Link>
-      <DependentUpon>frmThemNCC.cs</DependentUpon>
-    </Compile>
-    <EmbeddedResource Include="..\..\Kho\Kho\btl\frmKho.resx">
-      <Link>Modules\Kho\frmKho.resx</Link>
-      <DependentUpon>frmKho.cs</DependentUpon>
-      <LogicalName>btl.frmKho.resources</LogicalName>
-    </EmbeddedResource>
-    <EmbeddedResource Include="..\..\Kho\Kho\btl\frmPhieuNhap.resx">
-      <Link>Modules\Kho\frmPhieuNhap.resx</Link>
-      <DependentUpon>frmPhieuNhap.cs</DependentUpon>
-      <LogicalName>btl.frmPhieuNhap.resources</LogicalName>
-    </EmbeddedResource>
-    <EmbeddedResource Include="..\..\Kho\Kho\btl\Form1.resx">
-      <Link>Modules\Kho\Form1.resx</Link>
-      <DependentUpon>Form1.cs</DependentUpon>
-      <LogicalName>btl.frmNhapPhieuNhap.resources</LogicalName>
-    </EmbeddedResource>
-    <EmbeddedResource Include="..\..\Kho\Kho\btl\frmThemNCC.resx">
-      <Link>Modules\Kho\frmThemNCC.resx</Link>
-      <DependentUpon>frmThemNCC.cs</DependentUpon>
-      <LogicalName>btl.frmThemNCC.resources</LogicalName>
-    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
