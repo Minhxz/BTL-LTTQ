@@ -363,6 +363,11 @@ namespace QLyCuaHangSuaXe.DanhMuc.TiepNhan
             }
         }
 
+        private void lblTieuDe_Click(object sender, EventArgs e)
+        {
+
+        }
+
         private void btnDong_Click(object sender, EventArgs e) { Close(); }
 
         private void frmTiepNhan_FormClosing(object sender, FormClosingEventArgs e)

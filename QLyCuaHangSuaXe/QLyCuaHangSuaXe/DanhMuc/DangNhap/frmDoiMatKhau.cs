@@ -22,5 +22,10 @@ namespace QLyCuaHangSuaXe.DanhMuc.DangNhap
         {
             Close();
         }
+
+        private void frmDoiMatKhau_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

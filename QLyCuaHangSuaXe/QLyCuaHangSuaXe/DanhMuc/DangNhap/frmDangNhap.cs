@@ -86,5 +86,10 @@ namespace QLyCuaHangSuaXe.DanhMuc.DangNhap
                 form.WindowState = FormWindowState.Normal;
             form.Activate();
         }
+
+        private void lblMoTa_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

@@ -14,5 +14,10 @@ namespace QLyCuaHangSuaXe.DanhMuc.DangNhap
         {
             Close();
         }
+
+        private void frmQuanLyTaiKhoan_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }
