@@ -30,6 +30,19 @@ namespace btl
 				"Order By pn.MaPhieuNhap Asc";
 
 			dgvPhieuNhap.DataSource = dtbase.ReadData(sqlPhieuNhap);
+			dgvPhieuNhap.ReadOnly = true;
+			dgvChiTiet.ReadOnly = true;
+
+			if(dgvPhieuNhap.Rows.Count > 0)
+			{
+				string sqlChiTiet = "Select pn.MaPhieuNhap, ncc.TenNCC, pt.MaPhuTung, pt.TenPhuTung, ct.SoLuong As SoLuongNhap, ct.DonGiaNhap, ct.ThanhTien, ct.HanSuDung " +
+				"From PhuTung pt Join ChiTietPhieuNhap ct On pt.MaPhuTung = ct.MaPhuTung " +
+				"Join PhieuNhap pn On ct.MaPhieuNhap = pn.MaPhieuNhap " +
+				"Join NhaCungCap ncc On ct.MaNCC = ncc.MaNCC " +
+				"Where ct.MaPhieuNhap = '" + dgvPhieuNhap.Rows[0].Cells["colMaPhieuNhap"].Value.ToString() + "'";
+
+				dgvChiTiet.DataSource = dtbase.ReadData(sqlChiTiet);
+			}
 		}
 
 		private void dgvPhieuNhap_CellClick(object sender, DataGridViewCellEventArgs e)

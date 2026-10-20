@@ -29,6 +29,7 @@ namespace btl
 
 			dgvPhuTung.AutoGenerateColumns = false;
 			dgvPhuTung.DataSource = dtbase.ReadData(sqlPhuTung);
+			dgvPhuTung.ReadOnly = true;
 		}
 
 		private void btnDanhSachPhieuNhap_Click(object sender, EventArgs e)

@@ -51,6 +51,7 @@ namespace btl
 			dgvPhuTung.AutoGenerateColumns = false;
 			dgvPhuTung.DataSource = null;
 			dgvPhuTung.Rows.Clear();
+			dgvPhuTung.ReadOnly = true;
 
 			btnXoaNCC.Enabled = false;
 			btnSuaPhuTung.Enabled = false;
@@ -217,7 +218,6 @@ namespace btl
 			if (MessageBox.Show("Xác nhận sửa?", "Thông báo", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
 			{
 				DataGridViewRow row = dgvPhuTung.Rows[selectedRowIndex];
-				row.Cells["colMaPhieu"].Value = txtMaPhieuNhap.Text;
 				row.Cells["colNgayNhap"].Value = dtpNgayNhap.Value;
 				row.Cells["colMaNVNhap"].Value = txtMaNVNhap.Text;
 				row.Cells["colTenNCC"].Value = cbNhaCungCap.Text;
