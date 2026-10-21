@@ -30,7 +30,6 @@ namespace QLyCuaHangSuaXe
             this.lblMoTaBaoCao = new System.Windows.Forms.Label();
             this.btnThoat = new System.Windows.Forms.Button();
             this.SuspendLayout();
-            // lblTieuDe
             this.lblTieuDe.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Bold);
             this.lblTieuDe.ForeColor = System.Drawing.Color.FromArgb(28, 73, 103);
             this.lblTieuDe.Location = new System.Drawing.Point(30, 22);
@@ -38,14 +37,12 @@ namespace QLyCuaHangSuaXe
             this.lblTieuDe.Size = new System.Drawing.Size(700, 36);
             this.lblTieuDe.TabIndex = 0;
             this.lblTieuDe.Text = "QUẢN LÝ CỬA HÀNG SỬA XE";
-            // lblHuongDan
             this.lblHuongDan.ForeColor = System.Drawing.Color.FromArgb(98, 98, 98);
             this.lblHuongDan.Location = new System.Drawing.Point(32, 65);
             this.lblHuongDan.Name = "lblHuongDan";
             this.lblHuongDan.Size = new System.Drawing.Size(696, 22);
             this.lblHuongDan.TabIndex = 1;
             this.lblHuongDan.Text = "Chọn một trong năm chức năng để bắt đầu.";
-            // btnMoDangNhap
             this.btnMoDangNhap.BackColor = System.Drawing.Color.FromArgb(40, 91, 145);
             this.btnMoDangNhap.FlatAppearance.BorderSize = 0;
             this.btnMoDangNhap.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -59,14 +56,12 @@ namespace QLyCuaHangSuaXe
             this.btnMoDangNhap.UseVisualStyleBackColor = false;
             this.btnMoDangNhap.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnMoDangNhap.Click += new System.EventHandler(this.btnMoDangNhap_Click);
-            // lblMoTaDangNhap
             this.lblMoTaDangNhap.ForeColor = System.Drawing.Color.FromArgb(98, 98, 98);
             this.lblMoTaDangNhap.Location = new System.Drawing.Point(32, 164);
             this.lblMoTaDangNhap.Name = "lblMoTaDangNhap";
             this.lblMoTaDangNhap.Size = new System.Drawing.Size(332, 34);
             this.lblMoTaDangNhap.TabIndex = 8;
             this.lblMoTaDangNhap.Text = "Đăng nhập, đổi mật khẩu, tài khoản và phân quyền.";
-            // btnMoTiepNhan
             this.btnMoTiepNhan.BackColor = System.Drawing.Color.FromArgb(40, 91, 145);
             this.btnMoTiepNhan.FlatAppearance.BorderSize = 0;
             this.btnMoTiepNhan.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -80,14 +75,17 @@ namespace QLyCuaHangSuaXe
             this.btnMoTiepNhan.UseVisualStyleBackColor = false;
             this.btnMoTiepNhan.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnMoTiepNhan.Click += new System.EventHandler(this.btnMoTiepNhan_Click);
-            // lblMoTaTiepNhan
             this.lblMoTaTiepNhan.ForeColor = System.Drawing.Color.FromArgb(98, 98, 98);
             this.lblMoTaTiepNhan.Location = new System.Drawing.Point(396, 164);
             this.lblMoTaTiepNhan.Name = "lblMoTaTiepNhan";
             this.lblMoTaTiepNhan.Size = new System.Drawing.Size(332, 34);
             this.lblMoTaTiepNhan.TabIndex = 9;
+<<<<<<< Updated upstream
             this.lblMoTaTiepNhan.Text = "Lập phiếu, ghi tình trạng xe và phân công thợ.";
             // btnMoDanhMucDichVu
+=======
+            this.lblMoTaTiepNhan.Text = "Tiếp nhận xe, lập và theo dõi phiếu sửa chữa.";
+>>>>>>> Stashed changes
             this.btnMoDanhMucDichVu.BackColor = System.Drawing.Color.FromArgb(40, 91, 145);
             this.btnMoDanhMucDichVu.FlatAppearance.BorderSize = 0;
             this.btnMoDanhMucDichVu.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -101,19 +99,17 @@ namespace QLyCuaHangSuaXe
             this.btnMoDanhMucDichVu.UseVisualStyleBackColor = false;
             this.btnMoDanhMucDichVu.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnMoDanhMucDichVu.Click += new System.EventHandler(this.btnMoDanhMucDichVu_Click);
-            // lblMoTaDichVu
             this.lblMoTaDichVu.ForeColor = System.Drawing.Color.FromArgb(98, 98, 98);
             this.lblMoTaDichVu.Location = new System.Drawing.Point(32, 272);
             this.lblMoTaDichVu.Name = "lblMoTaDichVu";
             this.lblMoTaDichVu.Size = new System.Drawing.Size(332, 34);
             this.lblMoTaDichVu.TabIndex = 10;
             this.lblMoTaDichVu.Text = "Quản lý dịch vụ và giá tiền công.";
-            // btnMoKho
-            this.btnMoKho.BackColor = System.Drawing.Color.FromArgb(40, 91, 145);
+            this.btnMoKho.BackColor = System.Drawing.Color.FromArgb(224, 229, 235);
             this.btnMoKho.FlatAppearance.BorderSize = 0;
             this.btnMoKho.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnMoKho.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.btnMoKho.ForeColor = System.Drawing.Color.White;
+            this.btnMoKho.ForeColor = System.Drawing.Color.DimGray;
             this.btnMoKho.Location = new System.Drawing.Point(396, 216);
             this.btnMoKho.Name = "btnMoKho";
             this.btnMoKho.Size = new System.Drawing.Size(332, 48);
@@ -121,15 +117,13 @@ namespace QLyCuaHangSuaXe
             this.btnMoKho.Text = "Nhập kho phụ tùng";
             this.btnMoKho.UseVisualStyleBackColor = false;
             this.btnMoKho.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnMoKho.Click += new System.EventHandler(this.btnMoKho_Click);
-            // lblMoTaKho
+            this.btnMoKho.Enabled = false;
             this.lblMoTaKho.ForeColor = System.Drawing.Color.FromArgb(98, 98, 98);
             this.lblMoTaKho.Location = new System.Drawing.Point(396, 272);
             this.lblMoTaKho.Name = "lblMoTaKho";
             this.lblMoTaKho.Size = new System.Drawing.Size(332, 34);
             this.lblMoTaKho.TabIndex = 11;
-            this.lblMoTaKho.Text = "Theo dõi phụ tùng, phiếu nhập và nhà cung cấp.";
-            // btnMoBaoCao
+            this.lblMoTaKho.Text = "Chưa có mã nguồn module kho.";
             this.btnMoBaoCao.BackColor = System.Drawing.Color.FromArgb(224, 229, 235);
             this.btnMoBaoCao.FlatAppearance.BorderSize = 0;
             this.btnMoBaoCao.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -142,14 +136,12 @@ namespace QLyCuaHangSuaXe
             this.btnMoBaoCao.Text = "Báo cáo && Thống kê";
             this.btnMoBaoCao.UseVisualStyleBackColor = false;
             this.btnMoBaoCao.Enabled = false;
-            // lblMoTaBaoCao
             this.lblMoTaBaoCao.ForeColor = System.Drawing.Color.FromArgb(98, 98, 98);
             this.lblMoTaBaoCao.Location = new System.Drawing.Point(32, 380);
             this.lblMoTaBaoCao.Name = "lblMoTaBaoCao";
             this.lblMoTaBaoCao.Size = new System.Drawing.Size(332, 34);
             this.lblMoTaBaoCao.TabIndex = 12;
             this.lblMoTaBaoCao.Text = "Chưa xây dựng.";
-            // btnThoat
             this.btnThoat.Location = new System.Drawing.Point(608, 432);
             this.btnThoat.Name = "btnThoat";
             this.btnThoat.Size = new System.Drawing.Size(120, 34);
@@ -157,7 +149,6 @@ namespace QLyCuaHangSuaXe
             this.btnThoat.Text = "Thoát";
             this.btnThoat.UseVisualStyleBackColor = true;
             this.btnThoat.Click += new System.EventHandler(this.btnThoat_Click);
-            // Form1
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(245, 247, 250);

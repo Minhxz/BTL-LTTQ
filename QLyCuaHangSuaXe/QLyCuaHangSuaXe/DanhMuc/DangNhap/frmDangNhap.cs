@@ -18,6 +18,7 @@ namespace QLyCuaHangSuaXe.DanhMuc.DangNhap
 
         private void btnDangNhap_Click(object sender, EventArgs e)
         {
+            if (!string.IsNullOrEmpty(TenDangNhap)) return;
             if (string.IsNullOrWhiteSpace(txtTenDangNhap.Text) || txtMatKhau.Text.Length == 0)
             {
                 HienLoiDangNhap("Vui lòng nhập tên đăng nhập và mật khẩu.");
@@ -28,7 +29,6 @@ namespace QLyCuaHangSuaXe.DanhMuc.DangNhap
                 return;
             }
 
-            // Tài khoản tạm để chạy thử trước khi kết nối dữ liệu tài khoản.
             if (!string.Equals(txtTenDangNhap.Text.Trim(), "minh", StringComparison.Ordinal)
                 || txtMatKhau.Text != "123")
             {
@@ -40,11 +40,17 @@ namespace QLyCuaHangSuaXe.DanhMuc.DangNhap
 
             TenDangNhap = "minh";
             txtMatKhau.Clear();
+            btnMoDoiMatKhau.Enabled = true;
+            btnMoQuanLyTaiKhoan.Enabled = true;
+            txtTenDangNhap.Enabled = false;
+            txtMatKhau.Enabled = false;
+            chkHienMatKhau.Enabled = false;
+            btnDangNhap.Enabled = false;
+            lblMoTa.ForeColor = System.Drawing.Color.DarkGreen;
+            lblMoTa.Text = "Đăng nhập thành công.";
             EventHandler handler = DangNhapThanhCong;
             if (handler != null)
                 handler(this, EventArgs.Empty);
-            DialogResult = DialogResult.OK;
-            Close();
         }
 
         private void HienLoiDangNhap(string thongBao)
@@ -65,11 +71,13 @@ namespace QLyCuaHangSuaXe.DanhMuc.DangNhap
 
         private void btnMoDoiMatKhau_Click(object sender, EventArgs e)
         {
+            if (string.IsNullOrEmpty(TenDangNhap)) return;
             MoForm(ref formDoiMatKhau);
         }
 
         private void btnMoQuanLyTaiKhoan_Click(object sender, EventArgs e)
         {
+            if (string.IsNullOrEmpty(TenDangNhap)) return;
             MoForm(ref formQuanLyTaiKhoan);
         }
 

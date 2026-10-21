@@ -46,11 +46,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Classes\DataProcessor.cs" />
-    <Compile Include="frmDanhMucDichVu.cs">
+    <Compile Include="..\..\QLyCuaHangSuaXe\QLyCuaHangSuaXe\DanhMuc\DichVu\Classes\DataProcessor.cs">
+      <Link>Classes\DataProcessor.cs</Link>
+    </Compile>
+    <Compile Include="..\..\QLyCuaHangSuaXe\QLyCuaHangSuaXe\DanhMuc\DichVu\frmDanhMucDichVu.cs">
+      <Link>frmDanhMucDichVu.cs</Link>
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="frmDanhMucDichVu.Designer.cs">
+    <Compile Include="..\..\QLyCuaHangSuaXe\QLyCuaHangSuaXe\DanhMuc\DichVu\frmDanhMucDichVu.Designer.cs">
+      <Link>frmDanhMucDichVu.Designer.cs</Link>
       <DependentUpon>frmDanhMucDichVu.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />

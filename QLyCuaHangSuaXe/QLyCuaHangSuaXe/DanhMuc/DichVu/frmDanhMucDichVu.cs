@@ -2,13 +2,12 @@ using System;
 using System.Data;
 using System.Drawing;
 using System.Windows.Forms;
-using DanhMuc.Classes;
+using QLyCuaHangSuaXe.DanhMuc.DichVu.Classes;
 
-namespace DanhMuc
+namespace QLyCuaHangSuaXe.DanhMuc.DichVu
 {
     public partial class frmDanhMucDichVu : Form
     {
-        // Khởi tạo đối tượng xử lý CSDL từ thư mục Classes
         private DataProcessor dtBase = new DataProcessor();
 
         public frmDanhMucDichVu()
@@ -16,14 +15,12 @@ namespace DanhMuc
             InitializeComponent();
         }
 
-        // 1. Khi Form tải lên
         private void frmDanhMucDichVu_Load(object sender, EventArgs e)
         {
-            cboTrangThai.SelectedIndex = 0; // Mặc định: Đang hoạt động
+            cboTrangThai.SelectedIndex = 0;
             LoadData();
         }
 
-        // 2. Tải toàn bộ danh sách dịch vụ lên DataGridView (sắp xếp tăng dần theo ServiceId)
         private void LoadData()
         {
             string sqlSelect = @"SELECT 
@@ -39,43 +36,37 @@ namespace DanhMuc
             DataTable dt = dtBase.ReadData(sqlSelect);
             dgvDichVu.DataSource = dt;
 
-            // Ẩn cột IsActive kỹ thuật (chỉ giữ lại cột Trạng thái tiếng Việt)
             if (dgvDichVu.Columns.Contains("IsActive"))
             {
                 dgvDichVu.Columns["IsActive"].Visible = false;
             }
 
-            // Định dạng tiền tệ có dấu phân cách hàng nghìn (VD: 250,000)
             if (dgvDichVu.Columns.Count > 2)
             {
                 dgvDichVu.Columns[2].DefaultCellStyle.Format = "N0";
                 dgvDichVu.Columns[2].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
             }
 
-            // Đặt kích thước cột hợp lý
             if (dgvDichVu.Columns.Count > 0)
             {
-                dgvDichVu.Columns[0].Width = 75; // Cột Mã DV
+                dgvDichVu.Columns[0].Width = 75;
             }
 
-            // Cập nhật tổng số lượng bản ghi
             lblTongSo.Text = $"Tổng số bản ghi: {dt.Rows.Count}";
         }
 
-        // 3. Xóa trắng form nhập liệu
         private void XoaTrang()
         {
-            txtMaDV.Clear(); // Để trống, không hiện chữ "Tự động tăng"
+            txtMaDV.Clear();
             txtTenDV.Clear();
             numDonGia.Value = 0;
             txtMoTa.Clear();
-            cboTrangThai.SelectedIndex = 0; // Chọn lại "Đang hoạt động"
+            cboTrangThai.SelectedIndex = 0;
             txtTimKiem.Clear();
 
             txtTenDV.Focus();
         }
 
-        // 4. Nhấp vào dòng trên DataGridView thì đổ dữ liệu lên các ô nhập liệu
         private void dgvDichVu_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex >= 0 && e.RowIndex < dgvDichVu.Rows.Count)
@@ -96,13 +87,11 @@ namespace DanhMuc
 
                 txtMoTa.Text = row.Cells[3].Value?.ToString();
 
-                // Cập nhật giá trị ComboBox Trạng thái
                 string trangThai = row.Cells[4].Value?.ToString();
                 cboTrangThai.SelectedItem = (trangThai == "Ngừng hoạt động") ? "Ngừng hoạt động" : "Đang hoạt động";
             }
         }
 
-        // 5. Nút Thêm mới dịch vụ
         private void btnThem_Click(object sender, EventArgs e)
         {
             string ten = txtTenDV.Text.Trim();
@@ -110,7 +99,6 @@ namespace DanhMuc
             string moTa = txtMoTa.Text.Trim();
             int isActive = (cboTrangThai.SelectedIndex == 0) ? 1 : 0;
 
-            // Kiểm tra rỗng
             if (string.IsNullOrEmpty(ten))
             {
                 MessageBox.Show("Vui lòng nhập Tên dịch vụ!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -118,7 +106,6 @@ namespace DanhMuc
                 return;
             }
 
-            // Kiểm tra trùng tên dịch vụ (ServiceName là UNIQUE)
             string sqlCheck = $"SELECT COUNT(*) FROM DichVu WHERE ServiceName = N'{ten}'";
             object tonTai = dtBase.GetScalar(sqlCheck);
             if (tonTai != null && Convert.ToInt32(tonTai) > 0)
@@ -128,7 +115,6 @@ namespace DanhMuc
                 return;
             }
 
-            // ServiceId là IDENTITY tự tăng, không cần chèn ServiceId
             string sqlInsert = $"INSERT INTO DichVu (ServiceName, BasePrice, Description, IsActive) VALUES (N'{ten}', {gia}, N'{moTa}', {isActive})";
             dtBase.ChangeData(sqlInsert);
 
@@ -137,7 +123,6 @@ namespace DanhMuc
             XoaTrang();
         }
 
-        // 6. Nút Sửa dịch vụ
         private void btnSua_Click(object sender, EventArgs e)
         {
             if (!int.TryParse(txtMaDV.Text, out int maDV))
@@ -158,7 +143,6 @@ namespace DanhMuc
                 return;
             }
 
-            // Kiểm tra trùng tên với các dịch vụ khác
             string sqlCheck = $"SELECT COUNT(*) FROM DichVu WHERE ServiceName = N'{ten}' AND ServiceId <> {maDV}";
             object tonTai = dtBase.GetScalar(sqlCheck);
             if (tonTai != null && Convert.ToInt32(tonTai) > 0)
@@ -176,7 +160,6 @@ namespace DanhMuc
             XoaTrang();
         }
 
-        // 7. Nút Xóa dịch vụ
         private void btnXoa_Click(object sender, EventArgs e)
         {
             if (!int.TryParse(txtMaDV.Text, out int maDV))
@@ -185,7 +168,6 @@ namespace DanhMuc
                 return;
             }
 
-            // Kiểm tra ràng buộc khóa ngoại: dịch vụ đã có trong ChiTietPhieuSuaChua hoặc LichHen chưa
             string sqlCheckCT = $"SELECT COUNT(*) FROM ChiTietPhieuSuaChua WHERE ServiceId = {maDV}";
             string sqlCheckLH = $"SELECT COUNT(*) FROM LichHen WHERE ServiceId = {maDV}";
             int countCT = Convert.ToInt32(dtBase.GetScalar(sqlCheckCT) ?? 0);
@@ -222,20 +204,17 @@ namespace DanhMuc
             }
         }
 
-        // 8. Nút Làm mới
         private void btnLamMoi_Click(object sender, EventArgs e)
         {
             XoaTrang();
             LoadData();
         }
 
-        // 9. Nút Đóng
         private void btnDong_Click(object sender, EventArgs e)
         {
             this.Close();
         }
 
-        // 10. Tìm kiếm theo tên hoặc mô tả dịch vụ
         private void btnTimKiem_Click(object sender, EventArgs e)
         {
             TimKiem();

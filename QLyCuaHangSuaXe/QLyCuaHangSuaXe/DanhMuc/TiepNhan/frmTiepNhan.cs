@@ -7,12 +7,26 @@ namespace QLyCuaHangSuaXe.DanhMuc.TiepNhan
 {
     public partial class frmTiepNhan : Form
     {
+<<<<<<< Updated upstream
         // Một bảng giữ tạm dữ liệu khi form đang mở, chưa sử dụng CSDL.
         private DataTable bangPhieu = new DataTable();
         private DataRow phieuDangChon;
         private int soPhieuTiepTheo = 5;
         private DateTime ngayNhan;
         private bool dangThem, dangSua, dangNapDuLieu;
+=======
+        private DataTable dtPhuTung;
+        private DataTable dtDichVu;
+        private List<PhieuSuaChua> danhSachPhieu = new List<PhieuSuaChua>();
+        private int soPhieu = 1, soPhuTung = 1, soDichVu = 1;
+        private bool dangNapDuLieu = true;
+        private bool coThayDoi = false;
+        private bool daKhoiTao = false;
+        private bool dangChuyenThanhToan = false;
+        private CultureInfo vanHoa = CultureInfo.GetCultureInfo("vi-VN");
+
+        public PhieuSuaChua PhieuChuyenThanhToan { get; private set; }
+>>>>>>> Stashed changes
 
         public frmTiepNhan()
         {
@@ -29,7 +43,11 @@ namespace QLyCuaHangSuaXe.DanhMuc.TiepNhan
             TaiDanhSach("");
         }
 
+<<<<<<< Updated upstream
         private void TaoBangPhieu()
+=======
+        private DataTable TaoBangChiTiet(bool laPhuTung)
+>>>>>>> Stashed changes
         {
             bangPhieu.Columns.Add("MaPhieu");
             bangPhieu.Columns.Add("NgayNhan", typeof(DateTime));
@@ -148,6 +166,113 @@ namespace QLyCuaHangSuaXe.DanhMuc.TiepNhan
 
         private string KiemTraThongTin()
         {
+<<<<<<< Updated upstream
+=======
+            string ten = txtTenPhuTung.Text.Trim();
+            string donVi = txtDonViTinh.Text.Trim();
+            int soLuong = (int)nudSoLuongPhuTung.Value;
+            decimal donGia = nudDonGiaPhuTung.Value;
+            if (ten == "" || donVi == "" || donGia <= 0)
+            {
+                MessageBox.Show("Nhập tên, đơn vị tính và đơn giá phụ tùng lớn hơn 0.");
+                return;
+            }
+            foreach (DataRow dong in dtPhuTung.Rows)
+            {
+                if (string.Equals(dong["TenPhuTung"].ToString(), ten, StringComparison.OrdinalIgnoreCase)
+                    && string.Equals(dong["DonViTinh"].ToString(), donVi, StringComparison.OrdinalIgnoreCase)
+                    && (decimal)dong["DonGia"] == donGia)
+                {
+                    int tongSoLuong = (int)dong["SoLuong"] + soLuong;
+                    if (tongSoLuong > 999) { MessageBox.Show("Mỗi dòng tối đa 999 phụ tùng."); return; }
+                    dong["SoLuong"] = tongSoLuong;
+                    dong["ThanhTien"] = tongSoLuong * donGia;
+                    CapNhatSauKhiSuaChiTiet();
+                    return;
+                }
+            }
+            dtPhuTung.Rows.Add("PT" + soPhuTung.ToString("000"), ten, donVi, soLuong, donGia, soLuong * donGia);
+            soPhuTung++;
+            CapNhatSauKhiSuaChiTiet();
+        }
+
+        private void btnThemDichVu_Click(object sender, EventArgs e)
+        {
+            string ten = txtTenDichVu.Text.Trim();
+            int soLuong = (int)nudSoLuongDichVu.Value;
+            decimal donGia = nudDonGiaDichVu.Value;
+            if (ten == "" || donGia <= 0)
+            {
+                MessageBox.Show("Nhập tên dịch vụ và đơn giá lớn hơn 0.");
+                return;
+            }
+            foreach (DataRow dong in dtDichVu.Rows)
+            {
+                if (string.Equals(dong["TenDichVu"].ToString(), ten, StringComparison.OrdinalIgnoreCase)
+                    && (decimal)dong["DonGia"] == donGia)
+                {
+                    int tongSoLuong = (int)dong["SoLuong"] + soLuong;
+                    if (tongSoLuong > 999) { MessageBox.Show("Mỗi dòng tối đa 999 dịch vụ."); return; }
+                    dong["SoLuong"] = tongSoLuong;
+                    dong["ThanhTien"] = tongSoLuong * donGia;
+                    CapNhatSauKhiSuaChiTiet();
+                    return;
+                }
+            }
+            dtDichVu.Rows.Add("DV" + soDichVu.ToString("000"), ten, soLuong, donGia, soLuong * donGia);
+            soDichVu++;
+            CapNhatSauKhiSuaChiTiet();
+        }
+
+        private void btnXoaPhuTung_Click(object sender, EventArgs e)
+        {
+            if (dgvPhuTung.SelectedRows.Count == 0) { MessageBox.Show("Chọn dòng phụ tùng cần xóa."); return; }
+            dtPhuTung.Rows.RemoveAt(dgvPhuTung.SelectedRows[0].Index);
+            CapNhatSauKhiSuaChiTiet();
+        }
+
+        private void btnXoaDichVu_Click(object sender, EventArgs e)
+        {
+            if (dgvDichVu.SelectedRows.Count == 0) { MessageBox.Show("Chọn dòng dịch vụ cần xóa."); return; }
+            dtDichVu.Rows.RemoveAt(dgvDichVu.SelectedRows[0].Index);
+            CapNhatSauKhiSuaChiTiet();
+        }
+
+        private void CapNhatSauKhiSuaChiTiet()
+        {
+            TinhTongTien();
+            coThayDoi = true;
+            PhieuChuyenThanhToan = null;
+        }
+
+        private decimal TinhTienBang(DataTable bang)
+        {
+            decimal tong = 0;
+            foreach (DataRow dong in bang.Rows) tong += (decimal)dong["ThanhTien"];
+            return tong;
+        }
+
+        private void TinhTongTien()
+        {
+            decimal tienPhuTung = TinhTienBang(dtPhuTung);
+            decimal tienCong = TinhTienBang(dtDichVu);
+            txtTienPhuTung.Text = tienPhuTung.ToString("N0", vanHoa) + " đ";
+            txtTienCong.Text = tienCong.ToString("N0", vanHoa) + " đ";
+            txtTongCong.Text = (tienPhuTung + tienCong).ToString("N0", vanHoa) + " đ";
+        }
+
+        private string KiemTraThongTin(bool deThanhToan)
+        {
+            if (txtKhachHang.Text.Trim() == "") return "Vui lòng nhập tên khách hàng.";
+            int soChuSo = 0;
+            foreach (char kyTu in txtDienThoai.Text.Trim())
+            {
+                if (kyTu >= '0' && kyTu <= '9') soChuSo++;
+                else if (kyTu != '+' && kyTu != '-' && kyTu != ' ' && kyTu != '(' && kyTu != ')')
+                    return "Số điện thoại không hợp lệ.";
+            }
+            if (soChuSo < 8 || soChuSo > 15) return "Số điện thoại phải có từ 8 đến 15 chữ số.";
+>>>>>>> Stashed changes
             if (txtBienSoXe.Text.Trim() == "") return "Vui lòng nhập biển số xe.";
             string soDienThoai = txtDienThoai.Text.Trim();
             foreach (char kyTu in soDienThoai)
@@ -163,10 +288,33 @@ namespace QLyCuaHangSuaXe.DanhMuc.TiepNhan
 
         private bool LuuPhieu()
         {
+<<<<<<< Updated upstream
             if (!dangThem && !dangSua) return false;
             string loi = KiemTraThongTin();
             if (loi != "") { HienThongBao(loi, true); return false; }
             bool laSuaPhieu = dangSua;
+=======
+            PhieuSuaChua phieu = new PhieuSuaChua();
+            phieu.MaPhieu = txtMaPhieu.Text;
+            phieu.NgayNhan = dtpNgayNhan.Value;
+            phieu.HenTraXe = dtpHenTraXe.Value;
+            phieu.NguoiTiepNhan = txtNguoiTiepNhan.Text.Trim();
+            phieu.TrangThai = cboTrangThai.Text;
+            phieu.KhachHang = txtKhachHang.Text.Trim();
+            phieu.DienThoai = txtDienThoai.Text.Trim();
+            phieu.BienSoXe = txtBienSoXe.Text.Trim();
+            phieu.DongXe = txtDongXe.Text.Trim();
+            phieu.SoKm = (int)nudSoKm.Value;
+            phieu.ThoPhuTrach = txtThoPhuTrach.Text.Trim();
+            phieu.TinhTrangXe = txtTinhTrangXe.Text.Trim();
+            phieu.NoiDungSuaChua = txtNoiDungSuaChua.Text.Trim();
+            phieu.PhuTung = dtPhuTung.Copy();
+            phieu.DichVu = dtDichVu.Copy();
+            phieu.TienPhuTung = TinhTienBang(dtPhuTung);
+            phieu.TienCong = TinhTienBang(dtDichVu);
+            return phieu;
+        }
+>>>>>>> Stashed changes
 
             DataRow dong = phieuDangChon;
             if (dangThem)
@@ -232,7 +380,19 @@ namespace QLyCuaHangSuaXe.DanhMuc.TiepNhan
 
         private void txtTimKiem_KeyDown(object sender, KeyEventArgs e)
         {
+<<<<<<< Updated upstream
             if (e.KeyCode == Keys.Enter) { e.SuppressKeyPress = true; btnTimKiem.PerformClick(); }
+=======
+            PhieuSuaChua phieu = cboPhieuDaLuu.SelectedItem as PhieuSuaChua;
+            if (phieu == null) { MessageBox.Show("Chọn một phiếu đã lưu trước."); return; }
+            string maCanMo = phieu.MaPhieu;
+            if (!ChoPhepDoiPhieu()) return;
+            foreach (PhieuSuaChua daLuu in danhSachPhieu)
+            {
+                if (daLuu.MaPhieu == maCanMo) { HienThiPhieu(daLuu); break; }
+            }
+            CapNhatDanhSachPhieu(maCanMo);
+>>>>>>> Stashed changes
         }
 
         private void dgvPhieu_CurrentCellChanged(object sender, EventArgs e)
@@ -249,5 +409,37 @@ namespace QLyCuaHangSuaXe.DanhMuc.TiepNhan
             lblThongBao.Text = noiDung == "" ? "Dữ liệu tạm; đóng form sẽ mất thay đổi." : noiDung;
         }
 
+<<<<<<< Updated upstream
+=======
+        private void btnChuyenThanhToan_Click(object sender, EventArgs e)
+        {
+            if (!ChuanBiChuyenThanhToan()) return;
+            if (Modal)
+            {
+                dangChuyenThanhToan = true;
+                DialogResult = DialogResult.OK;
+            }
+            else
+            {
+                MessageBox.Show("Đã chuẩn bị phiếu " + PhieuChuyenThanhToan.MaPhieu
+                    + ". Chưa liên kết form thu ngân; dữ liệu nằm trong PhieuChuyenThanhToan.");
+            }
+        }
+
+        private void lblTieuDe_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnDong_Click(object sender, EventArgs e) { Close(); }
+
+        private void frmTiepNhan_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (dangChuyenThanhToan || !daKhoiTao) return;
+            if (coThayDoi || danhSachPhieu.Count > 0)
+                e.Cancel = MessageBox.Show("Dữ liệu đang lưu trong bộ nhớ. Đóng form sẽ mất dữ liệu. Bạn có muốn đóng?",
+                    "Đóng form", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes;
+        }
+>>>>>>> Stashed changes
     }
 }

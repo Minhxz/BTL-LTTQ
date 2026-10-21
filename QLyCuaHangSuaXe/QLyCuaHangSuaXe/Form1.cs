@@ -6,8 +6,7 @@ namespace QLyCuaHangSuaXe
     public partial class Form1 : Form
     {
         private DanhMuc.TiepNhan.frmTiepNhan formTiepNhan;
-        private global::DanhMuc.frmDanhMucDichVu formDanhMucDichVu;
-        private btl.frmKho formKho;
+        private DanhMuc.DichVu.frmDanhMucDichVu formDanhMucDichVu;
         private DanhMuc.DangNhap.frmDangNhap formDangNhap;
 
         public Form1()
@@ -25,11 +24,6 @@ namespace QLyCuaHangSuaXe
             MoForm(ref formDanhMucDichVu);
         }
 
-        private void btnMoKho_Click(object sender, EventArgs e)
-        {
-            MoForm(ref formKho);
-        }
-
         private void btnMoDangNhap_Click(object sender, EventArgs e)
         {
             if (formDangNhap == null || formDangNhap.IsDisposed)
@@ -43,9 +37,6 @@ namespace QLyCuaHangSuaXe
         {
             DanhMuc.DangNhap.frmDangNhap dangNhap = (DanhMuc.DangNhap.frmDangNhap)sender;
             lblHuongDan.Text = "Đã đăng nhập: " + dangNhap.TenDangNhap + " (tài khoản tạm)";
-            if (WindowState == FormWindowState.Minimized)
-                WindowState = FormWindowState.Normal;
-            Activate();
         }
 
         private void btnThoat_Click(object sender, EventArgs e)
@@ -53,7 +44,6 @@ namespace QLyCuaHangSuaXe
             Close();
         }
 
-        // Giữ một cửa sổ cho mỗi chức năng; đóng rồi mở lại sẽ tạo form mới.
         private void MoForm<T>(ref T form) where T : Form, new()
         {
             if (form == null || form.IsDisposed)

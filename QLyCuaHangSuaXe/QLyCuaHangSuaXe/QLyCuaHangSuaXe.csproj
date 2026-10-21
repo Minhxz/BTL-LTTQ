@@ -117,17 +117,12 @@
     <None Include="App.config" />
     <None Include="DanhMuc\TiepNhan\README.md" />
   </ItemGroup>
-  <!-- Dùng chung nguồn form của các module, chỉ chạy Program.cs của project chính. -->
   <ItemGroup>
-    <Compile Include="..\..\DanhMuc\DanhMuc\Classes\DataProcessor.cs">
-      <Link>Modules\DichVu\Classes\DataProcessor.cs</Link>
-    </Compile>
-    <Compile Include="..\..\DanhMuc\DanhMuc\frmDanhMucDichVu.cs">
-      <Link>Modules\DichVu\frmDanhMucDichVu.cs</Link>
+    <Compile Include="DanhMuc\DichVu\Classes\DataProcessor.cs" />
+    <Compile Include="DanhMuc\DichVu\frmDanhMucDichVu.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="..\..\DanhMuc\DanhMuc\frmDanhMucDichVu.Designer.cs">
-      <Link>Modules\DichVu\frmDanhMucDichVu.Designer.cs</Link>
+    <Compile Include="DanhMuc\DichVu\frmDanhMucDichVu.Designer.cs">
       <DependentUpon>frmDanhMucDichVu.cs</DependentUpon>
     </Compile>
   </ItemGroup>

@@ -13,7 +13,6 @@ namespace QLyCuaHangSuaXe.Classes
         string strConnect = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=;Integrated Security=True";
         SqlConnection sqlConnect = null;
 
-        //Ham mo ket noi
         private void KetNoiCSDL()
         {
             sqlConnect = new SqlConnection(strConnect);
@@ -21,14 +20,12 @@ namespace QLyCuaHangSuaXe.Classes
                 sqlConnect.Open();
         }
 
-        //Ham dong ket noi
         private void DongKetNoiCSDL()
         {
             if (sqlConnect.State != ConnectionState.Closed)
                 sqlConnect.Close();
         }
 
-        //Ham thuc thi cau lenh SQL tra ve DataTable
         public DataTable DocBang(string sql)
         {
             DataTable dtBang = new DataTable();
@@ -39,7 +36,6 @@ namespace QLyCuaHangSuaXe.Classes
             return dtBang;
         }
 
-        //cap nhat du lieu
         public void CapNhatDuLieu(string sql)
         {
             KetNoiCSDL();

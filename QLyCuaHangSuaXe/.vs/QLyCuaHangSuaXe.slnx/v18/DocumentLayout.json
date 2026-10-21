@@ -3,7 +3,14 @@
   "WorkspaceRootPath": "C:\\Users\\Admin\\Desktop\\BTL LTTQ\\BTL-LTTQ\\QLyCuaHangSuaXe\\",
   "Documents": [
     {
+<<<<<<< Updated upstream
       "AbsoluteMoniker": "D:0:0:{7746BF1F-178B-4F59-9DBA-17035FDD1DC2}|QLyCuaHangSuaXe\\QLyCuaHangSuaXe.csproj|c:\\users\\admin\\desktop\\btl lttq\\btl-lttq\\qlycuahangsuaxe\\qlycuahangsuaxe\\danhmuc\\tiepnhan\\frmtiepnhan.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+=======
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\buiqu\\Desktop\\BTL-LTTQ\\BTL-LTTQ\\DanhMuc\\DanhMuc\\frmDanhMucDichVu.Designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7746BF1F-178B-4F59-9DBA-17035FDD1DC2}|QLyCuaHangSuaXe\\QLyCuaHangSuaXe.csproj|c:\\users\\buiqu\\desktop\\btl-lttq\\btl-lttq\\qlycuahangsuaxe\\qlycuahangsuaxe\\danhmuc\\tiepnhan\\frmtiepnhan.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+>>>>>>> Stashed changes
       "RelativeMoniker": "D:0:0:{7746BF1F-178B-4F59-9DBA-17035FDD1DC2}|QLyCuaHangSuaXe\\QLyCuaHangSuaXe.csproj|solutionrelative:qlycuahangsuaxe\\danhmuc\\tiepnhan\\frmtiepnhan.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
@@ -35,10 +42,14 @@
       "RelativeMoniker": "D:0:0:{7746BF1F-178B-4F59-9DBA-17035FDD1DC2}|QLyCuaHangSuaXe\\QLyCuaHangSuaXe.csproj|solutionrelative:qlycuahangsuaxe\\danhmuc\\dangnhap\\frmdangnhap.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     },
     {
+<<<<<<< Updated upstream
       "AbsoluteMoniker": "D:0:0:{7746BF1F-178B-4F59-9DBA-17035FDD1DC2}|QLyCuaHangSuaXe\\QLyCuaHangSuaXe.csproj|C:\\Users\\Admin\\Desktop\\BTL LTTQ\\BTL-LTTQ\\danhmuc\\danhmuc\\frmdanhmucdichvu.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     },
     {
       "AbsoluteMoniker": "D:0:0:{7746BF1F-178B-4F59-9DBA-17035FDD1DC2}|QLyCuaHangSuaXe\\QLyCuaHangSuaXe.csproj|C:\\Users\\Admin\\Desktop\\BTL LTTQ\\BTL-LTTQ\\QLyCuaHangSuaXe\\qlycuahangsuaxe\\classes\\function.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+=======
+      "AbsoluteMoniker": "D:0:0:{7746BF1F-178B-4F59-9DBA-17035FDD1DC2}|QLyCuaHangSuaXe\\QLyCuaHangSuaXe.csproj|C:\\Users\\buiqu\\Desktop\\BTL-LTTQ\\BTL-LTTQ\\QLyCuaHangSuaXe\\qlycuahangsuaxe\\classes\\function.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+>>>>>>> Stashed changes
       "RelativeMoniker": "D:0:0:{7746BF1F-178B-4F59-9DBA-17035FDD1DC2}|QLyCuaHangSuaXe\\QLyCuaHangSuaXe.csproj|solutionrelative:qlycuahangsuaxe\\classes\\function.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
@@ -57,7 +68,15 @@
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\buiqu\\Desktop\\BTL-LTTQ\\BTL-LTTQ\\QLyCuaHangSuaXe\\QLyCuaHangSuaXe\\DanhMuc\\frmDangNhap.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
+<<<<<<< Updated upstream
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|c:\\users\\buiqu\\desktop\\btl-lttq\\btl-lttq\\qlycuahangsuaxe\\qlycuahangsuaxe\\danhmuc\\frmdangnhap.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+=======
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|c:\\users\\buiqu\\desktop\\btl-lttq\\btl-lttq\\qlycuahangsuaxe\\qlycuahangsuaxe\\danhmuc\\frmdangnhap.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:qlycuahangsuaxe\\danhmuc\\frmdangnhap.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\buiqu\\Desktop\\BTL-LTTQ\\BTL-LTTQ\\danhmuc\\danhmuc\\frmdanhmucdichvu.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+>>>>>>> Stashed changes
     }
   ],
   "DocumentGroupContainers": [
@@ -67,7 +86,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 3,
+          "SelectedChildIndex": 4,
           "Children": [
             {
               "$type": "Bookmark",
@@ -82,21 +101,62 @@
               "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
             },
             {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
+            },
+            {
               "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "frmDanhMucDichVu.Designer.cs",
+              "DocumentMoniker": "C:\\Users\\buiqu\\Desktop\\BTL-LTTQ\\BTL-LTTQ\\DanhMuc\\DanhMuc\\frmDanhMucDichVu.Designer.cs",
+              "RelativeDocumentMoniker": "..\\DanhMuc\\DanhMuc\\frmDanhMucDichVu.Designer.cs",
+              "ToolTip": "C:\\Users\\buiqu\\Desktop\\BTL-LTTQ\\BTL-LTTQ\\DanhMuc\\DanhMuc\\frmDanhMucDichVu.Designer.cs",
+              "RelativeToolTip": "..\\DanhMuc\\DanhMuc\\frmDanhMucDichVu.Designer.cs",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-10-19T07:44:22.996Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
               "Title": "frmTiepNhan.cs",
               "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\BTL LTTQ\\BTL-LTTQ\\QLyCuaHangSuaXe\\QLyCuaHangSuaXe\\DanhMuc\\TiepNhan\\frmTiepNhan.cs",
               "RelativeDocumentMoniker": "QLyCuaHangSuaXe\\DanhMuc\\TiepNhan\\frmTiepNhan.cs",
               "ToolTip": "C:\\Users\\Admin\\Desktop\\BTL LTTQ\\BTL-LTTQ\\QLyCuaHangSuaXe\\QLyCuaHangSuaXe\\DanhMuc\\TiepNhan\\frmTiepNhan.cs",
               "RelativeToolTip": "QLyCuaHangSuaXe\\DanhMuc\\TiepNhan\\frmTiepNhan.cs",
+<<<<<<< Updated upstream
               "ViewState": "AgIAAJ8AAAAAAAAAAAAiwL8AAAAJAAAAAAAAAA==",
+=======
+              "ViewState": "AgIAAJsAAAAAAAAAAAAmwL8AAAAJAAAAAAAAAA==",
+>>>>>>> Stashed changes
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-10-19T15:24:17.053Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 15,
+              "Title": "frmDanhMucDichVu.cs [Design]",
+              "DocumentMoniker": "C:\\Users\\buiqu\\Desktop\\BTL-LTTQ\\BTL-LTTQ\\DanhMuc\\DanhMuc\\frmDanhMucDichVu.cs",
+              "RelativeDocumentMoniker": "..\\DanhMuc\\DanhMuc\\frmDanhMucDichVu.cs",
+              "ToolTip": "C:\\Users\\buiqu\\Desktop\\BTL-LTTQ\\BTL-LTTQ\\DanhMuc\\DanhMuc\\frmDanhMucDichVu.cs [Design]",
+              "RelativeToolTip": "..\\DanhMuc\\DanhMuc\\frmDanhMucDichVu.cs [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-10-19T05:18:01.58Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "frmQuanLyTaiKhoan.cs [Design]",
+              "DocumentMoniker": "C:\\Users\\buiqu\\Desktop\\BTL-LTTQ\\BTL-LTTQ\\QLyCuaHangSuaXe\\QLyCuaHangSuaXe\\DanhMuc\\DangNhap\\frmQuanLyTaiKhoan.cs",
+              "RelativeDocumentMoniker": "QLyCuaHangSuaXe\\DanhMuc\\DangNhap\\frmQuanLyTaiKhoan.cs",
+              "ToolTip": "C:\\Users\\buiqu\\Desktop\\BTL-LTTQ\\BTL-LTTQ\\QLyCuaHangSuaXe\\QLyCuaHangSuaXe\\DanhMuc\\DangNhap\\frmQuanLyTaiKhoan.cs [Design]",
+              "RelativeToolTip": "QLyCuaHangSuaXe\\DanhMuc\\DangNhap\\frmQuanLyTaiKhoan.cs [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-10-19T05:29:08.469Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
               "Title": "frmQuanLyTaiKhoan.cs",
               "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\BTL LTTQ\\BTL-LTTQ\\QLyCuaHangSuaXe\\QLyCuaHangSuaXe\\DanhMuc\\DangNhap\\frmQuanLyTaiKhoan.cs",
               "RelativeDocumentMoniker": "QLyCuaHangSuaXe\\DanhMuc\\DangNhap\\frmQuanLyTaiKhoan.cs",
@@ -108,6 +168,7 @@
             },
             {
               "$type": "Document",
+<<<<<<< Updated upstream
               "DocumentIndex": 2,
               "Title": "frmQuanLyTaiKhoan.cs [Design]",
               "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\BTL LTTQ\\BTL-LTTQ\\QLyCuaHangSuaXe\\QLyCuaHangSuaXe\\DanhMuc\\DangNhap\\frmQuanLyTaiKhoan.cs",
@@ -120,6 +181,9 @@
             {
               "$type": "Document",
               "DocumentIndex": 3,
+=======
+              "DocumentIndex": 4,
+>>>>>>> Stashed changes
               "Title": "frmTiepNhan.cs [Design]",
               "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\BTL LTTQ\\BTL-LTTQ\\QLyCuaHangSuaXe\\QLyCuaHangSuaXe\\DanhMuc\\TiepNhan\\frmTiepNhan.cs",
               "RelativeDocumentMoniker": "QLyCuaHangSuaXe\\DanhMuc\\TiepNhan\\frmTiepNhan.cs",
@@ -131,7 +195,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 5,
               "Title": "frmDoiMatKhau.cs",
               "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\BTL LTTQ\\BTL-LTTQ\\QLyCuaHangSuaXe\\QLyCuaHangSuaXe\\DanhMuc\\DangNhap\\frmDoiMatKhau.cs",
               "RelativeDocumentMoniker": "QLyCuaHangSuaXe\\DanhMuc\\DangNhap\\frmDoiMatKhau.cs",
@@ -143,7 +207,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 6,
               "Title": "frmDoiMatKhau.cs [Design]",
               "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\BTL LTTQ\\BTL-LTTQ\\QLyCuaHangSuaXe\\QLyCuaHangSuaXe\\DanhMuc\\DangNhap\\frmDoiMatKhau.cs",
               "RelativeDocumentMoniker": "QLyCuaHangSuaXe\\DanhMuc\\DangNhap\\frmDoiMatKhau.cs",
@@ -154,7 +218,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 7,
               "Title": "frmDangNhap.cs",
               "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\BTL LTTQ\\BTL-LTTQ\\QLyCuaHangSuaXe\\QLyCuaHangSuaXe\\DanhMuc\\DangNhap\\frmDangNhap.cs",
               "RelativeDocumentMoniker": "QLyCuaHangSuaXe\\DanhMuc\\DangNhap\\frmDangNhap.cs",
@@ -166,7 +230,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 8,
               "Title": "frmDangNhap.cs [Design]",
               "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\BTL LTTQ\\BTL-LTTQ\\QLyCuaHangSuaXe\\QLyCuaHangSuaXe\\DanhMuc\\DangNhap\\frmDangNhap.cs",
               "RelativeDocumentMoniker": "QLyCuaHangSuaXe\\DanhMuc\\DangNhap\\frmDangNhap.cs",
@@ -177,6 +241,7 @@
             },
             {
               "$type": "Document",
+<<<<<<< Updated upstream
               "DocumentIndex": 8,
               "Title": "frmDanhMucDichVu.cs [Design]",
               "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\BTL LTTQ\\BTL-LTTQ\\DanhMuc\\DanhMuc\\frmDanhMucDichVu.cs",
@@ -188,6 +253,8 @@
             },
             {
               "$type": "Document",
+=======
+>>>>>>> Stashed changes
               "DocumentIndex": 13,
               "Title": "frmDangNhap.cs",
               "DocumentMoniker": "C:\\Users\\buiqu\\Desktop\\BTL-LTTQ\\BTL-LTTQ\\QLyCuaHangSuaXe\\QLyCuaHangSuaXe\\DanhMuc\\frmDangNhap.cs",

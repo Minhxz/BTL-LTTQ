@@ -3,15 +3,13 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Windows.Forms;
 
-namespace DanhMuc.Classes
+namespace QLyCuaHangSuaXe.DanhMuc.DichVu.Classes
 {
     public class DataProcessor
     {
-        // Chuỗi kết nối tới CSDL SQL Server (AutoFixDb)
         private string strConnect = @"Data Source=.;Initial Catalog=AutoFixDb;Integrated Security=True";
         private SqlConnection sqlConnect = null;
 
-        // Phương thức mở kết nối
         private void OpenConnect()
         {
             sqlConnect = new SqlConnection(strConnect);
@@ -21,7 +19,6 @@ namespace DanhMuc.Classes
             }
         }
 
-        // Phương thức đóng kết nối
         private void CloseConnect()
         {
             if (sqlConnect != null && sqlConnect.State != ConnectionState.Closed)
@@ -31,7 +28,6 @@ namespace DanhMuc.Classes
             }
         }
 
-        // Phương thức đọc dữ liệu (SELECT)
         public DataTable ReadData(string sqlSelect)
         {
             DataTable dt = new DataTable();
@@ -50,7 +46,6 @@ namespace DanhMuc.Classes
             return dt;
         }
 
-        // Phương thức cập nhật dữ liệu (INSERT, UPDATE, DELETE)
         public void ChangeData(string sql)
         {
             try
@@ -67,7 +62,6 @@ namespace DanhMuc.Classes
             }
         }
 
-        // Hỗ trợ thêm phương thức kiểm tra giá trị đơn (ví dụ kiểm tra trùng mã)
         public object GetScalar(string sql)
         {
             object result = null;

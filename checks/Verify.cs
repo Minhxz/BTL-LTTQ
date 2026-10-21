@@ -107,7 +107,7 @@ internal static class Verify
             PrepareOffscreen(shell);
             shell.Show();
             Form services = CheckOwnedNavigation(shell, "btnMoDanhMucDichVu",
-                "formDanhMucDichVu", "DanhMuc.frmDanhMucDichVu");
+                "formDanhMucDichVu", "QLyCuaHangSuaXe.DanhMuc.DichVu.frmDanhMucDichVu");
             FindControl<Button>(services, "btnDong").PerformClick();
             Application.DoEvents();
             Assert(services.IsDisposed && !shell.IsDisposed && shell.Visible,
@@ -115,27 +115,11 @@ internal static class Verify
 
             CheckAccountFormsWorkflow(shell);
 
-            Form warehouse = CheckOwnedNavigation(shell, "btnMoKho", "formKho", "btl.frmKho");
-            Form receipts = CheckOwnedNavigation(warehouse, "btnPhieuNhap",
-                "formPhieuNhap", "btl.frmPhieuNhap");
-            Form receiptEntry = CheckOwnedNavigation(receipts, "btnThemPhieuNhap",
-                "formNhapPhieuNhap", "btl.frmNhapPhieuNhap");
-            CheckSupplierDialog(receiptEntry);
-            FindControl<Button>(receipts, "btnThoat").PerformClick();
-            Application.DoEvents();
-            Assert(receipts.IsDisposed && receiptEntry.IsDisposed && warehouse.Visible,
-                "Closing receipt management also closes its owned entry form and leaves the warehouse open.");
-            FindControl<Button>(warehouse, "btnPhieuNhap").PerformClick();
-            Application.DoEvents();
-            Form reopenedReceipts = CachedForm(warehouse, "formPhieuNhap");
-            Assert(reopenedReceipts != null && !Object.ReferenceEquals(receipts, reopenedReceipts)
-                && reopenedReceipts.Visible && Object.ReferenceEquals(reopenedReceipts.Owner, warehouse),
-                "The warehouse creates fresh receipt management after its previous instance closes.");
-            PrepareOffscreen(reopenedReceipts);
+            Assert(!FindControl<Button>(shell, "btnMoKho").Enabled,
+                "The missing warehouse module has a disabled launcher.");
             shell.Close();
             Application.DoEvents();
-            Assert(warehouse.IsDisposed && reopenedReceipts.IsDisposed,
-                "Closing the shared main form closes the owned warehouse and receipt windows.");
+            Assert(shell.IsDisposed, "The shared main form closes normally.");
         }
     }
 
@@ -365,37 +349,6 @@ internal static class Verify
             && CountOwnedForms(owner, formType) == 1,
             launcherName + " shows its hidden form again without replacing it.");
         return child;
-    }
-
-    private static void CheckSupplierDialog(Form receiptEntry)
-    {
-        using (Timer driver = new Timer())
-        {
-            Form supplier = null;
-            Exception driverError = null;
-            driver.Interval = 75;
-            driver.Tick += delegate
-            {
-                foreach (Form openForm in Application.OpenForms)
-                    if (openForm.GetType().FullName == "btl.frmThemNCC") supplier = openForm;
-                if (supplier == null) return;
-                driver.Stop();
-                try
-                {
-                    PrepareOffscreen(supplier);
-                    Assert(supplier.Modal && Object.ReferenceEquals(supplier.Owner, receiptEntry),
-                        "The supplier button opens the actual supplier dialog owned by receipt entry.");
-                }
-                catch (Exception error) { driverError = error; }
-                finally { supplier.Close(); }
-            };
-            driver.Start();
-            FindControl<Button>(receiptEntry, "btnThemNCC").PerformClick();
-            driver.Stop();
-            if (driverError != null) throw new InvalidOperationException("Supplier navigation failed.", driverError);
-            Assert(supplier != null && supplier.IsDisposed && receiptEntry.Visible && receiptEntry.Enabled,
-                "Closing the supplier dialog disposes it and returns control to receipt entry.");
-        }
     }
 
     private static void RemoveLoadHandlers(Form form)

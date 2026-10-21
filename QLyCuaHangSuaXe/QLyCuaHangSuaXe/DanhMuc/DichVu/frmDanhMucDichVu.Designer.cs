@@ -1,4 +1,4 @@
-namespace DanhMuc
+namespace QLyCuaHangSuaXe.DanhMuc.DichVu
 {
     partial class frmDanhMucDichVu
     {
@@ -51,9 +51,6 @@ namespace DanhMuc
             this.grpDanhSach.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvDichVu)).BeginInit();
             this.SuspendLayout();
-            // 
-            // lblTieuDe
-            // 
             this.lblTieuDe.Dock = System.Windows.Forms.DockStyle.Top;
             this.lblTieuDe.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblTieuDe.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(78)))), ((int)(((byte)(139)))));
@@ -63,9 +60,6 @@ namespace DanhMuc
             this.lblTieuDe.TabIndex = 0;
             this.lblTieuDe.Text = "QUẢN LÝ DANH MỤC DỊCH VỤ (AUTOFIX)";
             this.lblTieuDe.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // grpThongTin
-            // 
             this.grpThongTin.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.grpThongTin.Controls.Add(this.cboTrangThai);
@@ -86,9 +80,6 @@ namespace DanhMuc
             this.grpThongTin.TabIndex = 1;
             this.grpThongTin.TabStop = false;
             this.grpThongTin.Text = "Thông tin dịch vụ";
-            // 
-            // cboTrangThai
-            // 
             this.cboTrangThai.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cboTrangThai.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cboTrangThai.FormattingEnabled = true;
@@ -99,9 +90,6 @@ namespace DanhMuc
             this.cboTrangThai.Name = "cboTrangThai";
             this.cboTrangThai.Size = new System.Drawing.Size(260, 25);
             this.cboTrangThai.TabIndex = 8;
-            // 
-            // lblTrangThai
-            // 
             this.lblTrangThai.AutoSize = true;
             this.lblTrangThai.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblTrangThai.Location = new System.Drawing.Point(15, 108);
@@ -109,9 +97,6 @@ namespace DanhMuc
             this.lblTrangThai.Size = new System.Drawing.Size(69, 17);
             this.lblTrangThai.TabIndex = 7;
             this.lblTrangThai.Text = "Trạng thái:";
-            // 
-            // txtMoTa
-            // 
             this.txtMoTa.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtMoTa.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -120,9 +105,6 @@ namespace DanhMuc
             this.txtMoTa.Name = "txtMoTa";
             this.txtMoTa.Size = new System.Drawing.Size(353, 62);
             this.txtMoTa.TabIndex = 6;
-            // 
-            // lblMoTa
-            // 
             this.lblMoTa.AutoSize = true;
             this.lblMoTa.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblMoTa.Location = new System.Drawing.Point(405, 71);
@@ -130,9 +112,6 @@ namespace DanhMuc
             this.lblMoTa.Size = new System.Drawing.Size(46, 17);
             this.lblMoTa.TabIndex = 5;
             this.lblMoTa.Text = "Mô tả:";
-            // 
-            // numDonGia
-            // 
             this.numDonGia.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.numDonGia.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -152,9 +131,6 @@ namespace DanhMuc
             this.numDonGia.TabIndex = 4;
             this.numDonGia.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.numDonGia.ThousandsSeparator = true;
-            // 
-            // lblDonGia
-            // 
             this.lblDonGia.AutoSize = true;
             this.lblDonGia.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblDonGia.Location = new System.Drawing.Point(405, 31);
@@ -162,17 +138,11 @@ namespace DanhMuc
             this.lblDonGia.Size = new System.Drawing.Size(124, 17);
             this.lblDonGia.TabIndex = 3;
             this.lblDonGia.Text = "Giá niêm yết (VNĐ):";
-            // 
-            // txtTenDV
-            // 
             this.txtTenDV.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtTenDV.Location = new System.Drawing.Point(115, 68);
             this.txtTenDV.Name = "txtTenDV";
             this.txtTenDV.Size = new System.Drawing.Size(260, 25);
             this.txtTenDV.TabIndex = 2;
-            // 
-            // lblTenDV
-            // 
             this.lblTenDV.AutoSize = true;
             this.lblTenDV.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblTenDV.Location = new System.Drawing.Point(15, 71);
@@ -180,9 +150,6 @@ namespace DanhMuc
             this.lblTenDV.Size = new System.Drawing.Size(76, 17);
             this.lblTenDV.TabIndex = 1;
             this.lblTenDV.Text = "Tên dịch vụ:";
-            // 
-            // txtMaDV
-            // 
             this.txtMaDV.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(247)))), ((int)(((byte)(250)))));
             this.txtMaDV.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtMaDV.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
@@ -191,9 +158,6 @@ namespace DanhMuc
             this.txtMaDV.ReadOnly = true;
             this.txtMaDV.Size = new System.Drawing.Size(260, 25);
             this.txtMaDV.TabIndex = 0;
-            // 
-            // lblMaDV
-            // 
             this.lblMaDV.AutoSize = true;
             this.lblMaDV.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblMaDV.Location = new System.Drawing.Point(15, 31);
@@ -201,9 +165,6 @@ namespace DanhMuc
             this.lblMaDV.Size = new System.Drawing.Size(75, 17);
             this.lblMaDV.TabIndex = 0;
             this.lblMaDV.Text = "Mã dịch vụ:";
-            // 
-            // grpTimKiem
-            // 
             this.grpTimKiem.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.grpTimKiem.Controls.Add(this.btnTimKiem);
@@ -216,9 +177,6 @@ namespace DanhMuc
             this.grpTimKiem.TabIndex = 2;
             this.grpTimKiem.TabStop = false;
             this.grpTimKiem.Text = "Tìm kiếm nhanh";
-            // 
-            // btnTimKiem
-            // 
             this.btnTimKiem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(240)))), ((int)(((byte)(245)))));
             this.btnTimKiem.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnTimKiem.FlatStyle = System.Windows.Forms.FlatStyle.System;
@@ -230,18 +188,12 @@ namespace DanhMuc
             this.btnTimKiem.Text = "Tìm kiếm";
             this.btnTimKiem.UseVisualStyleBackColor = false;
             this.btnTimKiem.Click += new System.EventHandler(this.btnTimKiem_Click);
-            // 
-            // txtTimKiem
-            // 
             this.txtTimKiem.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtTimKiem.Location = new System.Drawing.Point(155, 21);
             this.txtTimKiem.Name = "txtTimKiem";
             this.txtTimKiem.Size = new System.Drawing.Size(310, 25);
             this.txtTimKiem.TabIndex = 1;
             this.txtTimKiem.TextChanged += new System.EventHandler(this.txtTimKiem_TextChanged);
-            // 
-            // lblTimKiem
-            // 
             this.lblTimKiem.AutoSize = true;
             this.lblTimKiem.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblTimKiem.Location = new System.Drawing.Point(15, 24);
@@ -249,9 +201,6 @@ namespace DanhMuc
             this.lblTimKiem.Size = new System.Drawing.Size(134, 17);
             this.lblTimKiem.TabIndex = 0;
             this.lblTimKiem.Text = "Nhập tên hoặc mô tả:";
-            // 
-            // pnlChucNang
-            // 
             this.pnlChucNang.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pnlChucNang.Controls.Add(this.btnDong);
@@ -263,9 +212,6 @@ namespace DanhMuc
             this.pnlChucNang.Name = "pnlChucNang";
             this.pnlChucNang.Size = new System.Drawing.Size(912, 45);
             this.pnlChucNang.TabIndex = 3;
-            // 
-            // btnDong
-            // 
             this.btnDong.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnDong.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(235)))), ((int)(((byte)(235)))));
             this.btnDong.Cursor = System.Windows.Forms.Cursors.Hand;
@@ -278,9 +224,6 @@ namespace DanhMuc
             this.btnDong.Text = "Đóng";
             this.btnDong.UseVisualStyleBackColor = false;
             this.btnDong.Click += new System.EventHandler(this.btnDong_Click);
-            // 
-            // btnLamMoi
-            // 
             this.btnLamMoi.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(240)))), ((int)(((byte)(240)))));
             this.btnLamMoi.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnLamMoi.FlatStyle = System.Windows.Forms.FlatStyle.System;
@@ -292,9 +235,6 @@ namespace DanhMuc
             this.btnLamMoi.Text = "Làm mới";
             this.btnLamMoi.UseVisualStyleBackColor = false;
             this.btnLamMoi.Click += new System.EventHandler(this.btnLamMoi_Click);
-            // 
-            // btnXoa
-            // 
             this.btnXoa.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(53)))), ((int)(((byte)(69)))));
             this.btnXoa.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnXoa.FlatStyle = System.Windows.Forms.FlatStyle.System;
@@ -306,9 +246,6 @@ namespace DanhMuc
             this.btnXoa.Text = "Xóa";
             this.btnXoa.UseVisualStyleBackColor = false;
             this.btnXoa.Click += new System.EventHandler(this.btnXoa_Click);
-            // 
-            // btnSua
-            // 
             this.btnSua.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(193)))), ((int)(((byte)(7)))));
             this.btnSua.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnSua.FlatStyle = System.Windows.Forms.FlatStyle.System;
@@ -320,9 +257,6 @@ namespace DanhMuc
             this.btnSua.Text = "Sửa";
             this.btnSua.UseVisualStyleBackColor = false;
             this.btnSua.Click += new System.EventHandler(this.btnSua_Click);
-            // 
-            // btnThem
-            // 
             this.btnThem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(13)))), ((int)(((byte)(110)))), ((int)(((byte)(253)))));
             this.btnThem.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnThem.FlatStyle = System.Windows.Forms.FlatStyle.System;
@@ -334,9 +268,6 @@ namespace DanhMuc
             this.btnThem.Text = "Thêm mới";
             this.btnThem.UseVisualStyleBackColor = false;
             this.btnThem.Click += new System.EventHandler(this.btnThem_Click);
-            // 
-            // grpDanhSach
-            // 
             this.grpDanhSach.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
@@ -350,9 +281,6 @@ namespace DanhMuc
             this.grpDanhSach.TabIndex = 4;
             this.grpDanhSach.TabStop = false;
             this.grpDanhSach.Text = "Danh sách dịch vụ niêm yết";
-            // 
-            // lblTongSo
-            // 
             this.lblTongSo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblTongSo.AutoSize = true;
             this.lblTongSo.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -362,9 +290,6 @@ namespace DanhMuc
             this.lblTongSo.Size = new System.Drawing.Size(105, 15);
             this.lblTongSo.TabIndex = 1;
             this.lblTongSo.Text = "Tổng số bản ghi: 0";
-            // 
-            // dgvDichVu
-            // 
             this.dgvDichVu.AllowUserToAddRows = false;
             this.dgvDichVu.AllowUserToDeleteRows = false;
             this.dgvDichVu.AllowUserToResizeRows = false;
@@ -402,9 +327,6 @@ namespace DanhMuc
             this.dgvDichVu.Size = new System.Drawing.Size(892, 212);
             this.dgvDichVu.TabIndex = 0;
             this.dgvDichVu.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvDichVu_CellClick);
-            // 
-            // frmDanhMucDichVu
-            // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(250)))), ((int)(((byte)(252)))));

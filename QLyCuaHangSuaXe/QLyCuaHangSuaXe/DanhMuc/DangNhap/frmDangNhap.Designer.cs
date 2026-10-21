@@ -27,9 +27,6 @@ namespace QLyCuaHangSuaXe.DanhMuc.DangNhap
             this.btnMoQuanLyTaiKhoan = new System.Windows.Forms.Button();
             this.grpDangNhap.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // lblTieuDe
-            // 
             this.lblTieuDe.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Bold);
             this.lblTieuDe.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(27)))), ((int)(((byte)(64)))), ((int)(((byte)(96)))));
             this.lblTieuDe.Location = new System.Drawing.Point(24, 20);
@@ -37,9 +34,6 @@ namespace QLyCuaHangSuaXe.DanhMuc.DangNhap
             this.lblTieuDe.Size = new System.Drawing.Size(392, 36);
             this.lblTieuDe.TabIndex = 0;
             this.lblTieuDe.Text = "ĐĂNG NHẬP";
-            // 
-            // lblMoTa
-            // 
             this.lblMoTa.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(98)))), ((int)(((byte)(98)))), ((int)(((byte)(98)))));
             this.lblMoTa.Location = new System.Drawing.Point(26, 60);
             this.lblMoTa.Name = "lblMoTa";
@@ -47,9 +41,6 @@ namespace QLyCuaHangSuaXe.DanhMuc.DangNhap
             this.lblMoTa.TabIndex = 1;
             this.lblMoTa.Text = "Quản lý cửa hàng sửa xe";
             this.lblMoTa.Click += new System.EventHandler(this.lblMoTa_Click);
-            // 
-            // grpDangNhap
-            // 
             this.grpDangNhap.Controls.Add(this.lblTenDangNhap);
             this.grpDangNhap.Controls.Add(this.txtTenDangNhap);
             this.grpDangNhap.Controls.Add(this.lblMatKhau);
@@ -65,36 +56,24 @@ namespace QLyCuaHangSuaXe.DanhMuc.DangNhap
             this.grpDangNhap.TabIndex = 2;
             this.grpDangNhap.TabStop = false;
             this.grpDangNhap.Text = "Thông tin đăng nhập";
-            // 
-            // lblTenDangNhap
-            // 
             this.lblTenDangNhap.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.lblTenDangNhap.Location = new System.Drawing.Point(18, 26);
             this.lblTenDangNhap.Name = "lblTenDangNhap";
             this.lblTenDangNhap.Size = new System.Drawing.Size(356, 20);
             this.lblTenDangNhap.TabIndex = 0;
             this.lblTenDangNhap.Text = "Tên đăng nhập:";
-            // 
-            // txtTenDangNhap
-            // 
             this.txtTenDangNhap.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.txtTenDangNhap.Location = new System.Drawing.Point(18, 49);
             this.txtTenDangNhap.MaxLength = 50;
             this.txtTenDangNhap.Name = "txtTenDangNhap";
             this.txtTenDangNhap.Size = new System.Drawing.Size(356, 27);
             this.txtTenDangNhap.TabIndex = 1;
-            // 
-            // lblMatKhau
-            // 
             this.lblMatKhau.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.lblMatKhau.Location = new System.Drawing.Point(18, 88);
             this.lblMatKhau.Name = "lblMatKhau";
             this.lblMatKhau.Size = new System.Drawing.Size(356, 20);
             this.lblMatKhau.TabIndex = 2;
             this.lblMatKhau.Text = "Mật khẩu:";
-            // 
-            // txtMatKhau
-            // 
             this.txtMatKhau.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.txtMatKhau.Location = new System.Drawing.Point(18, 111);
             this.txtMatKhau.MaxLength = 100;
@@ -102,9 +81,6 @@ namespace QLyCuaHangSuaXe.DanhMuc.DangNhap
             this.txtMatKhau.Size = new System.Drawing.Size(356, 27);
             this.txtMatKhau.TabIndex = 3;
             this.txtMatKhau.UseSystemPasswordChar = true;
-            // 
-            // chkHienMatKhau
-            // 
             this.chkHienMatKhau.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.chkHienMatKhau.Location = new System.Drawing.Point(18, 147);
             this.chkHienMatKhau.Name = "chkHienMatKhau";
@@ -113,9 +89,6 @@ namespace QLyCuaHangSuaXe.DanhMuc.DangNhap
             this.chkHienMatKhau.Text = "Hiện mật khẩu";
             this.chkHienMatKhau.UseVisualStyleBackColor = true;
             this.chkHienMatKhau.CheckedChanged += new System.EventHandler(this.chkHienMatKhau_CheckedChanged);
-            // 
-            // btnDangNhap
-            // 
             this.btnDangNhap.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(91)))), ((int)(((byte)(145)))));
             this.btnDangNhap.FlatAppearance.BorderSize = 0;
             this.btnDangNhap.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -127,9 +100,6 @@ namespace QLyCuaHangSuaXe.DanhMuc.DangNhap
             this.btnDangNhap.Text = "Đăng nhập";
             this.btnDangNhap.UseVisualStyleBackColor = false;
             this.btnDangNhap.Click += new System.EventHandler(this.btnDangNhap_Click);
-            // 
-            // btnThoat
-            // 
             this.btnThoat.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btnThoat.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.btnThoat.Location = new System.Drawing.Point(204, 184);
@@ -139,29 +109,22 @@ namespace QLyCuaHangSuaXe.DanhMuc.DangNhap
             this.btnThoat.Text = "Thoát";
             this.btnThoat.UseVisualStyleBackColor = true;
             this.btnThoat.Click += new System.EventHandler(this.btnThoat_Click);
-            // 
-            // btnMoDoiMatKhau
-            // 
             this.btnMoDoiMatKhau.Location = new System.Drawing.Point(24, 354);
             this.btnMoDoiMatKhau.Name = "btnMoDoiMatKhau";
+            this.btnMoDoiMatKhau.Enabled = false;
             this.btnMoDoiMatKhau.Size = new System.Drawing.Size(188, 36);
             this.btnMoDoiMatKhau.TabIndex = 3;
             this.btnMoDoiMatKhau.Text = "Đổi mật khẩu";
             this.btnMoDoiMatKhau.UseVisualStyleBackColor = true;
             this.btnMoDoiMatKhau.Click += new System.EventHandler(this.btnMoDoiMatKhau_Click);
-            // 
-            // btnMoQuanLyTaiKhoan
-            // 
             this.btnMoQuanLyTaiKhoan.Location = new System.Drawing.Point(228, 354);
             this.btnMoQuanLyTaiKhoan.Name = "btnMoQuanLyTaiKhoan";
+            this.btnMoQuanLyTaiKhoan.Enabled = false;
             this.btnMoQuanLyTaiKhoan.Size = new System.Drawing.Size(188, 36);
             this.btnMoQuanLyTaiKhoan.TabIndex = 4;
             this.btnMoQuanLyTaiKhoan.Text = "Quản lý tài khoản";
             this.btnMoQuanLyTaiKhoan.UseVisualStyleBackColor = true;
             this.btnMoQuanLyTaiKhoan.Click += new System.EventHandler(this.btnMoQuanLyTaiKhoan_Click);
-            // 
-            // frmDangNhap
-            // 
             this.AcceptButton = this.btnDangNhap;
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;

@@ -15,23 +15,39 @@
 - **Đăng nhập & Phân quyền** → form đăng nhập gọn → **Đổi mật khẩu** hoặc **Quản lý tài khoản**. Form quản lý có hai tab **Tài khoản** và **Phân quyền**.
 - **Tiếp nhận xe** → lập phiếu, ghi tình trạng xe và phân công thợ.
 - **Danh mục Dịch vụ (Tiền công)** → form quản lý dịch vụ.
-- **Nhập kho phụ tùng** → Kho → **Phiếu nhập** → **Thêm phiếu nhập** → form lập phiếu → **Thêm nhà cung cấp**.
+- **Nhập kho phụ tùng** → nút chờ, mã nguồn module Kho hiện đã được gỡ khỏi repo.
 - **Báo cáo & Thống kê** → nút chờ, ghi **Chưa xây dựng**, chưa mở form vì module này chưa có.
 - **Thoát** trên màn hình chính đóng ứng dụng; **Đóng/Thoát** trong form con đóng cửa sổ đó.
 
-Các form chức năng mở cùng màn hình chính. Bấm lại chức năng sẽ quay về cửa sổ đang mở (kể cả khi đang thu nhỏ); đóng rồi mở lại sẽ tạo cửa sổ mới. Form thêm nhà cung cấp mở dạng hộp thoại và cập nhật lại danh sách nhà cung cấp khi thêm thành công.
+Các form chức năng mở cùng màn hình chính. Bấm lại chức năng sẽ quay về cửa sổ đang mở (kể cả khi đang thu nhỏ); đóng rồi mở lại sẽ tạo cửa sổ mới.
 
-Project chính dùng liên kết đến các file nguồn trong `DanhMuc/DanhMuc` và `Kho/Kho/btl`, giữ một bản mã nguồn cho mỗi form. Nguồn module Kho đã được điều chỉnh để biên dịch chung trên .NET Framework 4.8.
+Mã nguồn ứng dụng được gom theo chức năng trong project chính:
+
+```text
+QLyCuaHangSuaXe/QLyCuaHangSuaXe/
+├── Form1.cs / Form1.Designer.cs
+├── Program.cs
+├── DanhMuc/
+│   ├── DangNhap/
+│   ├── DichVu/
+│   │   └── Classes/
+│   └── TiepNhan/
+├── Classes/
+├── Properties/
+└── App.config
+```
+
+`Form1` là màn hình chính; `Classes` ở gốc chứa các lớp dùng chung, còn lớp xử lý dữ liệu riêng của Dịch vụ nằm trong `DanhMuc/DichVu/Classes`. Project dịch vụ độc lập cũ ở `DanhMuc/DanhMuc` dùng liên kết tới nguồn mới để tránh nhân đôi mã. Các file kiểm tra nằm trong `checks`, tài liệu nằm trong `docs` ở gốc repo.
 
 Ba form đăng nhập nằm trong [DanhMuc/DangNhap](QLyCuaHangSuaXe/QLyCuaHangSuaXe/DanhMuc/DangNhap): `frmDangNhap` (đăng nhập và nút mở form con), `frmDoiMatKhau` (đổi mật khẩu), `frmQuanLyTaiKhoan` (tài khoản và phân quyền). Mỗi form có file `.cs`, `.Designer.cs` và `.resx` riêng để mở bằng Visual Studio Designer. Đóng form con sẽ quay lại đăng nhập; bấm lại nút sẽ dùng cửa sổ đang mở. Danh sách vị trí trong phần quản lý gồm **Chủ cửa hàng**, **Thu ngân**, **Kho**, **Thợ**.
 
 ### Phạm vi hiện tại
 
-Tài khoản đăng nhập tạm: **minh**, mật khẩu **123**. Từ màn hình chính, mở **Đăng nhập & Phân quyền**, nhập tài khoản rồi bấm **Đăng nhập** (hoặc Enter). Đúng tài khoản sẽ đóng form đăng nhập và hiển thị tên trên màn hình chính; nhập sai hoặc để trống sẽ báo ngay trên form. Tài khoản này được kiểm tra trong mã nguồn, chưa dùng database.
+Tài khoản đăng nhập tạm: **minh**, mật khẩu **123**. Từ màn hình chính, mở **Đăng nhập & Phân quyền**, nhập tài khoản rồi bấm **Đăng nhập** (hoặc Enter). Trước khi đăng nhập, **Đổi mật khẩu** và **Quản lý tài khoản** bị khóa. Đăng nhập đúng sẽ giữ form mở, bật hai nút đó, khóa phần nhập tài khoản và hiển thị tên trên màn hình chính; nhập sai hoặc để trống vẫn giữ hai nút bị khóa. Đóng rồi mở lại form sẽ yêu cầu đăng nhập lại. Tài khoản này được kiểm tra trong mã nguồn, chưa dùng database.
 
-Màn hình đổi mật khẩu và quản trị/phân quyền vẫn chỉ có giao diện; ứng dụng vẫn khởi động từ màn hình chính. Các nút sửa/xóa phiếu nhập và thao tác kho chưa có nghiệp vụ từ mã nguồn ban đầu.
+Màn hình đổi mật khẩu và quản trị/phân quyền vẫn chỉ có giao diện; ứng dụng vẫn khởi động từ màn hình chính.
 
-Danh mục dịch vụ sử dụng SQL Server `.` với database `AutoFixDb`; Kho sử dụng SQL Server `localhost` với database `QuanLyNhapKho`. Cần cấu hình kết nối trong lớp xử lý dữ liệu tương ứng để thao tác dữ liệu thật. Script tạo database Kho nằm ở [Kho/SQLQuery1.sql](Kho/SQLQuery1.sql); repo chưa có script database dịch vụ. Hai module vẫn dùng cơ sở dữ liệu riêng. Khi không kết nối được database, form báo lỗi để người dùng biết.
+Danh mục dịch vụ sử dụng SQL Server `.` với database `AutoFixDb`. Cấu hình kết nối nằm trong `DanhMuc/DichVu/Classes/DataProcessor.cs`; repo chưa có script database dịch vụ. Khi không kết nối được database, form báo lỗi để người dùng biết.
 
 ## Form tiếp nhận
 
