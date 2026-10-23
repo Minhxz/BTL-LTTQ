@@ -51,6 +51,8 @@
 			btnXoaPhieuNhap = new Button();
 			btnSuaPhieuNhap = new Button();
 			btnThemPhieuNhap = new Button();
+			label1 = new Label();
+			txtTim = new TextBox();
 			((System.ComponentModel.ISupportInitialize)dgvPhieuNhap).BeginInit();
 			groupBox2.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)dgvChiTiet).BeginInit();
@@ -114,7 +116,7 @@
 			// groupBox2
 			// 
 			groupBox2.Controls.Add(dgvPhieuNhap);
-			groupBox2.Location = new Point(12, 12);
+			groupBox2.Location = new Point(12, 76);
 			groupBox2.Name = "groupBox2";
 			groupBox2.Size = new Size(858, 296);
 			groupBox2.TabIndex = 2;
@@ -200,7 +202,7 @@
 			// groupBox3
 			// 
 			groupBox3.Controls.Add(dgvChiTiet);
-			groupBox3.Location = new Point(12, 314);
+			groupBox3.Location = new Point(12, 378);
 			groupBox3.Name = "groupBox3";
 			groupBox3.Size = new Size(858, 299);
 			groupBox3.TabIndex = 3;
@@ -214,7 +216,7 @@
 			panel1.Controls.Add(btnXoaPhieuNhap);
 			panel1.Controls.Add(btnSuaPhieuNhap);
 			panel1.Controls.Add(btnThemPhieuNhap);
-			panel1.Location = new Point(12, 619);
+			panel1.Location = new Point(12, 683);
 			panel1.Name = "panel1";
 			panel1.Size = new Size(858, 121);
 			panel1.TabIndex = 4;
@@ -269,11 +271,30 @@
 			btnThemPhieuNhap.UseVisualStyleBackColor = true;
 			btnThemPhieuNhap.Click += btnThemPhieuNhap_Click;
 			// 
+			// label1
+			// 
+			label1.AutoSize = true;
+			label1.Location = new Point(41, 30);
+			label1.Name = "label1";
+			label1.Size = new Size(37, 20);
+			label1.TabIndex = 5;
+			label1.Text = "Tìm:";
+			// 
+			// txtTim
+			// 
+			txtTim.Location = new Point(103, 27);
+			txtTim.Name = "txtTim";
+			txtTim.Size = new Size(239, 27);
+			txtTim.TabIndex = 6;
+			txtTim.TextChanged += txtTim_TextChanged;
+			// 
 			// frmPhieuNhap
 			// 
 			AutoScaleDimensions = new SizeF(8F, 20F);
 			AutoScaleMode = AutoScaleMode.Font;
-			ClientSize = new Size(882, 752);
+			ClientSize = new Size(882, 816);
+			Controls.Add(txtTim);
+			Controls.Add(label1);
 			Controls.Add(panel1);
 			Controls.Add(groupBox3);
 			Controls.Add(groupBox2);
@@ -288,6 +309,7 @@
 			groupBox3.ResumeLayout(false);
 			panel1.ResumeLayout(false);
 			ResumeLayout(false);
+			PerformLayout();
 		}
 
 		#endregion
@@ -315,5 +337,7 @@
 		private DataGridViewTextBoxColumn colChiTietThanhTien;
 		private DataGridViewTextBoxColumn colChiTietHanSuDung;
 		private Button btnInPhieuNhap;
+		private Label label1;
+		private TextBox txtTim;
 	}
 }

@@ -29,7 +29,6 @@
 		private void InitializeComponent()
 		{
 			panel1 = new Panel();
-			label1 = new Label();
 			groupBox1 = new GroupBox();
 			btnNgungSuDung = new Button();
 			btnThoat = new Button();
@@ -41,6 +40,8 @@
 			colTenNCC = new DataGridViewTextBoxColumn();
 			colHanSuDung = new DataGridViewTextBoxColumn();
 			panel2 = new Panel();
+			label1 = new Label();
+			txtTim = new TextBox();
 			panel1.SuspendLayout();
 			groupBox1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)dgvPhuTung).BeginInit();
@@ -49,20 +50,12 @@
 			// 
 			// panel1
 			// 
+			panel1.Controls.Add(txtTim);
 			panel1.Controls.Add(label1);
 			panel1.Location = new Point(12, 12);
 			panel1.Name = "panel1";
 			panel1.Size = new Size(958, 58);
 			panel1.TabIndex = 0;
-			// 
-			// label1
-			// 
-			label1.AutoSize = true;
-			label1.Location = new Point(19, 19);
-			label1.Name = "label1";
-			label1.Size = new Size(35, 20);
-			label1.TabIndex = 0;
-			label1.Text = "Kho";
 			// 
 			// groupBox1
 			// 
@@ -169,6 +162,23 @@
 			panel2.Size = new Size(958, 555);
 			panel2.TabIndex = 1;
 			// 
+			// label1
+			// 
+			label1.AutoSize = true;
+			label1.Location = new Point(55, 20);
+			label1.Name = "label1";
+			label1.Size = new Size(37, 20);
+			label1.TabIndex = 0;
+			label1.Text = "Tìm:";
+			// 
+			// txtTim
+			// 
+			txtTim.Location = new Point(107, 17);
+			txtTim.Name = "txtTim";
+			txtTim.Size = new Size(278, 27);
+			txtTim.TabIndex = 1;
+			txtTim.TextChanged += txtTim_TextChanged;
+			// 
 			// frmKho
 			// 
 			AutoScaleDimensions = new SizeF(8F, 20F);
@@ -192,7 +202,6 @@
 		#endregion
 
 		private Panel panel1;
-		private Label label1;
 		private GroupBox groupBox1;
 		private Button btnHuyPhuTung;
 		private DataGridView dgvPhuTung;
@@ -205,5 +214,7 @@
 		private DataGridViewTextBoxColumn colHanSuDung;
 		private Button btnThoat;
 		private Button btnNgungSuDung;
+		private TextBox txtTim;
+		private Label label1;
 	}
 }

@@ -15,7 +15,6 @@ namespace btl
 	{
 		Classes.DatabaseProcessor dtbase = new Classes.DatabaseProcessor();
 		private PrintDocument printDocument = new PrintDocument();
-		private int dongIn = 0;
 		private DataTable dataIn;
 		public frmPhieuNhap()
 		{
@@ -33,7 +32,7 @@ namespace btl
 			dgvPhieuNhap.ReadOnly = true;
 			dgvChiTiet.ReadOnly = true;
 
-			if(dgvPhieuNhap.Rows.Count > 0)
+			if (dgvPhieuNhap.Rows.Count > 0)
 			{
 				string sqlChiTiet = "Select pn.MaPhieuNhap, ncc.TenNCC, pt.MaPhuTung, pt.TenPhuTung, ct.SoLuong As SoLuongNhap, ct.DonGiaNhap, ct.ThanhTien, ct.HanSuDung " +
 				"From PhuTung pt Join ChiTietPhieuNhap ct On pt.MaPhuTung = ct.MaPhuTung " +
@@ -151,7 +150,7 @@ namespace btl
 			g.DrawString("Phiếu Nhập Kho", fontTitle, Brushes.Black, x + 200, y);
 			y += 50;
 
-			g.DrawString("Mã phiếu: " + maPhieu, Font, Brushes.Black, x, y);
+			g.DrawString("Mã phiếu: " + maPhieu, font, Brushes.Black, x, y);
 			y += lineHeight;
 
 			g.DrawString("Ngày nhập: " + ngayNhap.ToString("dd/MM/yyyy"), font, Brushes.Black, x, y);
@@ -164,7 +163,7 @@ namespace btl
 			y += lineHeight;
 
 			var nhaCungCap = dataIn.AsEnumerable().Select(r => r["TenNCC"].ToString()).Distinct();
-			foreach(string tenNCC in nhaCungCap)
+			foreach (string tenNCC in nhaCungCap)
 			{
 				g.DrawString("- " + tenNCC, font, Brushes.Black, x, y);
 				y += lineHeight;
@@ -177,7 +176,7 @@ namespace btl
 
 			float tableX = x;
 
-			for(int i = 0; i < headers.Length; i++)
+			for (int i = 0; i < headers.Length; i++)
 			{
 				g.DrawRectangle(Pens.Black, tableX, y, widths[i], lineHeight);
 				g.DrawString(headers[i], fontHeader, Brushes.Black, new RectangleF(tableX + 3, y + 5, widths[i] - 6, lineHeight));
@@ -194,7 +193,7 @@ namespace btl
 
 				string[] values = { (i + 1).ToString(), row["MaPhuTung"].ToString(), row["TenPhuTung"].ToString(), row["SoLuong"].ToString(), Convert.ToDecimal(row["DonGiaNhap"]).ToString(), Convert.ToDecimal(row["ThanhTien"]).ToString() };
 
-				for(int j  = 0; j < values.Length; j++)
+				for (int j = 0; j < values.Length; j++)
 				{
 					g.DrawRectangle(Pens.Black, tableX, y, widths[j], lineHeight);
 					g.DrawString(values[j], font, Brushes.Black, new RectangleF(tableX + 3, y + 5, widths[j] - 6, lineHeight));
@@ -216,7 +215,7 @@ namespace btl
 		{
 			if (dgvChiTiet.Rows.Count == 0 || dgvPhieuNhap.CurrentRow.IsNewRow == true)
 			{
-				MessageBox.Show("Chọn phiếu cần xóa!", "Thông báo");
+				MessageBox.Show("Chọn phiếu in!", "Thông báo");
 				return;
 			}
 
@@ -234,13 +233,11 @@ namespace btl
 
 			dataIn = dtbase.ReadData(sql);
 
-			if(dataIn.Rows.Count == 0)
+			if (dataIn.Rows.Count == 0)
 			{
 				MessageBox.Show("Phiếu nhập không có chi tiết!", "Thông báo");
 				return;
 			}
-
-			dongIn = 0;
 
 			printDocument.PrintPage -= printDocument_PrintPage;
 			printDocument.PrintPage += printDocument_PrintPage;
@@ -250,6 +247,27 @@ namespace btl
 			preview.Width = 1000;
 			preview.Height = 700;
 			preview.ShowDialog();
+		}
+
+		private void txtTim_TextChanged(object sender, EventArgs e)
+		{
+			string sqlTim = "Select pn.MaPhieuNhap, pn.NgayNhap, Sum(ct.SoLuong) As TongSoLuongNhap, Sum(ct.ThanhTien) As ThanhTien, NguoiNhap " +
+				"From PhieuNhap pn Join ChiTietPhieuNhap ct On pn.MaPhieuNhap = ct.MaPhieuNhap " +
+				"Where pn.MaPhieuNhap Like '%" + txtTim.Text + "%'" +
+				"Group By pn.MaPhieuNhap, pn.NgayNhap, pn.NguoiNhap " +
+				"Order By pn.MaPhieuNhap Asc";
+			dgvPhieuNhap.DataSource = dtbase.ReadData(sqlTim);
+
+			if (dgvPhieuNhap.Rows.Count > 0)
+			{
+				string sqlChiTiet = "Select pn.MaPhieuNhap, ncc.TenNCC, pt.MaPhuTung, pt.TenPhuTung, ct.SoLuong As SoLuongNhap, ct.DonGiaNhap, ct.ThanhTien, ct.HanSuDung " +
+				"From PhuTung pt Join ChiTietPhieuNhap ct On pt.MaPhuTung = ct.MaPhuTung " +
+				"Join PhieuNhap pn On ct.MaPhieuNhap = pn.MaPhieuNhap " +
+				"Join NhaCungCap ncc On ct.MaNCC = ncc.MaNCC " +
+				"Where ct.MaPhieuNhap = '" + dgvPhieuNhap.Rows[0].Cells["colMaPhieuNhap"].Value.ToString() + "'";
+
+				dgvChiTiet.DataSource = dtbase.ReadData(sqlChiTiet);
+			}
 		}
 	}
 }

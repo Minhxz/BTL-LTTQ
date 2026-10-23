@@ -74,5 +74,16 @@ namespace btl
 				this.Close();
 			}
 		}
+
+		private void txtTim_TextChanged(object sender, EventArgs e)
+		{
+			string sqlTim = "Select pt.MaPhuTung, pt.TenPhuTung, pt.SoLuongTon, ncc.TenNCC, ct.HanSuDung " +
+				"From PhuTung pt Join ChiTietPhieuNhap ct On pt.MaPhuTung = ct.MaPhuTung " +
+				"Join PhieuNhap pn On ct.MaPhieuNhap = pn.MaPhieuNhap " +
+				"Join NhaCungCap ncc On ct.MaNCC = ncc.MaNCC " +
+				"Where pt.TrangThai = 1 And pt.MaPhuTung Like '%" + txtTim.Text + "%' Or pt.TenPhuTung Like N'%" + txtTim.Text + "%'" +
+				"Order By pt.MaPhuTung Asc";
+			dgvPhuTung.DataSource = dtbase.ReadData(sqlTim);
+		}
 	}
 }
