@@ -1,52 +1,65 @@
 # Hiểu code tiếp nhận xe
 
-Code xử lý nằm trong `frmTiepNhan.cs`. Có thể đọc theo luồng: **bấm nút → kiểm tra ô nhập → cập nhật dữ liệu tạm → hiện lại DataGridView**.
+Code nằm trong `frmTiepNhan.cs`, viết trực tiếp trong sự kiện như bài `Hoc_vien`: **bấm nút → kiểm tra ô nhập → cập nhật bảng tạm → hiện lại danh sách**. Bài mẫu `D:\LTTQ\Hoc_vien` được giữ nguyên.
 
-## DataGridView và DataTable khác nhau thế nào?
+## Dữ liệu trong form
 
-`dgvPhieu` là control **DataGridView** kéo từ Toolbox, dùng để hiển thị và chọn phiếu. `DataTable` là bảng giữ dữ liệu trong bộ nhớ. Gán `DataSource` giúp DataGridView hiển thị các dòng của DataTable.
-
-Bảng dữ liệu có các cột: `MaPhieu`, `NgayNhan`, `BienSoXe`, `KhachHang`, `DienThoai`, `LoaiXe`, `TenTho`, `TrangThai`, `TinhTrangXe`. Giao diện chỉ hiện bảy cột chính. Điện thoại và tình trạng xe được đưa lên ô nhập khi chọn một dòng.
-
-Phần này chưa dùng CSDL. Nút **Lưu** chỉ cập nhật bảng trong bộ nhớ; đóng form sẽ mất thay đổi. Danh sách thợ hiện là các tên mẫu trong ComboBox.
-
-## Đọc các hàm theo thứ tự
-
-| Hàm | Công việc |
+| Biến | Công dụng |
 |---|---|
-| `TaoBangPhieu()` | Tạo các cột và dữ liệu mẫu cho bảng tạm |
-| `TaiDanhSach(...)` | Đưa danh sách phiếu lên DataGridView |
-| `HienThiPhieu()` | Đưa thông tin phiếu đang chọn lên các ô |
-| `DatCheDo(...)` | Mở/khóa ô nhập và bật/tắt nút khi xem, thêm hoặc sửa |
-| `TaoPhieuMoi()` | Làm trống ô nhập và hiện ngay mã phiếu tiếp theo |
-| `KiemTraThongTin()` | Kiểm tra ô nhập trước khi lưu |
-| `LuuPhieu()` | Thêm dòng mới hoặc sửa dòng đã chọn rồi cập nhật bảng |
+| `DataTable bangPhieu` | Giữ các phiếu trong bộ nhớ |
+| `int soPhieuTiepTheo` | Tạo mã mới, bắt đầu từ 5 sau bốn phiếu mẫu |
+| `DateTime ngayNhan` | Giữ ngày giờ nhận của phiếu |
+| `bool dangThem` | Phân biệt lưu mới với sửa |
+| `bool dangTaiDanhSach` | Đợi lưới tải xong rồi mới đọc dòng đang chọn |
+| `string noiDungIn` | Giữ nội dung của phiếu đã lưu để in |
+| `int viTriIn` | Nhớ phần nội dung đã vẽ khi phiếu có nhiều trang |
 
-Các hàm `btn..._Click` xử lý khi bấm nút. Ví dụ, **Lưu** gọi `LuuPhieu()`; **Tìm kiếm** đọc từ khóa rồi gọi hàm tải danh sách. Tìm kiếm chỉ kiểm tra mã phiếu, biển số và tên khách.
+`frmTiepNhan_Load` tạo cột, đặt `MaPhieu` làm khóa, thêm bốn phiếu và tên thợ mẫu. Ngoài thông tin khách/xe, bảng có `DongXe` kiểu chuỗi, `SoKm` kiểu số nguyên, `HenTra` kiểu `DateTime` và `NhacHen` kiểu chuỗi.
 
-**Mã phiếu tự động:** bấm **Thêm mới** sẽ hiện ngay mã như `TN-0005`. **Lưu** giữ đúng mã đang hiển thị rồi tăng số cho phiếu tiếp theo. Nhập sai chưa làm tăng số; khi sửa thì mã cũ giữ nguyên.
+`dgvPhieu` là DataGridView hiển thị tám cột: `MaPhieu`, `NgayNhan`, `BienSoXe`, `KhachHang`, `TenTho`, `HenTra`, `TrangThai`, `NhacHen`. Các trường khác vẫn nằm trong bảng tạm và được đưa lên ô nhập khi chọn phiếu. Để sửa hoặc xóa đúng dòng, dùng mã đang hiện:
 
-**Thông báo thành công:** `LuuPhieu()` dùng `MessageBox.Show(...)` sau khi dữ liệu hợp lệ và đã được cập nhật. Lưu mới báo **Lưu phiếu thành công.**; lưu sau khi sửa báo **Sửa phiếu thành công.** Bấm Sửa chỉ chuyển sang chế độ nhập, chưa thay dữ liệu nên chưa báo thành công.
+```csharp
+DataRow dong = bangPhieu.Rows.Find(txtMaPhieu.Text);
+```
 
-**Thoát form:** sự kiện `btnThoat_Click` gọi `Close()` để đóng cửa sổ tiếp nhận. Màn hình chính vẫn mở để chọn chức năng khác. Nút Thoát luôn dùng được; dữ liệu tạm của form sẽ mất khi đóng, kể cả các phiếu vừa bấm Lưu.
+**Lưu** chỉ cập nhật `bangPhieu`; đóng rồi mở lại form sẽ trở về dữ liệu mẫu.
 
-`phieuDangChon` giữ dòng đang xem để sửa/xóa đúng phiếu. `dangThem` và `dangSua` cho biết chế độ hiện tại. `dangNapDuLieu` tránh xử lý chọn dòng khi chương trình đang gán lại danh sách cho DataGridView.
+## Thêm, sửa và kiểm tra dữ liệu
 
-## Những thao tác dữ liệu cần hiểu
+**Thêm mới** đặt `dangThem = true`, xóa trắng ô nhập, tự điền mã và ngày nhận. **Sửa** đặt `dangThem = false`, mở các ô của phiếu đang chọn; mã và ngày nhận giữ nguyên.
 
-- Thêm: tạo một `DataRow`, gán giá trị từng cột rồi thêm vào bảng.
-- Sửa: lấy dòng đang chọn rồi gán lại các cột cần thay.
-- Xóa: bỏ dòng đã chọn sau khi người dùng xác nhận.
-- Tìm kiếm: dùng vòng lặp kiểm tra từng phiếu, đưa các dòng phù hợp lên bảng.
+`btnLuu_Click` kiểm tra trực tiếp từng trường bằng `if`. Có lỗi thì dùng `MessageBox.Show`, gọi `Focus` về ô cần sửa rồi `return`. Biển số bắt buộc; điện thoại có thể trống nhưng nếu nhập phải có 8–15 chữ số. Hẹn trả từ `dtpHenTra` không được trước `ngayNhan`. **Đang sửa** hoặc **Hoàn thành** cần phân công thợ.
 
-Khi bấm một dòng trong DataGridView, thông tin của dòng đó xuất hiện ở các ô phía trên. Muốn sửa thì bấm **Sửa**; bảng không cho sửa trực tiếp trong ô.
+Hợp lệ thì tạo `DataRow` mới hoặc tìm dòng cũ, gán từng cột rồi tải lại danh sách. Chỉ thêm thành công mới tăng `soPhieuTiepTheo`. Sau khi lưu, xóa từ khóa, đưa lọc trạng thái về **Tất cả** và chọn lại phiếu vừa lưu. Thêm mới báo **Lưu phiếu thành công.**; sửa báo **Sửa phiếu thành công.**
 
-Biển số không được trống. Điện thoại có thể bỏ qua; nếu nhập thì phải có 8–15 chữ số. Các ô chọn dùng danh sách có sẵn để hạn chế nhập sai. Phiếu **Chờ khám** chưa cần thợ; **Đang sửa** hoặc **Hoàn thành** phải chọn thợ.
+**Xóa** hỏi xác nhận rồi bỏ dòng khỏi bảng. **Thoát** gọi `Close()`; bảng tạm mất khi form đóng.
+
+## Tìm kiếm và chọn dòng
+
+`TaiDanhSach(string maCanChon)` tạo bảng kết quả từ `bangPhieu.Clone()`, dùng `foreach` và `Contains` để tìm mã phiếu, biển số, tên khách hoặc điện thoại. Điều kiện từ khóa kết hợp với trạng thái bằng **và**: phiếu phải khớp cả hai. `cboLocTrangThai` đổi lựa chọn sẽ gọi lọc ngay; từ khóa được tìm như nội dung bình thường.
+
+Sự kiện `dgvPhieu_CurrentCellChanged` đưa thông tin dòng đang chọn lên form. Sự kiện bỏ qua lúc đang nhập để tránh ghi đè, hoặc lúc `dangTaiDanhSach` đang bật để không đọc nhầm dòng trong khi đổi bảng. Tải xong mới hiển thị dòng được chọn. `XoaTrangForm()` làm trống các ô; `DatCheDo(bool choNhap)` mở/khóa ô nhập và bật/tắt nút tương ứng. Dòng hướng dẫn/kết quả được gán vào `lblThongBao.Text`.
+
+## Nhắc hẹn
+
+`CapNhatNhacHen()` xét từng phiếu theo điều kiện quá hẹn:
+
+```csharp
+HenTra < DateTime.Now && TrangThai != "Hoàn thành"
+```
+
+Điều kiện này áp dụng cả phiếu **Chờ khám**. `NhacHen` nhận một trong ba nội dung **Quá hẹn**, **Đã xong**, **Đúng hẹn**. `dgvPhieu_CellFormatting` dựa vào đó để tô dòng quá hẹn đỏ nhạt, hoàn thành xanh nhạt, còn lại trắng. `lblCanhBao` hiển thị cảnh báo khi phiếu đang chọn bị quá hẹn; `lblTongPhieu` cho biết số phiếu hiển thị/tổng số phiếu và `lblChuThich` giải thích màu.
+
+`timerNhacHen_Tick` gọi `CapNhatNhacHen()` mỗi 30 giây. Hàm cập nhật bảng gốc và bảng kết quả đang hiển thị, không tải lại lưới hoặc ghi đè các ô đang nhập. Phiếu **Hoàn thành** không bị đánh dấu quá hẹn. Dữ liệu mẫu dùng thời gian tương đối khi mở form: `TN-0002` quá hẹn, `TN-0004` đã hoàn thành.
+
+## In phiếu
+
+`btnInPhieu_Click` tạo `PrintDocument` khổ A4 và mở `PrintPreviewDialog` bằng `ShowDialog`. Nút in bị khóa khi đang thêm hoặc sửa. `inPhieu_BeginPrint` lấy thông tin phiếu đã lưu vào `noiDungIn` và đặt `viTriIn = 0`. `inPhieu_PrintPage` vẽ nội dung; nếu dài thì đặt `HasMorePages` để in tiếp trang sau.
+
+Người dùng xem trước và tự bấm in từ cửa sổ này; chương trình không tự gửi lệnh in khi bấm **In phiếu**. Lệnh in trong cửa sổ xem trước dùng máy in mặc định của Windows.
 
 ## Tự chạy từng bước
 
-Đặt điểm dừng trong sự kiện nút **Lưu**. Nhấn F10 để theo dõi kiểm tra thông tin, cập nhật dòng, hiển thị lại danh sách và báo thành công. Thử thêm phiếu, sửa tên khách, tìm theo biển số rồi bấm **Thoát**. Mở lại form để thấy dữ liệu mẫu được nạp lại.
+Đặt điểm dừng ở `btnLuu_Click`, nhấn F10 để theo dõi kiểm tra ô nhập và cập nhật bảng. Thử thêm dòng xe, số km, hẹn trả; thử hẹn trước ngày nhận để thấy kiểm tra. Tìm theo điện thoại kết hợp lọc trạng thái, chọn phiếu quá hẹn để xem cảnh báo, đổi sang **Hoàn thành** rồi lưu để thấy hết cảnh báo. Bấm **In phiếu** để xem trước và có thể đóng mà không in. Đóng rồi mở lại form để thấy bốn phiếu mẫu được nạp lại.
 
-## Sau này nối với hóa đơn
-
-Khi có CSDL chung, form hóa đơn sẽ đọc lại phiếu tiếp nhận theo mã phiếu và lấy thông tin khách/xe. Người làm form hóa đơn sẽ xử lý phụ tùng, tiền công và thanh toán. Phần tiếp nhận hiện chỉ minh họa thao tác bằng DataTable; chưa lưu lâu dài hoặc chuyển dữ liệu sang form hóa đơn.
+Phần tiếp nhận chưa cần SQL Server. Khi có CSDL chung, form hóa đơn sẽ đọc lại phiếu theo mã và xử lý phụ tùng, tiền công, thanh toán; hiện chưa có thao tác chuyển dữ liệu thật sang hóa đơn.

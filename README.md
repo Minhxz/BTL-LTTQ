@@ -1,4 +1,4 @@
-﻿# BTL-LTTQ
+# BTL-LTTQ
 
 Ứng dụng Windows Forms quản lý cửa hàng sửa xe, dùng .NET Framework 4.8.
 
@@ -53,15 +53,19 @@ Danh mục dịch vụ sử dụng SQL Server `.` với database `AutoFixDb`. C�
 
 Mã nguồn nằm trong [DanhMuc/TiepNhan](QLyCuaHangSuaXe/QLyCuaHangSuaXe/DanhMuc/TiepNhan), đã ghép vào project chung. Không cần chạy project `tiepnhan` riêng.
 
-Form tiếp nhận dùng một cửa sổ: tìm kiếm ở trên, thông tin khách/xe và thợ ở giữa, danh sách phiếu đã lưu ở dưới. Có các nút **Thêm mới**, **Sửa**, **Xóa**, **Lưu**, **Thoát**.
+Form tiếp nhận dùng giao diện xanh trắng, chia thành hai nhóm **Khách hàng và xe** và **Thông tin tiếp nhận**, cùng danh sách phiếu phía dưới. Có thể nhập dòng xe, số km và ngày giờ hẹn trả; thao tác bằng các nút **Thêm mới**, **Sửa**, **Xóa**, **Lưu**, **In phiếu**, **Thoát**.
 
 Mã phiếu hiển thị tự động ngay khi bấm **Thêm mới**. Nút **Lưu** giữ nguyên mã đang hiện; mã và ngày nhận không cho nhập tay.
 
 Lưu phiếu mới sẽ hiện hộp thông báo **Lưu phiếu thành công.** Chọn phiếu, bấm **Sửa** rồi **Lưu** sẽ báo **Sửa phiếu thành công.** Nút **Thoát** đóng form tiếp nhận để quay về màn hình chính và chọn chức năng khác.
 
-Danh sách phía dưới là control **DataGridView** thật, tên `dgvPhieu`. Dữ liệu tạm nằm trong một `DataTable` ở `frmTiepNhan.cs`; các nút dùng sự kiện `Click` để thêm, sửa, xóa và tìm kiếm. Code tập trung trong form để dễ đọc khi mới học Windows Forms.
+Tìm theo mã phiếu, biển số, tên khách hoặc điện thoại, kết hợp bộ lọc trạng thái. Đổi trạng thái lọc sẽ cập nhật danh sách ngay. Sau khi lưu, từ khóa được xóa và bộ lọc trở về **Tất cả** để chọn lại phiếu vừa lưu.
 
-Phần tiếp nhận hiện **không dùng CSDL** và không có cấu trúc SQL chuẩn bị sẵn. Có dữ liệu mẫu để thử giao diện; **Lưu** chỉ cập nhật danh sách trong bộ nhớ. Đóng form rồi mở lại sẽ trở về dữ liệu mẫu. Nhóm sẽ thống nhất và làm CSDL sau; danh sách thợ hiện cũng chỉ là tên mẫu.
+Ngày hẹn trả không được trước ngày nhận. Phiếu đã qua giờ hẹn mà chưa **Hoàn thành** được tô đỏ nhạt và có nhắc hẹn; phiếu hoàn thành tô xanh nhạt, các phiếu còn lại nền trắng. Nhắc hẹn tự cập nhật mỗi 30 giây và không ghi đè nội dung đang nhập. **In phiếu** mở cửa sổ xem trước; người dùng tự chọn in.
+
+Danh sách phía dưới là control **DataGridView** thật, tên `dgvPhieu`. Dữ liệu tạm nằm trong `DataTable bangPhieu` ở `frmTiepNhan.cs`. Code viết trực tiếp trong các sự kiện, giống cách làm bài `Hoc_vien`: tạo bảng trong `Load`, chọn dòng để đưa dữ liệu lên ô nhập, kiểm tra bằng `if` và `MessageBox.Show` rồi thêm/sửa/xóa dòng. `MaPhieu` là khóa của bảng tạm; sửa hoặc xóa dùng `Rows.Find(txtMaPhieu.Text)` để tìm đúng phiếu. Bài mẫu `D:\LTTQ\Hoc_vien` được giữ nguyên.
+
+Phần tiếp nhận hiện dùng **dữ liệu tạm trong bộ nhớ**, chưa kết nối SQL Server. Mỗi lần mở form có bốn phiếu mẫu để thử; **Lưu** chỉ cập nhật `bangPhieu`. Đóng form rồi mở lại sẽ trở về dữ liệu mẫu. CSDL tiếp nhận sẽ được bổ sung và nối vào form sau; danh sách thợ hiện cũng là tên mẫu.
 
 Sau khi nhóm ghép CSDL chung, form hóa đơn do thành viên khác làm sẽ tìm lại phiếu tiếp nhận theo mã phiếu, lấy thông tin khách/xe rồi bổ sung phụ tùng, tiền công và thanh toán. Hiện chưa có form hóa đơn hoặc chức năng chuyển dữ liệu sang hóa đơn.
 
@@ -71,7 +75,7 @@ Sau khi nhóm ghép CSDL chung, form hóa đơn do thành viên khác làm sẽ 
 
 ## Kiểm tra và ảnh chạy thử
 
-Nhấn **F5**, mở **Tiếp nhận xe** và thử thêm, sửa, tìm kiếm, xóa phiếu ngay với dữ liệu mẫu. Chọn một dòng trong DataGridView để xem thông tin trên các ô nhập.
+Nhấn **F5**, mở **Tiếp nhận xe** và thử thêm, sửa, tìm kiếm, lọc trạng thái, xóa và xem trước phiếu in với dữ liệu mẫu. Chọn một dòng trong DataGridView để xem thông tin và cảnh báo quá hẹn nếu có.
 
 Chạy `powershell -ExecutionPolicy Bypass -File .\checks\Run.ps1` để biên dịch và kiểm tra phần tiếp nhận, không cần kết nối SQL.
 

@@ -80,12 +80,8 @@ namespace QLyCuaHangSuaXe
             this.lblMoTaTiepNhan.Name = "lblMoTaTiepNhan";
             this.lblMoTaTiepNhan.Size = new System.Drawing.Size(332, 34);
             this.lblMoTaTiepNhan.TabIndex = 9;
-<<<<<<< Updated upstream
             this.lblMoTaTiepNhan.Text = "Lập phiếu, ghi tình trạng xe và phân công thợ.";
             // btnMoDanhMucDichVu
-=======
-            this.lblMoTaTiepNhan.Text = "Tiếp nhận xe, lập và theo dõi phiếu sửa chữa.";
->>>>>>> Stashed changes
             this.btnMoDanhMucDichVu.BackColor = System.Drawing.Color.FromArgb(40, 91, 145);
             this.btnMoDanhMucDichVu.FlatAppearance.BorderSize = 0;
             this.btnMoDanhMucDichVu.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
