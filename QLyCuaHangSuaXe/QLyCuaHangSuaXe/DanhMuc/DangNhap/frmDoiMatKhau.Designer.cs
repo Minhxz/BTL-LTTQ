@@ -3,13 +3,13 @@ namespace QLyCuaHangSuaXe.DanhMuc.DangNhap
     partial class frmDoiMatKhau
     {
         private System.ComponentModel.IContainer components = null;
-
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
             {
                 components.Dispose();
             }
+
             base.Dispose(disposing);
         }
 
@@ -100,7 +100,6 @@ namespace QLyCuaHangSuaXe.DanhMuc.DangNhap
             this.chkHienMatKhau.TabIndex = 6;
             this.chkHienMatKhau.Text = "Hiện mật khẩu";
             this.chkHienMatKhau.UseVisualStyleBackColor = true;
-            this.chkHienMatKhau.CheckedChanged += new System.EventHandler(this.chkHienMatKhau_CheckedChanged);
             this.lblGhiChuMatKhau.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblGhiChuMatKhau.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(98)))), ((int)(((byte)(98)))), ((int)(((byte)(98)))));
             this.lblGhiChuMatKhau.Location = new System.Drawing.Point(16, 217);
@@ -127,7 +126,13 @@ namespace QLyCuaHangSuaXe.DanhMuc.DangNhap
             this.btnDong.TabIndex = 3;
             this.btnDong.Text = "Đóng";
             this.btnDong.UseVisualStyleBackColor = true;
-            this.btnDong.Click += new System.EventHandler(this.btnDong_Click);
+            this.btnDong.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnDong.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(191, 207, 220);
+            this.btnDong.BackColor = System.Drawing.Color.White;
+            this.btnDong.ForeColor = System.Drawing.Color.FromArgb(30, 85, 130);
+            this.btnDong.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold);
+            this.btnDong.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnDong.UseVisualStyleBackColor = false;
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(242)))), ((int)(((byte)(242)))));
@@ -144,11 +149,9 @@ namespace QLyCuaHangSuaXe.DanhMuc.DangNhap
             this.Name = "frmDoiMatKhau";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Đổi mật khẩu";
-            this.Load += new System.EventHandler(this.frmDoiMatKhau_Load);
             this.grpDoiMatKhau.ResumeLayout(false);
             this.grpDoiMatKhau.PerformLayout();
             this.ResumeLayout(false);
-
         }
 
         private System.Windows.Forms.Label lblTieuDe;

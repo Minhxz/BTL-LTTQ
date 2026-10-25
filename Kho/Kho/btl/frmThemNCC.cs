@@ -1,58 +1,41 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
+using QLyCuaHangSuaXe.LopDungChung;
 using System.Windows.Forms;
 
 namespace btl
 {
-	public partial class frmThemNCC : Form
-	{
-		Classes.DatabaseProcessor dtbase = new Classes.DatabaseProcessor();
-		Classes.Function function = new Classes.Function();
-		public frmThemNCC()
-		{
-			InitializeComponent();
-		}
+    public partial class frmThemNCC : TrangThietKe
+    {
+        string maNhaCungCapDangChon = "";
+        public frmThemNCC()
+        {
+            InitializeComponent();
+            GanThietKe(null);
+            Text = "Nhà cung cấp";
+            txtMaNCC.ReadOnly = true;
+            txtMaNCC.Text = "Tự động khi lưu";
+            btnXacNhan.Click += (nguoiGui, suKien) => GiaoDien.ThucHien(() =>
+            {
+                Luu();
+                Close();
+            });
+            btnHuy.Click += (nguoiGui, suKien) => Close();
+        }
 
-		private void frmThemNCC_Load(object sender, EventArgs e)
-		{
-			function.NumberOnly(txtSDT);
-		}
+        public override void TaiDuLieu()
+        {
+            PhienDangNhap.YeuCau("NHAP_KHO");
+        }
 
-		private void btnXacNhan_Click(object sender, EventArgs e)
-		{
-			if (txtMaNCC.Text.Trim() == "" || txtTenNCC.Text.Trim() == "" || txtSDT.Text.Trim() == "" || txtDiaChi.Text.Trim() == "")
-			{
-				MessageBox.Show("Không được để trống!", "Thông báo");
-				return;
-			}
-
-			DataTable data = dtbase.ReadData("Select * From NhaCungCap Where MaNCC = '" + txtMaNCC.Text + "'");
-
-			if (data.Rows.Count > 0)
-			{
-				MessageBox.Show("Mã nhà cung cấp bị trùng!", "Thông báo");
-				return;
-			}
-
-			string sql = "Insert Into NhaCungCap Values ('" + txtMaNCC.Text + "', N'" + txtTenNCC.Text + "', '" + txtSDT.Text + "', N'" + txtDiaChi.Text + "')";
-			dtbase.ChangeData(sql);
-
-			MessageBox.Show("Thêm thành công!", "Thông báo");
-			this.DialogResult = DialogResult.OK;
-
-			this.Close();
-		}
-
-		private void btnHuy_Click(object sender, EventArgs e)
-		{
-			if(MessageBox.Show("Xác nhận hủy?", "Thông báo", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-			{
-				this.Close();
-			}
-		}
-	}
+        void Luu()
+        {
+            PhienDangNhap.YeuCau("NHAP_KHO");
+            string ten = GiaoDien.BatBuocNhap(txtTenNhaCungCap, "Tên nhà cung cấp", 100), thamSo = GiaoDien.KiemTraDienThoai(txtDienThoai), giaTriThuNhat = txtDiaChi.Text.Trim();
+            if (giaTriThuNhat.Length == 0 || giaTriThuNhat.Length > 200)
+                throw new System.InvalidOperationException("Địa chỉ bắt buộc, tối đa 200 ký tự.");
+            bool themMoi = maNhaCungCapDangChon.Length == 0;
+            string khoa = themMoi ? XuLyDuLieu.TaoMaMoi("NC") : maNhaCungCapDangChon;
+            duLieu.CapNhatDuLieu(themMoi ? "INSERT dbo.NhaCungCap VALUES(@id,@n,@p,@a)" : "UPDATE dbo.NhaCungCap SET TenNCC=@n,SoDienThoai=@p,DiaChi=@a WHERE MaNCC=@id", XuLyDuLieu.ThamSo("@id", khoa), XuLyDuLieu.ThamSo("@n", ten), XuLyDuLieu.ThamSo("@p", thamSo), XuLyDuLieu.ThamSo("@a", giaTriThuNhat));
+            TaiDuLieu();
+        }
+    }
 }

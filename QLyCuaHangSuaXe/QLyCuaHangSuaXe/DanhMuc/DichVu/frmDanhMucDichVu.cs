@@ -1,253 +1,150 @@
+using QLyCuaHangSuaXe.LopDungChung;
 using System;
 using System.Data;
-using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
-using QLyCuaHangSuaXe.DanhMuc.DichVu.Classes;
 
 namespace QLyCuaHangSuaXe.DanhMuc.DichVu
 {
-    public partial class frmDanhMucDichVu : Form
+    public partial class frmDanhMucDichVu : TrangThietKe
     {
-        private DataProcessor dtBase = new DataProcessor();
-
+        string maDichVuDangChon = "";
         public frmDanhMucDichVu()
         {
             InitializeComponent();
-        }
-
-        private void frmDanhMucDichVu_Load(object sender, EventArgs e)
-        {
+            GanThietKe(dgvDichVu, lblHuongDan);
+            Text = "Danh mục dịch vụ";
+            dgvDichVu.Columns.Clear();
+            dgvDichVu.AutoGenerateColumns = true;
+            cboTrangThai.Items.Clear();
+            cboTrangThai.Items.AddRange(new object[] { "Đang sử dụng", "Ngừng sử dụng" });
             cboTrangThai.SelectedIndex = 0;
-            LoadData();
+            txtMaDV.ReadOnly = true;
+            lblTieuDe.Text = "DANH MỤC DỊCH VỤ";
+            btnDinhMuc.Click += (nguoiGui, suKien) => GiaoDien.ThucHien(MoBoPhuTung);
+            btnKho.Click += (nguoiGui, suKien) => GiaoDien.ThucHien(() =>
+            {
+                using (var trang = new btl.frmKho())
+                    trang.ShowDialog(this);
+            });
+            btnThem.Click += (nguoiGui, suKien) =>
+            {
+                maDichVuDangChon = "";
+                txtMaDV.Clear();
+                txtTenDichVu.Clear();
+                txtMoTa.Clear();
+                numGiaDichVu.Value = numLuongNhiemVu.Value = numPhutDuKien.Value = 0;
+            };
+            btnSua.Text = "Lưu dịch vụ";
+            btnSua.Click += (nguoiGui, suKien) => GiaoDien.ThucHien(Luu);
+            btnXoa.Click += (nguoiGui, suKien) => GiaoDien.ThucHien(Xoa);
+            btnTimKiem.Click += (nguoiGui, suKien) => GiaoDien.ThucHien(TaiDuLieu);
+            btnLamMoi.Click += (nguoiGui, suKien) => GiaoDien.ThucHien(TaiDuLieu);
+            btnDong.Click += (nguoiGui, suKien) => Close();
+            dgvDanhSach.SelectionChanged += (nguoiGui, suKien) => ChonDong();
         }
 
-        private void LoadData()
+        public override void TaiDuLieu()
         {
-            string sqlSelect = @"SELECT 
-                                    ServiceId AS [Mã DV], 
-                                    ServiceName AS [Tên dịch vụ], 
-                                    BasePrice AS [Giá niêm yết (VNĐ)], 
-                                    Description AS [Mô tả], 
-                                    CASE WHEN IsActive = 1 THEN N'Đang hoạt động' ELSE N'Ngừng hoạt động' END AS [Trạng thái], 
-                                    IsActive 
-                                 FROM DichVu 
-                                 ORDER BY ServiceId ASC";
-
-            DataTable dt = dtBase.ReadData(sqlSelect);
-            dgvDichVu.DataSource = dt;
-
-            if (dgvDichVu.Columns.Contains("IsActive"))
-            {
-                dgvDichVu.Columns["IsActive"].Visible = false;
-            }
-
-            if (dgvDichVu.Columns.Count > 2)
-            {
-                dgvDichVu.Columns[2].DefaultCellStyle.Format = "N0";
-                dgvDichVu.Columns[2].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-            }
-
-            if (dgvDichVu.Columns.Count > 0)
-            {
-                dgvDichVu.Columns[0].Width = 75;
-            }
-
-            lblTongSo.Text = $"Tổng số bản ghi: {dt.Rows.Count}";
+            PhienDangNhap.YeuCau("DICH_VU");
+            dgvDanhSach.DataSource = duLieu.DocBang("SELECT MaDichVu,TenDichVu,DonGiaDichVu,LuongNhiemVu,ThoiGianDuKien,MoTa,TrangThai FROM dbo.DichVu WHERE TenDichVu LIKE @q ORDER BY TenDichVu", XuLyDuLieu.ThamSo("@q", "%" + txtTimKiem.Text.Trim() + "%"));
+            lblThongBao.Text = "Chọn dịch vụ để đổi giá; Bộ phụ tùng cho phép cấu hình nhiều phụ tùng và số lượng.";
         }
 
-        private void XoaTrang()
+        void ChonDong()
         {
-            txtMaDV.Clear();
-            txtTenDV.Clear();
-            numDonGia.Value = 0;
-            txtMoTa.Clear();
-            cboTrangThai.SelectedIndex = 0;
-            txtTimKiem.Clear();
-
-            txtTenDV.Focus();
-        }
-
-        private void dgvDichVu_CellClick(object sender, DataGridViewCellEventArgs e)
-        {
-            if (e.RowIndex >= 0 && e.RowIndex < dgvDichVu.Rows.Count)
-            {
-                DataGridViewRow row = dgvDichVu.Rows[e.RowIndex];
-
-                txtMaDV.Text = row.Cells[0].Value?.ToString();
-                txtTenDV.Text = row.Cells[1].Value?.ToString();
-
-                if (decimal.TryParse(row.Cells[2].Value?.ToString(), out decimal donGia))
-                {
-                    numDonGia.Value = donGia;
-                }
-                else
-                {
-                    numDonGia.Value = 0;
-                }
-
-                txtMoTa.Text = row.Cells[3].Value?.ToString();
-
-                string trangThai = row.Cells[4].Value?.ToString();
-                cboTrangThai.SelectedItem = (trangThai == "Ngừng hoạt động") ? "Ngừng hoạt động" : "Đang hoạt động";
-            }
-        }
-
-        private void btnThem_Click(object sender, EventArgs e)
-        {
-            string ten = txtTenDV.Text.Trim();
-            decimal gia = numDonGia.Value;
-            string moTa = txtMoTa.Text.Trim();
-            int isActive = (cboTrangThai.SelectedIndex == 0) ? 1 : 0;
-
-            if (string.IsNullOrEmpty(ten))
-            {
-                MessageBox.Show("Vui lòng nhập Tên dịch vụ!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txtTenDV.Focus();
+            if (dgvDanhSach.CurrentRow == null)
                 return;
-            }
+            maDichVuDangChon = GiaoDien.GiaTriO(dgvDanhSach, "MaDichVu");
+            txtMaDV.Text = maDichVuDangChon;
+            txtTenDichVu.Text = GiaoDien.GiaTriO(dgvDanhSach, "TenDichVu");
+            txtMoTa.Text = GiaoDien.GiaTriO(dgvDanhSach, "MoTa");
+            numGiaDichVu.Value = Convert.ToDecimal(dgvDanhSach.CurrentRow.Cells["DonGiaDichVu"].Value);
+            numLuongNhiemVu.Value = Convert.ToDecimal(dgvDanhSach.CurrentRow.Cells["LuongNhiemVu"].Value);
+            decimal soPhut;
+            numPhutDuKien.Value = decimal.TryParse(GiaoDien.GiaTriO(dgvDanhSach, "ThoiGianDuKien"), out soPhut) ? Math.Min(soPhut, numPhutDuKien.Maximum) : 0;
+            cboTrangThai.SelectedItem = GiaoDien.GiaTriO(dgvDanhSach, "TrangThai");
+        }
 
-            string sqlCheck = $"SELECT COUNT(*) FROM DichVu WHERE ServiceName = N'{ten}'";
-            object tonTai = dtBase.GetScalar(sqlCheck);
-            if (tonTai != null && Convert.ToInt32(tonTai) > 0)
-            {
-                MessageBox.Show($"Tên dịch vụ [{ten}] đã tồn tại trong danh mục niêm yết!", "Trùng dữ liệu", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txtTenDV.Focus();
+        void Luu()
+        {
+            PhienDangNhap.YeuCau("DICH_VU");
+            string ten = GiaoDien.BatBuocNhap(txtTenDichVu, "Tên dịch vụ", 100);
+            if (txtMoTa.Text.Length > 300)
+                throw new InvalidOperationException("Mô tả tối đa 300 ký tự.");
+            bool themMoi = maDichVuDangChon.Length == 0;
+            string khoa = themMoi ? XuLyDuLieu.TaoMaMoi("DV") : maDichVuDangChon;
+            duLieu.CapNhatDuLieu(themMoi ? "INSERT dbo.DichVu(MaDichVu,TenDichVu,DonGiaDichVu,LuongNhiemVu,ThoiGianDuKien,MoTa,TrangThai) VALUES(@id,@n,@p,@w,@m,@d,@s)" : "UPDATE dbo.DichVu SET TenDichVu=@n,DonGiaDichVu=@p,LuongNhiemVu=@w,ThoiGianDuKien=@m,MoTa=@d,TrangThai=@s WHERE MaDichVu=@id", XuLyDuLieu.ThamSo("@id", khoa), XuLyDuLieu.ThamSo("@n", ten), XuLyDuLieu.ThamSo("@p", numGiaDichVu.Value), XuLyDuLieu.ThamSo("@w", numLuongNhiemVu.Value), XuLyDuLieu.ThamSo("@m", (int)numPhutDuKien.Value), XuLyDuLieu.ThamSo("@d", txtMoTa.Text.Trim()), XuLyDuLieu.ThamSo("@s", cboTrangThai.Text));
+            TaiDuLieu();
+            lblThongBao.Text = "Đã lưu " + khoa;
+        }
+
+        void Xoa()
+        {
+            PhienDangNhap.YeuCau("DICH_VU");
+            if (maDichVuDangChon.Length == 0)
                 return;
-            }
-
-            string sqlInsert = $"INSERT INTO DichVu (ServiceName, BasePrice, Description, IsActive) VALUES (N'{ten}', {gia}, N'{moTa}', {isActive})";
-            dtBase.ChangeData(sqlInsert);
-
-            MessageBox.Show("Thêm mới dịch vụ thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            LoadData();
-            XoaTrang();
+            string khoa = maDichVuDangChon;
+            duLieu.TrongGiaoDich<int>((ketNoi, giaoDich) =>
+            {
+                var daSuDung = XuLyDuLieu.DocDuLieu(ketNoi, giaoDich, "SELECT 1 FROM dbo.ChiTietPhieuTiepNhan WHERE MaDichVu=@id UNION ALL SELECT 1 FROM dbo.ChiTietHoaDon WHERE MaDichVu=@id", XuLyDuLieu.ThamSo("@id", khoa));
+                if (daSuDung.Rows.Count > 0)
+                    return XuLyDuLieu.ThucThi(ketNoi, giaoDich, "UPDATE dbo.DichVu SET TrangThai=N'Ngừng sử dụng' WHERE MaDichVu=@id", XuLyDuLieu.ThamSo("@id", khoa));
+                XuLyDuLieu.ThucThi(ketNoi, giaoDich, "DELETE dbo.DinhMucDichVu WHERE MaDichVu=@id", XuLyDuLieu.ThamSo("@id", khoa));
+                return XuLyDuLieu.ThucThi(ketNoi, giaoDich, "DELETE dbo.DichVu WHERE MaDichVu=@id", XuLyDuLieu.ThamSo("@id", khoa));
+            });
+            maDichVuDangChon = "";
+            TaiDuLieu();
+            lblThongBao.Text = "Đã xóa dịch vụ chưa sử dụng hoặc ngừng dùng dịch vụ có lịch sử.";
         }
 
-        private void btnSua_Click(object sender, EventArgs e)
+        void MoBoPhuTung()
         {
-            if (!int.TryParse(txtMaDV.Text, out int maDV))
-            {
-                MessageBox.Show("Vui lòng chọn dịch vụ từ bảng danh sách để sửa!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
+            if (maDichVuDangChon.Length == 0)
+                throw new InvalidOperationException("Lưu hoặc chọn dịch vụ trước.");
+            using (var frmChiTiet = new frmDinhMuc(maDichVuDangChon))
+                frmChiTiet.ShowDialog(this);
+        }
+    }
 
-            string ten = txtTenDV.Text.Trim();
-            decimal gia = numDonGia.Value;
-            string moTa = txtMoTa.Text.Trim();
-            int isActive = (cboTrangThai.SelectedIndex == 0) ? 1 : 0;
-
-            if (string.IsNullOrEmpty(ten))
-            {
-                MessageBox.Show("Tên dịch vụ không được để trống!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txtTenDV.Focus();
-                return;
-            }
-
-            string sqlCheck = $"SELECT COUNT(*) FROM DichVu WHERE ServiceName = N'{ten}' AND ServiceId <> {maDV}";
-            object tonTai = dtBase.GetScalar(sqlCheck);
-            if (tonTai != null && Convert.ToInt32(tonTai) > 0)
-            {
-                MessageBox.Show($"Tên dịch vụ [{ten}] đã được sử dụng bởi dịch vụ khác!", "Trùng tên dịch vụ", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txtTenDV.Focus();
-                return;
-            }
-
-            string sqlUpdate = $"UPDATE DichVu SET ServiceName = N'{ten}', BasePrice = {gia}, Description = N'{moTa}', IsActive = {isActive} WHERE ServiceId = {maDV}";
-            dtBase.ChangeData(sqlUpdate);
-
-            MessageBox.Show("Cập nhật thông tin dịch vụ thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            LoadData();
-            XoaTrang();
+    public class frmDinhMuc : TrangDuLieu
+    {
+        readonly string maDichVu;
+        public frmDinhMuc(string maDichVuDuocChon) : base("Bộ phụ tùng — " + maDichVuDuocChon)
+        {
+            maDichVu = maDichVuDuocChon;
+            dgvDanhSach.ReadOnly = false;
+            var giaTriThuHai = GiaoDien.TaoThanhThaoTac();
+            giaTriThuHai.Controls.Add(GiaoDien.TaoNut("Lưu định mức", Luu));
+            ThemVungNhap(giaTriThuHai);
+            lblThongBao.Text = "Tick phụ tùng và nhập số lượng cho mỗi đơn vị dịch vụ. Không chọn dòng nào = dịch vụ chỉ có tiền công.";
         }
 
-        private void btnXoa_Click(object sender, EventArgs e)
+        public override void TaiDuLieu()
         {
-            if (!int.TryParse(txtMaDV.Text, out int maDV))
+            PhienDangNhap.YeuCau("DICH_VU");
+            dgvDanhSach.DataSource = duLieu.DocBang("SELECT CAST(CASE WHEN m.MaPhuTung IS NULL THEN 0 ELSE 1 END AS BIT) AS Chon,p.MaPhuTung,p.TenPhuTung,COALESCE(m.SoLuong,1) AS SoLuong,p.TrangThai FROM dbo.PhuTung p LEFT JOIN dbo.DinhMucDichVu m ON m.MaPhuTung=p.MaPhuTung AND m.MaDichVu=@id", XuLyDuLieu.ThamSo("@id", maDichVu));
+            foreach (DataGridViewColumn cotHienThi in dgvDanhSach.Columns)
+                cotHienThi.ReadOnly = cotHienThi.Name != "Chon" && cotHienThi.Name != "SoLuong";
+        }
+
+        void Luu()
+        {
+            PhienDangNhap.YeuCau("DICH_VU");
+            dgvDanhSach.EndEdit();
+            var cacDong = ((DataTable)dgvDanhSach.DataSource).AsEnumerable().Where(dongDuLieu => Convert.ToBoolean(dongDuLieu["Chon"])).ToList();
+            if (cacDong.Any(dongDuLieu => Convert.ToInt32(dongDuLieu["SoLuong"]) <= 0 || Convert.ToInt32(dongDuLieu["SoLuong"]) > 1000))
+                throw new InvalidOperationException("Số lượng phải từ 1–1000.");
+            duLieu.TrongGiaoDich<int>((ketNoi, giaoDich) =>
             {
-                MessageBox.Show("Vui lòng chọn dịch vụ muốn xóa từ bảng danh sách!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
-            string sqlCheckCT = $"SELECT COUNT(*) FROM ChiTietPhieuSuaChua WHERE ServiceId = {maDV}";
-            string sqlCheckLH = $"SELECT COUNT(*) FROM LichHen WHERE ServiceId = {maDV}";
-            int countCT = Convert.ToInt32(dtBase.GetScalar(sqlCheckCT) ?? 0);
-            int countLH = Convert.ToInt32(dtBase.GetScalar(sqlCheckLH) ?? 0);
-
-            if (countCT > 0 || countLH > 0)
-            {
-                DialogResult hoiKhoa = MessageBox.Show(
-                    $"Dịch vụ [{txtTenDV.Text}] đã có dữ liệu trong Phiếu sửa chữa hoặc Lịch hẹn, không thể xóa vĩnh viễn!\n\nBạn có muốn chuyển trạng thái dịch vụ sang 'Ngừng hoạt động' không?",
-                    "Cảnh báo ràng buộc toàn vẹn",
-                    MessageBoxButtons.YesNo,
-                    MessageBoxIcon.Warning);
-
-                if (hoiKhoa == DialogResult.Yes)
-                {
-                    string sqlDeactivate = $"UPDATE DichVu SET IsActive = 0 WHERE ServiceId = {maDV}";
-                    dtBase.ChangeData(sqlDeactivate);
-                    MessageBox.Show("Đã chuyển dịch vụ sang trạng thái 'Ngừng hoạt động' thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    LoadData();
-                    XoaTrang();
-                }
-                return;
-            }
-
-            DialogResult dr = MessageBox.Show($"Bạn có chắc chắn muốn xóa dịch vụ [Mã: {maDV}] - {txtTenDV.Text} không?", "Xác nhận xóa", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-            if (dr == DialogResult.Yes)
-            {
-                string sqlDelete = $"DELETE FROM DichVu WHERE ServiceId = {maDV}";
-                dtBase.ChangeData(sqlDelete);
-
-                MessageBox.Show("Đã xóa dịch vụ thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                LoadData();
-                XoaTrang();
-            }
-        }
-
-        private void btnLamMoi_Click(object sender, EventArgs e)
-        {
-            XoaTrang();
-            LoadData();
-        }
-
-        private void btnDong_Click(object sender, EventArgs e)
-        {
-            this.Close();
-        }
-
-        private void btnTimKiem_Click(object sender, EventArgs e)
-        {
-            TimKiem();
-        }
-
-        private void txtTimKiem_TextChanged(object sender, EventArgs e)
-        {
-            TimKiem();
-        }
-
-        private void TimKiem()
-        {
-            string tuKhoa = txtTimKiem.Text.Trim();
-            string sqlSearch = $@"SELECT 
-                                    ServiceId AS [Mã DV], 
-                                    ServiceName AS [Tên dịch vụ], 
-                                    BasePrice AS [Giá niêm yết (VNĐ)], 
-                                    Description AS [Mô tả], 
-                                    CASE WHEN IsActive = 1 THEN N'Đang hoạt động' ELSE N'Ngừng hoạt động' END AS [Trạng thái], 
-                                    IsActive 
-                                  FROM DichVu 
-                                  WHERE ServiceName LIKE N'%{tuKhoa}%' OR Description LIKE N'%{tuKhoa}%' 
-                                  ORDER BY ServiceId ASC";
-
-            DataTable dt = dtBase.ReadData(sqlSearch);
-            dgvDichVu.DataSource = dt;
-
-            if (dgvDichVu.Columns.Contains("IsActive"))
-            {
-                dgvDichVu.Columns["IsActive"].Visible = false;
-            }
-
-            lblTongSo.Text = $"Kết quả tìm kiếm: {dt.Rows.Count} bản ghi";
+                XuLyDuLieu.ThucThi(ketNoi, giaoDich, "SELECT MaDichVu FROM dbo.DichVu WITH(UPDLOCK,HOLDLOCK) WHERE MaDichVu=@id", XuLyDuLieu.ThamSo("@id", maDichVu));
+                XuLyDuLieu.ThucThi(ketNoi, giaoDich, "DELETE dbo.DinhMucDichVu WHERE MaDichVu=@id", XuLyDuLieu.ThamSo("@id", maDichVu));
+                foreach (var dongDuLieu in cacDong)
+                    XuLyDuLieu.ThucThi(ketNoi, giaoDich, "INSERT dbo.DinhMucDichVu VALUES(@id,@p,@q)", XuLyDuLieu.ThamSo("@id", maDichVu), XuLyDuLieu.ThamSo("@p", dongDuLieu["MaPhuTung"]), XuLyDuLieu.ThamSo("@q", dongDuLieu["SoLuong"]));
+                XuLyDuLieu.ThucThi(ketNoi, giaoDich, "UPDATE dbo.DichVu SET MaPhuTung=NULL WHERE MaDichVu=@id", XuLyDuLieu.ThamSo("@id", maDichVu));
+                return 0;
+            });
+            Close();
         }
     }
 }

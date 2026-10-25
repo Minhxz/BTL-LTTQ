@@ -1,19 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System;
 using System.Windows.Forms;
 
 namespace QLyCuaHangSuaXe
 {
-    internal static class Program
+    internal static class ChuongTrinh
     {
         [STAThread]
         static void Main()
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+            using (LopDungChung.DieuPhoiUngDung ungDung = new LopDungChung.DieuPhoiUngDung())
+                Application.Run(ungDung);
         }
     }
 }
