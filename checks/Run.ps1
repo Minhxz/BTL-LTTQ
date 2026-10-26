@@ -1,4 +1,4 @@
-param([ValidateSet('Debug','Release')][string]$Configuration='Debug',[switch]$SkipBuild,[switch]$Integration,[switch]$Designer,[switch]$ReadOnly,[switch]$Performance)
+param([ValidateSet('Debug','Release')][string]$Configuration='Debug',[switch]$SkipBuild,[switch]$Integration,[switch]$Designer,[switch]$ReadOnly,[switch]$Performance,[switch]$Accounts)
 $ErrorActionPreference='Stop'
 $root=Split-Path -Parent $PSScriptRoot
 $project=Join-Path $root 'QLyCuaHangSuaXe/QLyCuaHangSuaXe/QLyCuaHangSuaXe.csproj'
@@ -14,7 +14,7 @@ if(-not $SkipBuild){
 }
 $assembly=Join-Path $output 'QLyCuaHangSuaXe.exe'
 $compiler=Join-Path $env:WINDIR 'Microsoft.NET/Framework64/v4.0.30319/csc.exe'
-$source=if($Integration){'VerifyNghiepVu'}elseif($Designer){'VerifyDesigner'}elseif($ReadOnly){'VerifyDatabaseReadOnly'}elseif($Performance){'VerifyLoginPerformance'}else{'VerifyDangNhap'}
+$source=if($Accounts){'VerifyTaiKhoan'}elseif($Integration){'VerifyNghiepVu'}elseif($Designer){'VerifyDesigner'}elseif($ReadOnly){'VerifyDatabaseReadOnly'}elseif($Performance){'VerifyLoginPerformance'}else{'VerifyDangNhap'}
 $testOutput=Join-Path $PSScriptRoot "output/kiemthu/$Configuration"
 [void](New-Item -ItemType Directory -Path $testOutput -Force)
 foreach($name in @('QLyCuaHangSuaXe.exe','QLyCuaHangSuaXe.exe.config','QLyCuaHangSuaXe.pdb')){
@@ -25,7 +25,7 @@ $verification=Join-Path $testOutput "$source.exe"
 & $compiler /nologo /target:exe "/out:$verification" "/reference:$assembly" /reference:System.dll /reference:System.Core.dll /reference:System.Data.dll /reference:System.Data.DataSetExtensions.dll /reference:System.Drawing.dll /reference:System.Windows.Forms.dll /reference:System.Design.dll /reference:System.IO.Compression.dll /reference:System.IO.Compression.FileSystem.dll (Join-Path $PSScriptRoot "$source.cs")
 if($LASTEXITCODE -ne 0){throw 'Verification compile failed.'}
 Copy-Item -LiteralPath (Join-Path $output 'QLyCuaHangSuaXe.exe.config') -Destination "$verification.config" -Force
-if($Integration){
+if($Integration -or $Accounts){
     & sqllocaldb start CodexQuanLySuaXeTest
     if($LASTEXITCODE -ne 0){& sqllocaldb create CodexQuanLySuaXeTest -s;if($LASTEXITCODE -ne 0){throw 'Could not create dedicated test LocalDB.'}}
     & (Join-Path $PSScriptRoot 'Prepare-TestDatabase.ps1')

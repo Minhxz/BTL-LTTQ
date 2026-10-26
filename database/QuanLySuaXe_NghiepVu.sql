@@ -2,6 +2,10 @@ USE QuanLySuaXe;
 GO
 SET XACT_ABORT ON;
 BEGIN TRANSACTION;
+IF COL_LENGTH('dbo.NhanVien','DaCapTaiKhoan') IS NULL
+    ALTER TABLE dbo.NhanVien ADD DaCapTaiKhoan BIT NOT NULL CONSTRAINT DF_NV_DaCapTaiKhoan DEFAULT 1;
+IF COL_LENGTH('dbo.NhanVien','TaiKhoanHoatDong') IS NULL
+    ALTER TABLE dbo.NhanVien ADD TaiKhoanHoatDong BIT NOT NULL CONSTRAINT DF_NV_TaiKhoanHoatDong DEFAULT 1;
 IF COL_LENGTH('dbo.NhanVien','LuongGio') IS NULL
     ALTER TABLE dbo.NhanVien ADD LuongGio DECIMAL(18,2) NOT NULL CONSTRAINT DF_NV_LuongGio DEFAULT 0;
 IF COL_LENGTH('dbo.DichVu','LuongNhiemVu') IS NULL

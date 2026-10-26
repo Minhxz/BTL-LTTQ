@@ -44,6 +44,8 @@ class KiemTraDuLieuChiDoc
                 new btl.frmKho(),
                 new frmHoaDon(),
                 new frmQuanLyTaiKhoan(),
+                new frmNhanVien(),
+                new frmDoiMatKhau(),
                 new frmPhanCong(),
                 new frmBangCong(),
                 new frmThongKe()
@@ -87,7 +89,7 @@ class KiemTraDuLieuChiDoc
                     bitmap.Save("checks/output/database-thuc.png");
                 }
 
-                frmChinh.Close();
+                frmChinh.Dispose();
             }
 
             var sauKiemTra = duLieu.DocBang("SELECT COUNT(*) AS SoHoaDon,SUM(TongTien) AS TongTien FROM dbo.HoaDon");

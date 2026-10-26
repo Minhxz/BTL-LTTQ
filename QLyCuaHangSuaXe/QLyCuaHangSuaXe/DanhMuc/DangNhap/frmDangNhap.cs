@@ -186,6 +186,14 @@ namespace QLyCuaHangSuaXe.DanhMuc.DangNhap
             Close();
         }
 
+        protected override void OnFormClosing(FormClosingEventArgs suKien)
+        {
+            base.OnFormClosing(suKien);
+            if (!suKien.Cancel && string.IsNullOrEmpty(TenDangNhap) && suKien.CloseReason == CloseReason.UserClosing && Visible && !DesignMode)
+                suKien.Cancel = MessageBox.Show(this, "Bạn có chắc muốn thoát ứng dụng?", "Xác nhận thoát",
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) != DialogResult.Yes;
+        }
+
         private void chkHienMatKhau_DoiTrangThai(object doiTuongGui, EventArgs suKien)
         {
             txtMatKhau.UseSystemPasswordChar = !chkHienMatKhau.Checked;

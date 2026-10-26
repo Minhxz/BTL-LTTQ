@@ -110,6 +110,50 @@ class KiemTraNghiepVu
             DangNhapKiemThu("admin");
             KiemTra(!PhienDangNhap.DangNhap(tienToTaiKhoan + "admin", "bad"), "Reject wrong password");
             KiemTra(!BaoMat.KiemTraMatKhau("x", "plaintext"), "Reject unsupported password hash");
+            string maNhanSu = QuanLyNhanSu.LuuNhanVien(new ThongTinNhanVien { HoTen = "Nhân viên chưa cấp tài khoản", DienThoai = "0912345678", ChucVu = "Thợ", TrangThai = "Đang làm", GioiHanXe = 2, LuongGio = 45000 });
+            KiemTra(!Convert.ToBoolean(DocGiaTri("SELECT DaCapTaiKhoan FROM dbo.NhanVien WHERE MaNhanVien=@id", ThamSo("@id", maNhanSu))), "New employee has no login until account is issued");
+            PhaiBaoLoi(() => QuanLyNhanSu.LuuTaiKhoan(maNhanSu, tienToTaiKhoan + "new", "", "Thợ", true), "New account requires a password");
+            QuanLyNhanSu.LuuTaiKhoan(maNhanSu, tienToTaiKhoan + "new", "123", "Thợ", true);
+            KiemTra(PhienDangNhap.DangNhap(tienToTaiKhoan + "new", "123"), "Issued account accepts short password");
+            PhaiBaoLoi(() => QuanLyNhanSu.LuuNhanVien(new ThongTinNhanVien { HoTen = "Không có quyền", ChucVu = "Thợ", TrangThai = "Đang làm", GioiHanXe = 2 }), "Worker cannot manage employees");
+            DangNhapKiemThu("admin");
+            QuanLyNhanSu.LuuTaiKhoan(maNhanSu, tienToTaiKhoan + "new", "", "Thợ", false);
+            KiemTra(!PhienDangNhap.DangNhap(tienToTaiKhoan + "new", "123"), "Locked account cannot log in");
+            KiemTra(DocGiaTri("SELECT TrangThai FROM dbo.NhanVien WHERE MaNhanVien=@id", ThamSo("@id", maNhanSu)).ToString() == "Đang làm", "Locking account preserves employment status");
+            QuanLyNhanSu.LuuTaiKhoan(maNhanSu, tienToTaiKhoan + "new", "", "Thợ chính", true);
+            KiemTra(Convert.ToInt32(DocGiaTri("SELECT SoXeDangSuaToiDa FROM dbo.NhanVien WHERE MaNhanVien=@id", ThamSo("@id", maNhanSu))) == 3, "Promotion defaults chief capacity to three");
+            KiemTra(Convert.ToDecimal(DocGiaTri("SELECT LuongGio FROM dbo.NhanVien WHERE MaNhanVien=@id", ThamSo("@id", maNhanSu))) == 45000, "Account update preserves hourly wage");
+            KiemTra(PhienDangNhap.DangNhap(tienToTaiKhoan + "new", "123"), "Blank password on edit preserves existing password");
+            DangNhapKiemThu("admin");
+            PhaiBaoLoi(() => QuanLyNhanSu.LuuTaiKhoan(maNhanSu, tienToTaiKhoan + "admin", "123", "Thợ", true), "Duplicate username rejected");
+            PhaiBaoLoi(() => QuanLyNhanSu.LuuTaiKhoan(maQuanLy, tienToTaiKhoan + "admin", "", "Chủ/Quản lý", false), "Owner cannot lock own account");
+            QuanLyNhanSu.LuuNhanVien(new ThongTinNhanVien { Ma = maNhanSu, HoTen = "Tên nhân viên đã sửa", DienThoai = "0912345678", ChucVu = "Thợ chính", TrangThai = "Đang làm", GioiHanXe = 3, LuongGio = 50000 });
+            KiemTra(PhienDangNhap.DangNhap(tienToTaiKhoan + "new", "123"), "Employee edit preserves credentials");
+            DangNhapKiemThu("admin");
+            QuanLyNhanSu.LuuNhanVien(new ThongTinNhanVien { Ma = maNhanSu, HoTen = "Tên nhân viên đã sửa", ChucVu = "Thợ chính", TrangThai = "Đã nghỉ", GioiHanXe = 3, LuongGio = 50000 });
+            KiemTra(!PhienDangNhap.DangNhap(tienToTaiKhoan + "new", "123"), "Former employee cannot log in even if account enabled");
+            int soNhanVienTruocTao = Convert.ToInt32(DocGiaTri("SELECT COUNT(*) FROM dbo.NhanVien"));
+            PhaiBaoLoi(() => QuanLyNhanSu.TaoTaiKhoanMoi(null, "Tài khoản thiếu mật khẩu", tienToTaiKhoan + "empty", "", "Thợ", true), "Direct account creation requires a password");
+            KiemTra(Convert.ToInt32(DocGiaTri("SELECT COUNT(*) FROM dbo.NhanVien")) == soNhanVienTruocTao, "Missing password creates no employee profile");
+            string maTaiKhoanTaoThang = QuanLyNhanSu.TaoTaiKhoanMoi(null, "Nhân viên tạo từ tài khoản", tienToTaiKhoan + "direct", "123", "Thợ", true);
+            var nhanVienTaoThang = duLieu.DocBang("SELECT * FROM dbo.NhanVien WHERE MaNhanVien=@id", ThamSo("@id", maTaiKhoanTaoThang)).Rows[0];
+            KiemTra(Convert.ToBoolean(nhanVienTaoThang["DaCapTaiKhoan"]) && Convert.ToBoolean(nhanVienTaoThang["TaiKhoanHoatDong"]) && Convert.ToInt32(nhanVienTaoThang["SoXeDangSuaToiDa"]) == 2 && Convert.ToDecimal(nhanVienTaoThang["LuongGio"]) == 0 && nhanVienTaoThang["TrangThai"].ToString() == "Đang làm", "Direct account creation initializes an active worker profile");
+            KiemTra(PhienDangNhap.DangNhap(tienToTaiKhoan + "direct", "123"), "Directly created account logs in with short password");
+            PhaiBaoLoi(() => QuanLyNhanSu.TaoTaiKhoanMoi(null, "Thợ không được cấp tài khoản", tienToTaiKhoan + "forbidden", "123", "Thợ", true), "Worker cannot create accounts directly");
+            DangNhapKiemThu("admin");
+            int soNhanVienTruocTrung = Convert.ToInt32(DocGiaTri("SELECT COUNT(*) FROM dbo.NhanVien"));
+            PhaiBaoLoi(() => QuanLyNhanSu.TaoTaiKhoanMoi(null, "Hồ sơ không được sinh dư", tienToTaiKhoan + "direct", "123", "Thợ", true), "Direct creation rejects duplicate username");
+            KiemTra(Convert.ToInt32(DocGiaTri("SELECT COUNT(*) FROM dbo.NhanVien")) == soNhanVienTruocTrung, "Duplicate username rolls back without orphan employee");
+            PhaiBaoLoi(() => QuanLyNhanSu.TaoTaiKhoanMoi(maTaiKhoanTaoThang, "Tên bị bỏ qua", tienToTaiKhoan + "reissued", "456", "Thợ", true), "Direct creation cannot replace an already issued account");
+            string maNhanVienLienKet = QuanLyNhanSu.LuuNhanVien(new ThongTinNhanVien { HoTen = "Nhân viên liên kết giữ hồ sơ", DienThoai = "0987654321", ChucVu = "Thợ", TrangThai = "Đang làm", GioiHanXe = 5, LuongGio = 65000 });
+            string maDaLienKet = QuanLyNhanSu.TaoTaiKhoanMoi(maNhanVienLienKet, "Không đổi họ tên", tienToTaiKhoan + "linked", "123", "Thợ", true);
+            var nhanVienLienKet = duLieu.DocBang("SELECT * FROM dbo.NhanVien WHERE MaNhanVien=@id", ThamSo("@id", maNhanVienLienKet)).Rows[0];
+            KiemTra(maDaLienKet == maNhanVienLienKet && nhanVienLienKet["TenNhanVien"].ToString() == "Nhân viên liên kết giữ hồ sơ" && nhanVienLienKet["SoDienThoai"].ToString() == "0987654321" && Convert.ToDecimal(nhanVienLienKet["LuongGio"]) == 65000 && Convert.ToInt32(nhanVienLienKet["SoXeDangSuaToiDa"]) == 5, "Issuing linked account preserves employee identity phone wage and custom capacity");
+            KiemTra(PhienDangNhap.DangNhap(tienToTaiKhoan + "linked", "123"), "Linked account logs in after issuance");
+            DangNhapKiemThu("admin");
+            PhaiBaoLoi(() => QuanLyNhanSu.TaoTaiKhoanMoi(maNhanVienLienKet, "", tienToTaiKhoan + "linked_again", "123", "Thợ", true), "Linked employee cannot receive a second account");
+            string maTaiKhoanThoChinh = QuanLyNhanSu.TaoTaiKhoanMoi(null, "Thợ chính tạo từ tài khoản", tienToTaiKhoan + "direct_chief", "123", "Thợ chính", false);
+            KiemTra(Convert.ToInt32(DocGiaTri("SELECT SoXeDangSuaToiDa FROM dbo.NhanVien WHERE MaNhanVien=@id", ThamSo("@id", maTaiKhoanThoChinh))) == 3, "Direct chief account defaults to three vehicles");
             maPhuTung = XuLyDuLieu.TaoMaMoi("VT");
             maDichVu = XuLyDuLieu.TaoMaMoi("VT");
             maDichVuThuHai = XuLyDuLieu.TaoMaMoi("VT");
@@ -232,6 +276,14 @@ class KiemTraNghiepVu
             int maDongCong = Convert.ToInt32(DocGiaTri("SELECT MaBangCong FROM dbo.BangCong WHERE MaNhanVien=@nv", ThamSo("@nv", maTho)));
             ChamCong.LuuCong(maDongCong, maTho, DateTime.Today, "SANG", new TimeSpan(8, 0, 0), ketThuc, false, 10, "Bù giờ được duyệt");
             KiemTra(Convert.ToInt32(DocGiaTri("SELECT COUNT(*) FROM dbo.LichSuBangCong WHERE MaBangCong=@id", ThamSo("@id", maDongCong))) == 2, "Attendance audit captures insert and edit");
+            var chiTietCong = duLieu.DocBang("SELECT * FROM dbo.vBangCong WHERE MaBangCong=@id", ThamSo("@id", maDongCong)).Rows[0];
+            var tinhCong = ChamCong.TinhChiTiet((TimeSpan)chiTietCong["GioBatDau"], (TimeSpan)chiTietCong["GioKetThuc"], (TimeSpan)chiTietCong["GioVao"], (TimeSpan)chiTietCong["GioRa"], false, Convert.ToInt32(chiTietCong["DieuChinhPhut"]), Convert.ToDecimal(chiTietCong["LuongGio"]));
+            KiemTra(tinhCong.TienCong == Convert.ToDecimal(chiTietCong["TienLuong"]) && tinhCong.PhutTinhCong == Convert.ToInt32(chiTietCong["PhutTinhCong"]), "Displayed pay breakdown matches SQL wage exactly");
+            duLieu.CapNhatDuLieu("UPDATE dbo.NhanVien SET LuongGio=70000 WHERE MaNhanVien=@id", ThamSo("@id", maTho));
+            ChamCong.LuuCong(maDongCong, maTho, DateTime.Today, "SANG", new TimeSpan(8, 0, 59), ketThuc, false, 10, "Bù giờ được duyệt");
+            KiemTra(Convert.ToDecimal(DocGiaTri("SELECT LuongGio FROM dbo.BangCong WHERE MaBangCong=@id", ThamSo("@id", maDongCong))) == 60000, "Editing existing attendance preserves locked hourly rate");
+            KiemTra((TimeSpan)DocGiaTri("SELECT GioVao FROM dbo.BangCong WHERE MaBangCong=@id", ThamSo("@id", maDongCong)) == new TimeSpan(8, 0, 0), "Stored attendance strips hidden seconds");
+            PhaiBaoLoi(() => ChamCong.LuuCong(int.MaxValue, maTho, DateTime.Today, "SANG", batDau, ketThuc, false, 0, ""), "Cannot save missing attendance row");
             DangNhapKiemThu("worker");
             PhaiBaoLoi(() => ChamCong.LuuCong(maDongCong, maTho, DateTime.Today, "SANG", batDau, ketThuc, false, 0, ""), "Worker cannot change attendance");
             DangNhapKiemThu("admin");
@@ -272,6 +324,8 @@ class KiemTraNghiepVu
                 {
                     frmChiTiet.StartPosition = FormStartPosition.Manual;
                     frmChiTiet.Location = new Point(-3000, -3000);
+                    if (frmChiTiet is TrangDuLieu) ((TrangDuLieu)frmChiTiet).TaiDuLieu();
+                    if (frmChiTiet is TrangThietKe) ((TrangThietKe)frmChiTiet).TaiDuLieu();
                     frmChiTiet.Show();
                     Application.DoEvents();
                     KiemTra(frmChiTiet.Controls.Count > 0, "SQL form loads: " + frmChiTiet.Text);
@@ -295,6 +349,18 @@ class KiemTraNghiepVu
                         danhSachBaoCao.SelectedIndex = 1;
                         ((frmBangCong)frmChiTiet).TaiDuLieu();
                         KiemTra(true, "SQL payroll summary combines hourly and task wages");
+                        var co = System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic;
+                        var boLoc = (ComboBox)typeof(frmBangCong).GetField("cboLocNhanVien", co).GetValue(frmChiTiet);
+                        boLoc.SelectedValue = maTho;
+                        ((frmBangCong)frmChiTiet).TaiDuLieu();
+                        var bangLuong = (DataTable)frmChiTiet.Controls.OfType<DataGridView>().Single().DataSource;
+                        KiemTra(bangLuong.Rows.Count == 1 && Convert.ToDecimal(bangLuong.Rows[0]["TongLuong"]) == Convert.ToDecimal(bangLuong.Rows[0]["LuongTheoGio"]) + Convert.ToDecimal(bangLuong.Rows[0]["LuongNhiemVu"]), "Employee filter and salary components reconcile");
+                        danhSachBaoCao.SelectedIndex = 2;
+                        ((frmBangCong)frmChiTiet).TaiDuLieu();
+                        var bangViec = (DataTable)frmChiTiet.Controls.OfType<DataGridView>().Single().DataSource;
+                        KiemTra(bangViec.AsEnumerable().All(d => d["MaNhanVien"].ToString() == maTho) && bangViec.AsEnumerable().Sum(d => Convert.ToDecimal(d["TienCong"])) == Convert.ToDecimal(bangLuong.Rows[0]["LuongNhiemVu"]), "Task drilldown reconciles with payroll task amount");
+                        XuatExcel.GhiTep(bangLuong, "checks/output/ChiTietLuong.xlsx", "Kiểm tra lương");
+                        boLoc.SelectedValue = "";
                         danhSachBaoCao.SelectedIndex = 0;
                         ((frmBangCong)frmChiTiet).TaiDuLieu();
                     }
@@ -326,6 +392,12 @@ class KiemTraNghiepVu
                 var trang = frmChinh.Controls.Cast<Control>().SelectMany(dieuKhien => dieuKhien.Controls.Cast<Control>()).OfType<frmTiepNhan>().Single();
                 var coTruyCap = System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic;
                 var nutKho = (Button)typeof(QLyCuaHangSuaXe.frmChinh).GetField("btnMoKho", coTruyCap).GetValue(frmChinh);
+                var nutNhanVien = (Button)typeof(QLyCuaHangSuaXe.frmChinh).GetField("btnMoNhanVien", coTruyCap).GetValue(frmChinh);
+                var nutTaiKhoan = (Button)typeof(QLyCuaHangSuaXe.frmChinh).GetField("btnMoQuanLyTaiKhoan", coTruyCap).GetValue(frmChinh);
+                nutNhanVien.PerformClick(); Application.DoEvents();
+                KiemTra(frmChinh.Controls.Cast<Control>().SelectMany(c => c.Controls.Cast<Control>()).OfType<frmNhanVien>().Any(), "Employee sidebar opens personnel page");
+                nutTaiKhoan.PerformClick(); Application.DoEvents();
+                KiemTra(frmChinh.Controls.Cast<Control>().SelectMany(c => c.Controls.Cast<Control>()).OfType<frmQuanLyTaiKhoan>().Any(), "Account sidebar opens separate account page");
                 KiemTra(nutKho.Visible && nutKho.Height >= 58, "Warehouse has a large direct sidebar button");
                 nutKho.PerformClick(); Application.DoEvents();
                 KiemTra(frmChinh.Controls.Cast<Control>().SelectMany(dieuKhien => dieuKhien.Controls.Cast<Control>()).OfType<btl.frmKho>().Any(), "Sidebar opens existing warehouse form");
@@ -369,7 +441,7 @@ class KiemTraNghiepVu
                     bitmap.Save("checks/output/sidebar-ready.png");
                 }
 
-                frmChinh.Close();
+                frmChinh.Dispose();
             }
 
             DangNhapKiemThu("worker");

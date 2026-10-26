@@ -10,7 +10,7 @@
 4. Chạy `database/QuanLySuaXe_NghiepVu.sql`. Script bổ sung định mức phụ tùng, giá chốt, tiền nhiệm vụ, ca làm, bảng công, lịch sử sửa công và khóa hóa đơn; có thể chạy lại.
 5. Build và chạy. Chủ/quản lý và thu ngân vào ngay Phiếu tiếp nhận trong sidebar; thợ vào Phân công sửa chữa.
 
-**Tình trạng kiểm tra:** đã kết nối và nâng cấp `QuanLySuaXe` thật trên `(localdb)\MSSQLLocalDB`, sau khi sao lưu và kiểm tra checksum. Database giữ 4 nhân viên, 3 hóa đơn, tổng 770.000đ; Tài khoản quản lý đã đổi thành `minh` theo yêu cầu trong chat. Giới hạn thợ hiện có đã đặt 2 xe theo yêu cầu. LocalDB trên máy có tiến trình vẫn chạy nhưng công cụ quản lý báo Stopped; lớp kết nối có đường dự phòng lấy pipe hiện hành từ log của đúng instance, không cố định mã pipe trong cấu hình. Kiểm thử ghi nghiệp vụ dùng LocalDB riêng `CodexQuanLySuaXeTest` / `QuanLySuaXe_CodexChecks`, không ghi chứng từ kiểm thử vào dữ liệu thật.
+**Tình trạng kiểm tra:** đã kết nối và nâng cấp `QuanLySuaXe` thật trên `(localdb)\MSSQLLocalDB`, sau khi sao lưu và kiểm tra checksum. Database giữ 4 nhân viên: Minh — Chủ/Quản lý, An — Thợ chính (3 xe), Huy — Thợ (2 xe), Mai — Thu ngân; giữ nguyên mã nhân viên và các liên kết. Vẫn có 3 hóa đơn, tổng 770.000đ. Tài khoản chủ là `minh`. LocalDB và SQL Client đã được kiểm tra kết nối thành công. Lớp kết nối có đường dự phòng lấy pipe hiện hành từ log của đúng instance, không cố định mã pipe trong cấu hình. Kiểm thử ghi nghiệp vụ dùng LocalDB riêng `CodexQuanLySuaXeTest` / `QuanLySuaXe_CodexChecks`.
 
 ## Nghiệp vụ đã nối SQL
 
@@ -20,8 +20,9 @@
 - **Hóa đơn:** chỉ phát hành khi phiếu đã hoàn thành và chốt phụ tùng. Một phiếu có tối đa một hóa đơn. Nội dung lấy từ chi tiết phiếu; màn hình chỉ đọc và SQL chặn sửa/xóa/thêm dòng sau phát hành. Có thể ghi nhận thanh toán một lần bằng tiền mặt hoặc chuyển khoản.
 - **Dịch vụ:** thêm, đổi giá, mô tả, thời gian, tiền nhiệm vụ và bộ nhiều phụ tùng/số lượng. Dịch vụ chưa sử dụng có thể xóa; đã có lịch sử thì chuyển ngừng dùng.
 - **Phụ tùng:** thêm/sửa danh mục, giá nhập/bán, trạng thái; tìm kiếm; nhà cung cấp; nhập kho nhiều dòng, mỗi dòng có NCC và hạn sử dụng tùy chọn. Ghi sổ phiếu nhập và cộng tồn trong một transaction. Phiếu nhập đã ghi sổ chỉ đọc.
-- **Tài khoản / nhân viên:** DataGridView hiển thị tài khoản, chức vụ, trạng thái, giới hạn xe và lương giờ. Tạo mới, đổi chức vụ, khóa bằng Đã nghỉ, đặt mật khẩu mới hoặc tự đổi mật khẩu bằng mật khẩu hiện tại. Băm PBKDF2-SHA256 với salt riêng. Không hiện hash/mật khẩu trên danh sách. Không cho tự khóa/đổi chức vụ tài khoản đang dùng. Tài khoản còn xe chưa xong không được giảm giới hạn dưới số xe đang có hoặc chuyển khỏi vai trò thợ.
-- **Bảng công:** Sáng 07:30–14:00, Chiều tối 13:30–20:00, mỗi ca 390 phút. Tính phần giờ vào/ra nằm trong ca; đi muộn/về sớm tự trừ. Vắng cả ca tính 0. Điều chỉnh ±390 phút cần lý do; sửa ngày/ca ngay trên dòng hiện có, có lịch sử trước/sau trong SQL. Hai ca cùng ngày không được trùng giờ thực tính, nhất là 13:30–14:00. Lương giờ được chốt theo dòng công, tiền nhiệm vụ chỉ ghi nhận khi hoàn thành. Tổng lương = tiền giờ + tiền nhiệm vụ. Xuất chi tiết hoặc tổng hợp ra `.xlsx` thật, không cần cài Excel.
+- **Tài khoản:** chủ/quản lý tạo tài khoản ngay trong form, cho nhân viên mới hoặc nhân viên có sẵn chưa được cấp đăng nhập. Tạo hồ sơ và tài khoản trong một giao dịch; trùng tên không để lại hồ sơ dư. Khóa tài khoản tách riêng trạng thái nghỉ việc. Thẻ **Đổi mật khẩu của tôi** dùng lại form đổi mật khẩu hiện có, yêu cầu mật khẩu hiện tại; cả bốn vai trò truy cập được thẻ này, chỉ chủ/quản lý được xem danh sách tài khoản. Băm PBKDF2-SHA256 với salt riêng, không hiển thị hash/mật khẩu trong bảng; không cho tự khóa/đổi quyền tài khoản đang dùng.
+- **Nhân viên:** trang riêng quản lý họ tên, điện thoại, chức vụ, giới hạn xe, lương giờ và trạng thái làm việc. Có nút mở phân công và bảng công. Không cho giảm giới hạn dưới số xe đang nhận hoặc chuyển khỏi vai trò thợ khi còn công việc chưa xong.
+- **Bảng công:** Sáng 07:30–14:00, Chiều tối 13:30–20:00, mỗi ca 390 phút. Hiển thị cách tính từng dòng: phút thực làm +/− phút điều chỉnh = phút tính công; tiền ca = phút tính công ÷ 60 × lương giờ đã chốt. Đi muộn/về sớm đã phản ánh vào phút thực làm, không trừ lần hai. Có dự tính trước khi lưu, lọc theo nhân viên, tổng hợp tiền ca và danh sách nhiệm vụ hoàn thành để đối chiếu tổng lương. Vắng cả ca tính 0; chưa chấm công không tự coi là vắng. Điều chỉnh ±390 phút cần lý do, lưu lịch sử trước/sau trong SQL. Hai ca cùng ngày không được trùng giờ thực tính. Xuất đầy đủ chi tiết hoặc tổng hợp ra `.xlsx` thật.
 - **Thống kê:** hóa đơn đã phát hành, đã thu/chưa thu; dịch vụ bán; tiền nhiệm vụ; tồn phụ tùng; nhập kho; phiếu và quá hẹn; công và lương. Có lọc ngày, xuất Excel. Báo cáo tồn là số hiện tại. Doanh thu và đã thu đang nhóm theo ngày lập hóa đơn, chưa theo ngày giao dịch thanh toán.
 
 ## Bốn chức vụ
@@ -50,6 +51,7 @@ Các hóa đơn cũ vẫn giữ nguyên tổng và chi tiết gốc. Không tự
 ```powershell
 powershell -ExecutionPolicy Bypass -File .\checks\Run.ps1
 powershell -ExecutionPolicy Bypass -File .\checks\Run.ps1 -Integration
+powershell -ExecutionPolicy Bypass -File .\checks\Run.ps1 -Accounts
 powershell -ExecutionPolicy Bypass -File .\checks\Run.ps1 -Configuration Release
 ```
 

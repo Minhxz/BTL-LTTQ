@@ -3,8 +3,35 @@ using System.Data;
 
 namespace QLyCuaHangSuaXe.LopDungChung
 {
+    public sealed class ChiTietTinhCong
+    {
+        public int PhutCa, PhutThucLam, PhutMuon, PhutVeSom, DieuChinhPhut, PhutTinhCong;
+        public decimal LuongGio, TienCong;
+        public bool Vang;
+        public string GiaiThich()
+        {
+            if (Vang) return "Vắng cả ca: 0 phút → 0 đ. Không cộng hoặc trừ phút trên ca vắng.";
+            return "Trong ca: " + PhutCa + " phút • Đi muộn: " + PhutMuon + " phút • Về sớm: " + PhutVeSom + " phút\n"
+                + "Phút tính công = " + PhutThucLam + " phút thực làm " + (DieuChinhPhut >= 0 ? "+ " : "− ") + Math.Abs(DieuChinhPhut) + " phút điều chỉnh = " + PhutTinhCong + " phút\n"
+                + "Tiền ca = " + PhutTinhCong + " ÷ 60 × " + LuongGio.ToString("N0") + " đ/giờ = " + TienCong.ToString("N2") + " đ. Đi muộn/về sớm đã nằm trong giờ thực làm.";
+        }
+    }
+
     public static class ChamCong
     {
+        public static ChiTietTinhCong TinhChiTiet(TimeSpan batDau, TimeSpan ketThuc, TimeSpan gioVao, TimeSpan gioRa, bool vang, int dieuChinh, decimal luongGio)
+        {
+            gioVao = new TimeSpan(gioVao.Hours, gioVao.Minutes, 0);
+            gioRa = new TimeSpan(gioRa.Hours, gioRa.Minutes, 0);
+            var chiTiet = new ChiTietTinhCong { PhutCa = (int)(ketThuc - batDau).TotalMinutes, Vang = vang, LuongGio = luongGio, DieuChinhPhut = dieuChinh };
+            chiTiet.PhutThucLam = PhutCong(batDau, ketThuc, gioVao, gioRa, vang, 0);
+            chiTiet.PhutTinhCong = PhutCong(batDau, ketThuc, gioVao, gioRa, vang, dieuChinh);
+            chiTiet.PhutMuon = vang ? 0 : Math.Max(0, (int)(gioVao - batDau).TotalMinutes);
+            chiTiet.PhutVeSom = vang ? 0 : Math.Max(0, (int)(ketThuc - gioRa).TotalMinutes);
+            chiTiet.TienCong = Math.Round(chiTiet.PhutTinhCong * luongGio / 60m, 2, MidpointRounding.AwayFromZero);
+            return chiTiet;
+        }
+
         public static int PhutCong(TimeSpan batDau, TimeSpan ketThuc, TimeSpan gioVao, TimeSpan gioRa, bool vang, int dieuChinhPhut)
         {
             if (vang)
@@ -23,12 +50,17 @@ namespace QLyCuaHangSuaXe.LopDungChung
         public static void LuuCong(int ma, string maTho, DateTime ngay, string maCa, TimeSpan gioVao, TimeSpan gioRa, bool vang, int dieuChinhPhut, string lyDo)
         {
             PhienDangNhap.YeuCau("BANG_CONG");
+            lyDo = (lyDo ?? "").Trim();
+            gioVao = new TimeSpan(gioVao.Hours, gioVao.Minutes, 0);
+            gioRa = new TimeSpan(gioRa.Hours, gioRa.Minutes, 0);
             if (Math.Abs(dieuChinhPhut) > 390 || (dieuChinhPhut != 0 && string.IsNullOrWhiteSpace(lyDo)) || lyDo.Length > 300)
                 throw new InvalidOperationException("Điều chỉnh trong ±390 phút và bắt buộc có lý do (tối đa 300 ký tự).");
             if (vang && string.IsNullOrWhiteSpace(lyDo))
                 throw new InvalidOperationException("Ghi lý do vắng.");
             new XuLyDuLieu().TrongGiaoDich<int>((ketNoi, giaoDich) =>
             {
+                if (ma != 0 && XuLyDuLieu.DocDuLieu(ketNoi, giaoDich, "SELECT MaBangCong FROM dbo.BangCong WITH(UPDLOCK,HOLDLOCK) WHERE MaBangCong=@id", XuLyDuLieu.ThamSo("@id", ma)).Rows.Count != 1)
+                    throw new InvalidOperationException("Dòng công không còn tồn tại. Hãy tải lại bảng công.");
                 var bangNhanVien = XuLyDuLieu.DocDuLieu(ketNoi, giaoDich, "SELECT LuongGio FROM dbo.NhanVien WITH(UPDLOCK) WHERE MaNhanVien=@nv AND TrangThai=N'Đang làm'", XuLyDuLieu.ThamSo("@nv", maTho));
                 if (bangNhanVien.Rows.Count != 1)
                     throw new InvalidOperationException("Chọn nhân viên đang làm.");

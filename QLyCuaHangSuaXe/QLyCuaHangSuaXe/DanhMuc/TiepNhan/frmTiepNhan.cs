@@ -3,9 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
-using System.Drawing.Printing;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
 namespace QLyCuaHangSuaXe.DanhMuc.TiepNhan
@@ -14,13 +12,13 @@ namespace QLyCuaHangSuaXe.DanhMuc.TiepNhan
     {
         readonly NghiepVuSuaXe nghiepVu = new NghiepVuSuaXe();
         List<DichVuChon> dichVuDaKiemTra;
-        DataTable bangPhieuGoc, bangDuThao;
+        DataTable bangPhieuGoc, bangDuThao, bangChiTiet;
         bool dangThem, dangSua, dangTai;
         string maPhieuDangChon = "";
         public frmTiepNhan()
         {
             InitializeComponent();
-            GanThietKe(dgvPhieu, lblThongBao);
+            GanThietKe(dgvPhieu, lblTrangThaiPhieu);
             lblHangMuc.ForeColor = lblDanhSachPhieu.ForeColor = lblTrangThaiHen.ForeColor = GiaoDien.Xanh;
             lblTrangThaiHen.BackColor = Color.FromArgb(235, 243, 251);
             dgvPhieu.Columns.Clear();
@@ -47,7 +45,12 @@ namespace QLyCuaHangSuaXe.DanhMuc.TiepNhan
                 TaiDuLieu();
             });
             btnInPhieu.Click += (nguoiGui, suKien) => GiaoDien.ThucHien(InPhieu);
-            btnThoat.Click += (nguoiGui, suKien) => Close();
+            btnThoat.Click += (nguoiGui, suKien) =>
+            {
+                string thongBao = dangThem || dangSua ? "Đóng phiếu tiếp nhận? Thông tin chưa lưu sẽ bị bỏ." : "Bạn có muốn đóng phiếu tiếp nhận?";
+                if (MessageBox.Show(this, thongBao, "Xác nhận thoát", MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes) Close();
+            };
             btnTimKiem.Click += (nguoiGui, suKien) => LocPhieu();
             cboLocTrangThai.SelectedIndexChanged += (nguoiGui, suKien) => LocPhieu();
             dgvPhieu.SelectionChanged += (nguoiGui, suKien) => HienThiPhieu();
@@ -78,6 +81,8 @@ namespace QLyCuaHangSuaXe.DanhMuc.TiepNhan
                 dong["NhacHen"] = trangThai == "Đã hủy" ? "Đã hủy" : trangThai == "Hoàn thành" && !choThu ? "Đã xong" : dong["HenTra"] != DBNull.Value && Convert.ToDateTime(dong["HenTra"]) < DateTime.Now ? "Quá hẹn" : "Đúng hẹn";
             }
 
+            bangChiTiet = duLieu.DocBang(@"SELECT MaPhieuTiepNhan,N'Dịch vụ' AS Loai,TenDichVu AS NoiDung,SoLuong,DonGiaDichVu AS DonGia,SoLuong*DonGiaDichVu AS ThanhTien FROM dbo.ChiTietPhieuTiepNhan
+                UNION ALL SELECT MaPhieuTiepNhan,N'Phụ tùng',TenPhuTung,SoLuong,DonGia,SoLuong*DonGia FROM dbo.PhuTungTiepNhan");
             LocPhieu();
         }
 
@@ -129,7 +134,7 @@ namespace QLyCuaHangSuaXe.DanhMuc.TiepNhan
             btnLuu.Enabled = btnHuySua.Enabled = false;
             cboTrangThai.Enabled = false;
             btnXoa.Enabled = PhanQuyenNguoiDung.CoQuyen(PhienDangNhap.VaiTro, "NHAN_VIEN");
-            lblThongBao.Text = "Bấm Tiếp nhận mới để chọn dịch vụ và kiểm tra phụ tùng trước.";
+            lblTrangThaiPhieu.Text = "Bấm Tiếp nhận mới để chọn dịch vụ và kiểm tra phụ tùng trước.";
         }
 
         void SapXepCot()
@@ -165,6 +170,7 @@ namespace QLyCuaHangSuaXe.DanhMuc.TiepNhan
             dichVuDaKiemTra = cacDichVu.Select(dichVu => new DichVuChon { Ma = dichVu.Ma, SoLuong = dichVu.SoLuong }).ToList();
             bangDuThao = chiTiet.Copy();
             dangThem = true;
+            btnInPhieu.Enabled = btnChiTiet.Enabled = true;
             dangSua = false;
             maPhieuDangChon = "";
             txtKhachHang.Clear();
@@ -187,14 +193,22 @@ namespace QLyCuaHangSuaXe.DanhMuc.TiepNhan
             btnLuu.Enabled = btnHuySua.Enabled = true;
             lblHangMuc.Text = "Hạng mục đã kiểm tra: " + chiTiet.Rows.Count + "  |  Dự kiến: " + chiTiet.AsEnumerable().Sum(dong => Convert.ToDecimal(dong["ThanhTien"])).ToString("N0") + " đ";
             lblTrangThaiHen.Text = "Nhập khách hàng, xe và chọn thợ còn rảnh.";
-            lblThongBao.Text = "Đã kiểm tra phụ tùng. Nhập thông tin xe rồi Lưu phiếu; tồn kho và thợ được kiểm tra lại khi lưu.";
+            lblTrangThaiPhieu.Text = "Đã kiểm tra phụ tùng. Nhập thông tin xe rồi Lưu phiếu; tồn kho và thợ được kiểm tra lại khi lưu.";
             txtKhachHang.Focus();
         }
 
         void HienThiPhieu()
         {
-            if (dangTai || dangThem || dangSua || dgvPhieu.CurrentRow == null)
+            if (dangTai || dangThem || dangSua)
                 return;
+            btnInPhieu.Enabled = btnChiTiet.Enabled = dgvPhieu.CurrentRow != null;
+            if (dgvPhieu.CurrentRow == null)
+            {
+                maPhieuDangChon = "";
+                txtMaPhieu.Clear(); txtKhachHang.Clear(); txtDienThoai.Clear(); txtBienSoXe.Clear(); txtDongXe.Clear();
+                lblTrangThaiPhieu.Text = "Chưa có phiếu phù hợp với bộ lọc.";
+                return;
+            }
             var dong = ((DataRowView)dgvPhieu.CurrentRow.DataBoundItem).Row;
             maPhieuDangChon = dong["MaPhieuTiepNhan"].ToString();
             txtMaPhieu.Text = maPhieuDangChon;
@@ -215,7 +229,7 @@ namespace QLyCuaHangSuaXe.DanhMuc.TiepNhan
             KhoaThongTin();
             lblHangMuc.Text = "Hạng mục: " + dong["SoHangMuc"] + "  |  Tổng dự kiến: " + Convert.ToDecimal(dong["TongDuKien"]).ToString("N0") + " đ";
             lblTrangThaiHen.Text = dong["NhacHen"].ToString() == "Quá hẹn" ? "Phiếu đã quá thời gian hẹn trả xe." : "Phiếu " + dong["NhacHen"].ToString().ToLower() + ".";
-            lblThongBao.Text = "Đang xem phiếu " + maPhieuDangChon + ".";
+            lblTrangThaiPhieu.Text = "Đang xem phiếu " + maPhieuDangChon + ".";
         }
 
         void TimXeCu()
@@ -250,7 +264,7 @@ namespace QLyCuaHangSuaXe.DanhMuc.TiepNhan
                     throw new InvalidOperationException("Phiếu đã hoàn thành hoặc đã có hóa đơn, không thể sửa.");
                 dangSua = false;
                 TaiDuLieu();
-                lblThongBao.Text = "Đã cập nhật hẹn trả và tình trạng xe.";
+                lblTrangThaiPhieu.Text = "Đã cập nhật hẹn trả và tình trạng xe.";
                 return;
             }
 
@@ -273,7 +287,7 @@ namespace QLyCuaHangSuaXe.DanhMuc.TiepNhan
             dichVuDaKiemTra = null;
             bangDuThao = null;
             TaiDuLieu();
-            lblThongBao.Text = "Đã lưu " + ma + ", chốt phụ tùng và phân công thợ.";
+            lblTrangThaiPhieu.Text = "Đã lưu " + ma + ", chốt phụ tùng và phân công thợ.";
         }
 
         void BatDauSua()
@@ -287,7 +301,7 @@ namespace QLyCuaHangSuaXe.DanhMuc.TiepNhan
             dtpHenTra.Enabled = true;
             rtbTinhTrangXe.ReadOnly = false;
             btnLuu.Enabled = btnHuySua.Enabled = true;
-            lblThongBao.Text = "Đang sửa hẹn trả và tình trạng xe. Dịch vụ và đơn giá đã chốt được giữ nguyên.";
+            lblTrangThaiPhieu.Text = "Đang sửa hẹn trả và tình trạng xe. Dịch vụ và đơn giá đã chốt được giữ nguyên.";
         }
 
         void HuyThaoTac()
@@ -315,7 +329,14 @@ namespace QLyCuaHangSuaXe.DanhMuc.TiepNhan
                 return bangDuThao.Copy();
             if (maPhieuDangChon.Length == 0)
                 throw new InvalidOperationException("Chọn phiếu cần xem.");
-            return duLieu.DocBang(@"SELECT N'Dịch vụ' AS Loai,TenDichVu AS NoiDung,SoLuong,DonGiaDichVu AS DonGia,SoLuong*DonGiaDichVu AS ThanhTien FROM dbo.ChiTietPhieuTiepNhan WHERE MaPhieuTiepNhan=@ma UNION ALL SELECT N'Phụ tùng',TenPhuTung,SoLuong,DonGia,SoLuong*DonGia FROM dbo.PhuTungTiepNhan WHERE MaPhieuTiepNhan=@ma", XuLyDuLieu.ThamSo("@ma", maPhieuDangChon));
+            if (bangChiTiet == null)
+                throw new InvalidOperationException("Danh sách phiếu chưa tải xong.");
+            var ketQua = bangChiTiet.Clone();
+            foreach (DataRow dong in bangChiTiet.Rows)
+                if (dong["MaPhieuTiepNhan"].ToString() == maPhieuDangChon)
+                    ketQua.ImportRow(dong);
+            ketQua.Columns.Remove("MaPhieuTiepNhan");
+            return ketQua;
         }
 
         void XemChiTiet()
@@ -326,40 +347,16 @@ namespace QLyCuaHangSuaXe.DanhMuc.TiepNhan
 
         void InPhieu()
         {
-            var chiTiet = LayChiTiet();
-            var noiDung = new StringBuilder("PHIẾU TIẾP NHẬN " + txtMaPhieu.Text + "\n\n");
-            noiDung.AppendLine("Khách hàng: " + txtKhachHang.Text + "    Điện thoại: " + txtDienThoai.Text);
-            noiDung.AppendLine("Biển số: " + txtBienSoXe.Text + "    Dòng xe: " + txtDongXe.Text);
-            noiDung.AppendLine("Ngày nhận: " + txtNgayNhan.Text + "    Hẹn trả: " + dtpHenTra.Value.ToString("dd/MM/yyyy HH:mm"));
-            noiDung.AppendLine("Thợ: " + cboThoPhuTrach.Text + "\nTình trạng: " + rtbTinhTrangXe.Text + "\n");
-            foreach (DataRow dong in chiTiet.Rows)
-                noiDung.AppendLine(string.Join(" | ", dong.ItemArray.Select(giaTri => giaTri is decimal ? ((decimal)giaTri).ToString("N0") : giaTri.ToString())));
-            noiDung.AppendLine("\nTổng dự kiến: " + chiTiet.AsEnumerable().Sum(dong => Convert.ToDecimal(dong["ThanhTien"])).ToString("N0") + " đ");
-            using (var taiLieu = new PrintDocument())
-            using (var font = new Font("Segoe UI", 10))
-            using (var hopThoai = new PrintPreviewDialog
-            {
-                Document = taiLieu,
-                Width = 1000,
-                Height = 760
-            }
-
-            )
-            {
-                int viTri = 0;
-                string vanBan = noiDung.ToString();
-                taiLieu.BeginPrint += (nguoiGui, suKien) => viTri = 0;
-                taiLieu.PrintPage += (nguoiGui, suKien) =>
-                {
-                    int soKyTu, soDong;
-                    string conLai = vanBan.Substring(viTri);
-                    suKien.Graphics.MeasureString(conLai, font, suKien.MarginBounds.Size, StringFormat.GenericDefault, out soKyTu, out soDong);
-                    suKien.Graphics.DrawString(conLai.Substring(0, soKyTu), font, Brushes.Black, suKien.MarginBounds);
-                    viTri += soKyTu;
-                    suKien.HasMorePages = viTri < vanBan.Length;
-                };
+            var phieu = new MauInPhieu(dangThem ? "CHƯA LƯU" : txtMaPhieu.Text, LayChiTiet(),
+                "Khách hàng: " + txtKhachHang.Text + "    •    Điện thoại: " + txtDienThoai.Text,
+                "Biển số: " + txtBienSoXe.Text + "    •    Loại xe: " + cboLoaiXe.Text,
+                "Dòng xe: " + txtDongXe.Text + "    •    Số km: " + numSoKm.Value.ToString("N0"),
+                "Ngày nhận: " + txtNgayNhan.Text + "    •    Hẹn trả: " + dtpHenTra.Value.ToString("dd/MM/yyyy HH:mm"),
+                "Thợ phụ trách: " + cboThoPhuTrach.Text,
+                "Tình trạng / yêu cầu: " + rtbTinhTrangXe.Text,
+                dangThem ? "BẢN DỰ THẢO — Phiếu chưa lưu." : "Trạng thái: " + cboTrangThai.Text);
+            using (var hopThoai = new frmXemBanInPhieu(phieu))
                 hopThoai.ShowDialog(this);
-            }
         }
 
         void DinhDangPhieu(object nguoiGui, DataGridViewCellFormattingEventArgs suKien)

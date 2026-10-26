@@ -5,13 +5,6 @@ using System.Windows.Forms;
 
 namespace QLyCuaHangSuaXe.DanhMuc
 {
-    public class frmNhanVien : DangNhap.frmQuanLyTaiKhoan
-    {
-        public frmNhanVien() : base("Nhân viên & tài khoản")
-        {
-        }
-    }
-
     public class frmPhanCong : TrangDuLieu
     {
         readonly NghiepVuSuaXe nghiepVu = new NghiepVuSuaXe();

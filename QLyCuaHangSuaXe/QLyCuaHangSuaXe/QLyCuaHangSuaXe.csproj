@@ -54,9 +54,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Classes\BaoMat.cs" />
+    <Compile Include="Classes\MauInPhieu.cs" />
+    <Compile Include="Classes\QuanLyNhanSu.cs" />
     <Compile Include="Classes\ChamCong.cs" />
     <Compile Include="Classes\DataProcessor.cs" />
-
     <Compile Include="Classes\GiaoDien.cs" />
     <Compile Include="Classes\NghiepVuSuaXe.cs" />
     <Compile Include="Classes\PhanQuyenNguoiDung.cs" />
@@ -101,11 +102,27 @@
     <Compile Include="DanhMuc\frmNghiepVu.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="DanhMuc\frmNhanVien.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DanhMuc\frmNhanVien.Designer.cs">
+      <DependentUpon>frmNhanVien.cs</DependentUpon>
+    </Compile>
     <Compile Include="DanhMuc\TiepNhan\frmTiepNhan.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="DanhMuc\TiepNhan\frmKiemTraTiepNhan.cs"><SubType>Form</SubType></Compile>
-    <Compile Include="DanhMuc\TiepNhan\frmKiemTraTiepNhan.Designer.cs"><DependentUpon>frmKiemTraTiepNhan.cs</DependentUpon></Compile>
+    <Compile Include="DanhMuc\TiepNhan\frmKiemTraTiepNhan.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DanhMuc\TiepNhan\frmXemBanInPhieu.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DanhMuc\TiepNhan\frmXemBanInPhieu.Designer.cs">
+      <DependentUpon>frmXemBanInPhieu.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DanhMuc\TiepNhan\frmKiemTraTiepNhan.Designer.cs">
+      <DependentUpon>frmKiemTraTiepNhan.cs</DependentUpon>
+    </Compile>
     <Compile Include="DanhMuc\TiepNhan\frmTiepNhan.Designer.cs">
       <DependentUpon>frmTiepNhan.cs</DependentUpon>
     </Compile>
@@ -131,6 +148,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DanhMuc\DichVu\frmDanhMucDichVu.resx">
       <DependentUpon>frmDanhMucDichVu.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DanhMuc\frmNhanVien.resx">
+      <DependentUpon>frmNhanVien.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DanhMuc\TiepNhan\frmKiemTraTiepNhan.resx">
+      <DependentUpon>frmKiemTraTiepNhan.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="DanhMuc\TiepNhan\frmTiepNhan.resx">
       <DependentUpon>frmTiepNhan.cs</DependentUpon>

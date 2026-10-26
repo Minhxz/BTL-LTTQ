@@ -86,7 +86,7 @@ namespace QLyCuaHangSuaXe.LopDungChung
 
         public static bool DangNhap(string tenDangNhap, string matKhau)
         {
-            var cacDong = new XuLyDuLieu().DocBang(@"SELECT n.MaNhanVien,n.TenDangNhap,n.MatKhauHash,c.TenChucVu FROM dbo.NhanVien n JOIN dbo.ChucVu c ON c.MaChucVu=n.MaChucVu WHERE n.TenDangNhap=@u AND n.TrangThai=N'Đang làm'", XuLyDuLieu.ThamSo("@u", tenDangNhap));
+            var cacDong = new XuLyDuLieu().DocBang(@"SELECT n.MaNhanVien,n.TenDangNhap,n.MatKhauHash,c.TenChucVu FROM dbo.NhanVien n JOIN dbo.ChucVu c ON c.MaChucVu=n.MaChucVu WHERE n.TenDangNhap=@u AND n.TrangThai=N'Đang làm' AND n.DaCapTaiKhoan=1 AND n.TaiKhoanHoatDong=1", XuLyDuLieu.ThamSo("@u", tenDangNhap));
             if (cacDong.Rows.Count != 1 || !BaoMat.KiemTraMatKhau(matKhau, cacDong.Rows[0]["MatKhauHash"].ToString()))
                 return false;
             string vaiTro = PhanQuyenNguoiDung.ChuanHoa(cacDong.Rows[0]["TenChucVu"].ToString());
@@ -104,7 +104,7 @@ namespace QLyCuaHangSuaXe.LopDungChung
                 throw new InvalidOperationException("Cần đăng nhập.");
             new XuLyDuLieu().TrongGiaoDich<int>((ketNoi, giaoDich) =>
             {
-                var dong = XuLyDuLieu.DocDuLieu(ketNoi, giaoDich, "SELECT MatKhauHash FROM dbo.NhanVien WITH(UPDLOCK) WHERE MaNhanVien=@id AND TrangThai=N'Đang làm'", XuLyDuLieu.ThamSo("@id", MaNhanVien));
+                var dong = XuLyDuLieu.DocDuLieu(ketNoi, giaoDich, "SELECT MatKhauHash FROM dbo.NhanVien WITH(UPDLOCK) WHERE MaNhanVien=@id AND TrangThai=N'Đang làm' AND DaCapTaiKhoan=1 AND TaiKhoanHoatDong=1", XuLyDuLieu.ThamSo("@id", MaNhanVien));
                 if (dong.Rows.Count != 1 || !BaoMat.KiemTraMatKhau(matKhauCu, dong.Rows[0][0].ToString()))
                     throw new InvalidOperationException("Mật khẩu hiện tại không đúng.");
                 return XuLyDuLieu.ThucThi(ketNoi, giaoDich, "UPDATE dbo.NhanVien SET MatKhauHash=@h WHERE MaNhanVien=@id", XuLyDuLieu.ThamSo("@h", BaoMat.BamMatKhau(matKhauMoi)), XuLyDuLieu.ThamSo("@id", MaNhanVien));
@@ -115,10 +115,11 @@ namespace QLyCuaHangSuaXe.LopDungChung
         {
             if (string.IsNullOrEmpty(MaNhanVien))
                 throw new UnauthorizedAccessException("Cần đăng nhập trước khi sử dụng chức năng.");
-            var hienTai = new XuLyDuLieu().DocBang("SELECT v.TenChucVu FROM dbo.NhanVien n JOIN dbo.ChucVu v ON v.MaChucVu=n.MaChucVu WHERE n.MaNhanVien=@id AND n.TrangThai=N'Đang làm'", XuLyDuLieu.ThamSo("@id", MaNhanVien));
+            var hienTai = new XuLyDuLieu().DocBang("SELECT v.TenChucVu,n.TenDangNhap FROM dbo.NhanVien n JOIN dbo.ChucVu v ON v.MaChucVu=n.MaChucVu WHERE n.MaNhanVien=@id AND n.TrangThai=N'Đang làm' AND n.DaCapTaiKhoan=1 AND n.TaiKhoanHoatDong=1", XuLyDuLieu.ThamSo("@id", MaNhanVien));
             if (hienTai.Rows.Count != 1)
                 throw new UnauthorizedAccessException("Tài khoản đã bị khóa hoặc nghỉ việc.");
             VaiTro = PhanQuyenNguoiDung.ChuanHoa(hienTai.Rows[0][0].ToString());
+            TenDangNhap = hienTai.Rows[0][1].ToString();
             if (!PhanQuyenNguoiDung.CoQuyen(VaiTro, maQuyen))
                 throw new UnauthorizedAccessException("Tài khoản không có quyền thực hiện chức năng này.");
         }

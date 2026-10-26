@@ -26,6 +26,7 @@ namespace QLyCuaHangSuaXe.LopDungChung
                     "BANG_CONG",
                     "BAO_CAO",
                     "QUAN_LY_TAI_KHOAN",
+                    "TAI_KHOAN_CA_NHAN",
                     "PHAN_QUYEN"
                 }
             },
@@ -34,7 +35,8 @@ namespace QLyCuaHangSuaXe.LopDungChung
                 new HashSet<string>
                 {
                     "PHAN_CONG",
-                    "CONG_CA_NHAN"
+                    "CONG_CA_NHAN",
+                    "TAI_KHOAN_CA_NHAN"
                 }
             },
             {
@@ -42,7 +44,8 @@ namespace QLyCuaHangSuaXe.LopDungChung
                 new HashSet<string>
                 {
                     "PHAN_CONG",
-                    "CONG_CA_NHAN"
+                    "CONG_CA_NHAN",
+                    "TAI_KHOAN_CA_NHAN"
                 }
             },
             {
@@ -50,7 +53,8 @@ namespace QLyCuaHangSuaXe.LopDungChung
                 new HashSet<string>
                 {
                     "TIEP_NHAN",
-                    "HOA_DON"
+                    "HOA_DON",
+                    "TAI_KHOAN_CA_NHAN"
                 }
             }
         };

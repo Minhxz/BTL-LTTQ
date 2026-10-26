@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Drawing2D;
+using System.Runtime.CompilerServices;
 using System.Windows.Forms;
 
 namespace QLyCuaHangSuaXe.LopDungChung
@@ -346,9 +348,28 @@ namespace QLyCuaHangSuaXe.LopDungChung
         }
 
         public static readonly Color Xanh = Color.FromArgb(30, 108, 176);
+        sealed class TrangThaiNut
+        {
+            public bool DieuHuong, DiChuot, DangNhan;
+            public string BieuTuong;
+        }
+
+        static readonly ConditionalWeakTable<Button, TrangThaiNut> cacNut = new ConditionalWeakTable<Button, TrangThaiNut>();
+        static readonly ConditionalWeakTable<GroupBox, object> cacKhung = new ConditionalWeakTable<GroupBox, object>();
+        static readonly Font chuNut = new Font("Segoe UI", 9.5F, FontStyle.Bold);
+        static readonly Font chuDieuHuong = new Font("Segoe UI", 11F, FontStyle.Bold);
+        static readonly Font chuBieuTuong = new Font("Segoe MDL2 Assets", 14F);
+
+        static bool TrongKhung(Control dieuKhien)
+        {
+            for (Control cha = dieuKhien.Parent; cha != null; cha = cha.Parent)
+                if (cha is GroupBox) return true;
+            return false;
+        }
+
         public static void ApDungMauTiepNhan(Control goc)
         {
-            goc.BackColor = Color.FromArgb(250, 252, 254);
+            goc.BackColor = goc is GroupBox || TrongKhung(goc) ? Color.White : Color.FromArgb(244, 247, 251);
             goc.ForeColor = Color.FromArgb(42, 42, 42);
             foreach (Control dieuKhien in goc.Controls)
             {
@@ -364,7 +385,10 @@ namespace QLyCuaHangSuaXe.LopDungChung
                 if (dieuKhien is Label && dieuKhien.Font.Size >= 16)
                     dieuKhien.ForeColor = Xanh;
                 if (dieuKhien is GroupBox)
+                {
                     dieuKhien.ForeColor = Xanh;
+                    DinhDangKhung((GroupBox)dieuKhien);
+                }
                 var bang = dieuKhien as DataGridView;
                 if (bang != null)
                     DinhDangBang(bang);
@@ -380,11 +404,162 @@ namespace QLyCuaHangSuaXe.LopDungChung
             nut.FlatAppearance.BorderColor = chinh ? Xanh : xoa ? Color.FromArgb(218, 172, 172) : Color.FromArgb(191, 207, 220);
             nut.BackColor = chinh ? Xanh : Color.White;
             nut.ForeColor = chinh ? Color.White : xoa ? Color.FromArgb(164, 59, 59) : Color.FromArgb(30, 85, 130);
-            nut.Font = new Font("Segoe UI", 9.5F, FontStyle.Bold);
+            nut.Font = chuNut;
+            if (nut.AutoSize)
+                nut.Padding = new Padding(Math.Max(12, nut.Padding.Left), nut.Padding.Top, Math.Max(12, nut.Padding.Right), nut.Padding.Bottom);
             nut.Cursor = Cursors.Hand;
             nut.FlatAppearance.MouseOverBackColor = chinh ? Color.FromArgb(24, 91, 151) : Color.FromArgb(235, 243, 251);
             nut.FlatAppearance.MouseDownBackColor = chinh ? Color.FromArgb(19, 76, 128) : Color.FromArgb(216, 234, 249);
             nut.UseVisualStyleBackColor = false;
+            var trangThai = GanHieuUngNut(nut);
+            trangThai.DieuHuong = false;
+            trangThai.BieuTuong = null;
+            BoGocNut(nut, trangThai);
+            nut.Invalidate();
+        }
+
+        public static void DinhDangNutDieuHuong(Button nut, string bieuTuong)
+        {
+            nut.FlatStyle = FlatStyle.Flat;
+            nut.FlatAppearance.BorderSize = 0;
+            nut.Font = chuDieuHuong;
+            nut.ForeColor = Color.White;
+            nut.Cursor = Cursors.Hand;
+            nut.UseVisualStyleBackColor = false;
+            var trangThai = GanHieuUngNut(nut);
+            trangThai.DieuHuong = true;
+            trangThai.BieuTuong = bieuTuong ?? "";
+            BoGocNut(nut, trangThai);
+            nut.Invalidate();
+        }
+
+        static GraphicsPath DuongBoGoc(RectangleF khung, float banKinh)
+        {
+            var duong = new GraphicsPath();
+            float duongKinh = Math.Min(banKinh * 2, Math.Min(khung.Width, khung.Height));
+            if (duongKinh < 1) { duong.AddRectangle(khung); return duong; }
+            duong.AddArc(khung.X, khung.Y, duongKinh, duongKinh, 180, 90);
+            duong.AddArc(khung.Right - duongKinh, khung.Y, duongKinh, duongKinh, 270, 90);
+            duong.AddArc(khung.Right - duongKinh, khung.Bottom - duongKinh, duongKinh, duongKinh, 0, 90);
+            duong.AddArc(khung.X, khung.Bottom - duongKinh, duongKinh, duongKinh, 90, 90);
+            duong.CloseFigure();
+            return duong;
+        }
+
+        static Color PhaMau(Color mau, Color mauPhu, float tiLe)
+        {
+            return Color.FromArgb((int)(mau.R * (1 - tiLe) + mauPhu.R * tiLe), (int)(mau.G * (1 - tiLe) + mauPhu.G * tiLe), (int)(mau.B * (1 - tiLe) + mauPhu.B * tiLe));
+        }
+
+        static void BoGocNut(Button nut, TrangThaiNut trangThai)
+        {
+            if (nut.Width < 2 || nut.Height < 2 || System.ComponentModel.LicenseManager.UsageMode == System.ComponentModel.LicenseUsageMode.Designtime || nut.Site != null && nut.Site.DesignMode) return;
+            using (var duong = DuongBoGoc(new RectangleF(0, 0, nut.Width, nut.Height), (trangThai.DieuHuong ? 8 : 6) * nut.DeviceDpi / 96F))
+            {
+                var vungCu = nut.Region;
+                nut.Region = new Region(duong);
+                if (vungCu != null) vungCu.Dispose();
+            }
+        }
+
+        static TrangThaiNut GanHieuUngNut(Button nut)
+        {
+            TrangThaiNut trangThai;
+            if (cacNut.TryGetValue(nut, out trangThai)) return trangThai;
+            trangThai = new TrangThaiNut();
+            cacNut.Add(nut, trangThai);
+            nut.MouseEnter += (nguoiGui, suKien) => { trangThai.DiChuot = true; nut.Invalidate(); };
+            nut.MouseLeave += (nguoiGui, suKien) => { trangThai.DiChuot = false; trangThai.DangNhan = false; nut.Invalidate(); };
+            nut.MouseDown += (nguoiGui, suKien) => { if (suKien.Button == MouseButtons.Left) trangThai.DangNhan = true; nut.Invalidate(); };
+            nut.MouseUp += (nguoiGui, suKien) => { trangThai.DangNhan = false; nut.Invalidate(); };
+            nut.MouseCaptureChanged += (nguoiGui, suKien) => { if (!nut.Capture) trangThai.DangNhan = false; nut.Invalidate(); };
+            nut.KeyDown += (nguoiGui, suKien) => { if (suKien.KeyCode == Keys.Space || suKien.KeyCode == Keys.Enter) trangThai.DangNhan = true; nut.Invalidate(); };
+            nut.KeyUp += (nguoiGui, suKien) => { trangThai.DangNhan = false; nut.Invalidate(); };
+            nut.GotFocus += (nguoiGui, suKien) => nut.Invalidate();
+            nut.LostFocus += (nguoiGui, suKien) => { trangThai.DangNhan = false; nut.Invalidate(); };
+            nut.EnabledChanged += (nguoiGui, suKien) => { trangThai.DangNhan = false; trangThai.DiChuot = false; nut.Invalidate(); };
+            nut.Resize += (nguoiGui, suKien) => { BoGocNut(nut, trangThai); nut.Invalidate(); };
+            nut.Paint += (nguoiGui, suKien) => VeNut(nut, trangThai, suKien.Graphics);
+            return trangThai;
+        }
+
+        static void VeNut(Button nut, TrangThaiNut trangThai, Graphics ve)
+        {
+            if (nut.Width < 2 || nut.Height < 2) return;
+            float tiLe = nut.DeviceDpi / 96F;
+            Color nen = nut.BackColor, chu = nut.ForeColor;
+            bool nenDam = nen.GetBrightness() < 0.65F;
+            Color vien = trangThai.DieuHuong ? PhaMau(nen, Color.White, 0.09F) : nut.FlatAppearance.BorderColor;
+            if (!nut.Enabled)
+            {
+                nen = trangThai.DieuHuong ? Color.FromArgb(43, 65, 83) : Color.FromArgb(235, 240, 245);
+                chu = trangThai.DieuHuong ? Color.FromArgb(145, 166, 184) : Color.FromArgb(126, 143, 159);
+                vien = trangThai.DieuHuong ? nen : Color.FromArgb(213, 222, 231);
+            }
+            else if (trangThai.DangNhan)
+                nen = nenDam ? PhaMau(nen, Color.Black, 0.15F) : Color.FromArgb(218, 234, 247);
+            else if (trangThai.DiChuot)
+                nen = nenDam ? PhaMau(nen, Color.White, 0.10F) : Color.FromArgb(238, 246, 253);
+            var trangThaiVe = ve.Save();
+            ve.Clear(nut.Parent == null ? SystemColors.Control : nut.Parent.BackColor);
+            ve.SmoothingMode = SmoothingMode.AntiAlias;
+            using (var duong = DuongBoGoc(new RectangleF(0.5F, 0.5F, nut.Width - 1, nut.Height - 1), (trangThai.DieuHuong ? 8 : 6) * tiLe))
+            using (var coNen = new SolidBrush(nen))
+            using (var net = new Pen(vien, tiLe))
+            {
+                ve.FillPath(coNen, duong);
+                ve.DrawPath(net, duong);
+            }
+            if (nut.Focused && nut.Enabled && nut.Width > 6 * tiLe && nut.Height > 6 * tiLe)
+            {
+                using (var duong = DuongBoGoc(new RectangleF(3 * tiLe, 3 * tiLe, nut.Width - 6 * tiLe, nut.Height - 6 * tiLe), (trangThai.DieuHuong ? 5 : 3) * tiLe))
+                using (var net = new Pen(nenDam ? PhaMau(nen, Color.White, 0.65F) : Xanh, tiLe))
+                {
+                    net.DashStyle = DashStyle.Dot;
+                    ve.DrawPath(net, duong);
+                }
+            }
+            ve.Restore(trangThaiVe);
+            var khungChu = new Rectangle(8, 0, Math.Max(1, nut.Width - 16), nut.Height);
+            var canChu = TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter | TextFormatFlags.SingleLine | TextFormatFlags.EndEllipsis | TextFormatFlags.NoPadding | TextFormatFlags.PreserveGraphicsClipping;
+            if (!nut.UseMnemonic) canChu |= TextFormatFlags.NoPrefix;
+            else canChu |= TextFormatFlags.HidePrefix;
+            if (trangThai.DieuHuong)
+            {
+                int leTrai = (int)(18 * tiLe);
+                TextRenderer.DrawText(ve, trangThai.BieuTuong, chuBieuTuong, new Rectangle(leTrai, 0, (int)(25 * tiLe), nut.Height), chu, TextFormatFlags.Left | TextFormatFlags.VerticalCenter | TextFormatFlags.NoPadding);
+                khungChu = new Rectangle((int)(52 * tiLe), 0, Math.Max(1, nut.Width - (int)(64 * tiLe)), nut.Height);
+                canChu = (canChu & ~TextFormatFlags.HorizontalCenter) | TextFormatFlags.Left;
+            }
+            TextRenderer.DrawText(ve, nut.Text, nut.Font, khungChu, chu, canChu);
+        }
+
+        static void DinhDangKhung(GroupBox khung)
+        {
+            khung.BackColor = Color.White;
+            object daGan;
+            if (cacKhung.TryGetValue(khung, out daGan)) return;
+            cacKhung.Add(khung, new object());
+            khung.Paint += (nguoiGui, suKien) =>
+            {
+                if (khung.Width < 4 || khung.Height < 4) return;
+                var ve = suKien.Graphics;
+                var trangThaiVe = ve.Save();
+                ve.SmoothingMode = SmoothingMode.AntiAlias;
+                ve.Clear(Color.White);
+                float y = khung.Font.Height / 2F + 2;
+                using (var duong = DuongBoGoc(new RectangleF(0.5F, y, khung.Width - 1, Math.Max(1, khung.Height - y - 1)), 6))
+                using (var net = new Pen(Color.FromArgb(216, 226, 236)))
+                    ve.DrawPath(net, duong);
+                using (var chu = new Font(khung.Font, FontStyle.Bold))
+                {
+                    var coChu = TextRenderer.MeasureText(ve, khung.Text, chu, new Size(Math.Max(1, khung.Width - 32), khung.Font.Height + 8), TextFormatFlags.SingleLine | TextFormatFlags.NoPadding);
+                    ve.FillRectangle(Brushes.White, 12, 0, coChu.Width + 12, coChu.Height + 2);
+                    TextRenderer.DrawText(ve, khung.Text, chu, new Rectangle(18, 0, Math.Max(1, khung.Width - 36), coChu.Height + 2), Xanh, TextFormatFlags.Left | TextFormatFlags.VerticalCenter | TextFormatFlags.SingleLine | TextFormatFlags.EndEllipsis | TextFormatFlags.NoPadding);
+                }
+                ve.Restore(trangThaiVe);
+            };
+            khung.Resize += (nguoiGui, suKien) => khung.Invalidate();
         }
 
         public static void DinhDangBang(DataGridView bang)
@@ -393,8 +568,15 @@ namespace QLyCuaHangSuaXe.LopDungChung
             bang.EnableHeadersVisualStyles = false;
             bang.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(235, 243, 251);
             bang.ColumnHeadersDefaultCellStyle.ForeColor = Color.FromArgb(42, 42, 42);
-            bang.ColumnHeadersHeight = 38;
+            bang.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 9.5F, FontStyle.Bold);
+            bang.ColumnHeadersDefaultCellStyle.Padding = new Padding(6, 3, 6, 3);
+            bang.ColumnHeadersHeight = 44;
             bang.RowTemplate.Height = 38;
+            bang.DefaultCellStyle.Padding = new Padding(6, 0, 6, 0);
+            bang.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(245, 249, 253);
+            bang.GridColor = Color.FromArgb(216, 225, 233);
+            bang.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
+            bang.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.Single;
             bang.DefaultCellStyle.SelectionBackColor = Color.FromArgb(216, 234, 249);
             bang.DefaultCellStyle.SelectionForeColor = Color.FromArgb(42, 42, 42);
             bang.AllowUserToAddRows = false;

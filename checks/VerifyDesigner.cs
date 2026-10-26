@@ -5,6 +5,9 @@ using QLyCuaHangSuaXe;
 using QLyCuaHangSuaXe.DanhMuc.DangNhap;
 using QLyCuaHangSuaXe.DanhMuc.DichVu;
 using QLyCuaHangSuaXe.DanhMuc.TiepNhan;
+using QLyCuaHangSuaXe.LopDungChung;
+using System.Linq;
+using System.Reflection;
 
 class KiemTraDesigner
 {
@@ -19,6 +22,8 @@ class KiemTraDesigner
                 typeof(frmDangNhap),
                 typeof(frmTiepNhan),
                 typeof(frmKiemTraTiepNhan),
+                typeof(frmXemBanInPhieu),
+                typeof(QLyCuaHangSuaXe.DanhMuc.frmNhanVien),
                 typeof(frmDanhMucDichVu),
                 typeof(frmQuanLyTaiKhoan),
                 typeof(frmDoiMatKhau),
@@ -30,6 +35,15 @@ class KiemTraDesigner
             };
             foreach (Type kieuForm in cacForm)
                 {
+                    if (typeof(TrangThietKe).IsAssignableFrom(kieuForm))
+                    {
+                        var tenKeThua = typeof(TrangThietKe).GetFields(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public)
+                            .Where(truong => truong.IsFamily && typeof(System.ComponentModel.IComponent).IsAssignableFrom(truong.FieldType))
+                            .Select(truong => truong.Name).ToArray();
+                        var trungTen = kieuForm.GetFields(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public)
+                            .Where(truong => typeof(System.ComponentModel.IComponent).IsAssignableFrom(truong.FieldType) && tenKeThua.Contains(truong.Name, StringComparer.OrdinalIgnoreCase)).ToArray();
+                        if (trungTen.Length > 0) throw new Exception(kieuForm.Name + ": Tên control trùng lớp cha: " + string.Join(", ", trungTen.Select(truong => truong.Name)));
+                    }
                     var beMat = new DesignSurface();
                     beMat.BeginLoad(kieuForm);
                     if (!beMat.IsLoaded || beMat.LoadErrors.Count > 0)
