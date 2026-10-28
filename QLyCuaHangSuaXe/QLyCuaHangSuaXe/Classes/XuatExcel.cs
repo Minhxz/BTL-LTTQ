@@ -17,7 +17,8 @@ namespace QLyCuaHangSuaXe.LopDungChung
                 throw new InvalidOperationException("Chưa có dữ liệu để xuất.");
             using (var hopThoai = new SaveFileDialog
             {
-                Filter = "Excel workbook (*.xlsx)|*.xlsx",
+                Filter = "Tệp Excel (*.xlsx)|*.xlsx",
+                Title = "Xuất dữ liệu ra Excel",
                 FileName = "BangCong_" + DateTime.Today.ToString("yyyyMMdd") + ".xlsx"
             }
 

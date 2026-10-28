@@ -1,39 +1,44 @@
-# Đối chiếu SQL và đề xuất nghiệp vụ
+# Đối chiếu SQL mới và phạm vi ứng dụng
 
-## Schema ban đầu còn thiếu gì?
+Ứng dụng dùng cấu trúc từ file `QuanLySuaXe.sql` mới được cung cấp ngày 28/10/2026. Bản giao cho nhóm là `database/QuanLySuaXe_DayDu_20261028.sql`, gồm 18 bảng và dữ liệu đã thu gọn theo yêu cầu. Không ghép lại các bảng/cột của phiên bản trước vào database mới. Dữ liệu nhân viên có Minh (chủ), An (thợ chính), Huy (thợ phụ), Mai (thu ngân), Cường (thủ kho); năm tên đăng nhập không dấu đều dùng mật khẩu ban đầu 123. Giữ các phiếu mẫu đại diện và dữ liệu mới đang có; công chỉ lấy từ năm hồ sơ đại diện, không cộng dồn giờ của tất cả nhân viên mẫu.
 
-Đã đọc trực tiếp schema của `QuanLySuaXe` trên `(localdb)\MSSQLLocalDB` và đối chiếu 14 bảng với script trong repo. Đã sao lưu, kiểm tra checksum và áp dụng migration lên database thật; sau nâng cấp có 19 bảng, giữ nguyên 4 nhân viên và 3 hóa đơn với tổng 770.000đ. Lỗi ban đầu là công cụ LocalDB báo Stopped trong khi tiến trình SQL vẫn chạy; đã kết nối qua pipe hiện hành và bổ sung đường kết nối dự phòng.
+## Những thay đổi theo SQL
 
-| Yêu cầu | Thiết kế cũ | Đã bổ sung |
-| --- | --- | --- |
-| Một dịch vụ cần một bộ nhiều phụ tùng | `DichVu.MaPhuTung` chỉ biểu diễn một phụ tùng, mặc định một đơn vị | `DinhMucDichVu`: nhiều phụ tùng và số lượng; gom nhu cầu chung để kiểm tra tồn |
-| Hóa đơn không đổi khi danh mục tăng giá | Chi tiết tiếp nhận chỉ chốt giá dịch vụ, chưa chốt phụ tùng hoặc tên | Chốt tên dịch vụ, tiền nhiệm vụ; `PhuTungTiepNhan` chốt tên, lượng và giá phụ tùng; trigger khóa nội dung đã phát hành |
-| Tồn kho không âm khi nhiều người lưu | Có CHECK không âm nhưng chưa có giao dịch giữa nhiều bảng | Transaction Serializable, khóa dữ liệu, UPDATE có điều kiện đủ tồn, rollback cả phiếu khi thất bại |
-| Giới hạn thợ 2 xe, thợ chính 3 xe | Có `SoXeDangSuaToiDa`, chưa kiểm tra phân công đồng thời; thiếu chức vụ thợ chính | Bốn vai trò trong UI; bổ sung thợ chính, giới hạn cấu hình từng nhân viên, kiểm tra sức chứa khi lưu |
-| Trả lương theo nhiệm vụ | Chưa có định mức và tiền đã chốt | `DichVu.LuongNhiemVu`, chi tiết phiếu chốt mức lương, `PhanCongTho.TienCong` và ngày ghi nhận khi hoàn thành |
-| Hai ca cố định, muộn/vắng/đổi ca | Chưa có bảng ca hoặc công | `CaLam`, `BangCong`, `vBangCong`, `LichSuBangCong`; lương giờ theo dòng công; xuất Excel |
-| Hẹn trả và loại xe | Thiếu hẹn trả và loại xe tách biệt | `HenTra`, `Xe.LoaiXe`; báo cáo quá hẹn |
+| Nội dung | Cách ứng dụng đang xử lý |
+| --- | --- |
+| Tài khoản nằm trong NhanVien | Đọc HoTen, TenDangNhap, MatKhau, TrangThai; SHA-256 HEX 64 ký tự; Nghỉ việc chặn đăng nhập |
+| Sáu chức vụ | Chủ, Quản lý, Thợ phụ, Thợ chính, Thu ngân, Thủ kho; quyền cố định theo chức vụ |
+| Khách hàng bỏ địa chỉ | Tiếp nhận chỉ nhập tên, điện thoại và các trường xe có trong SQL; bỏ địa chỉ, số km và tình trạng không có cột lưu |
+| Mỗi lượt sửa có Xe riêng | Dùng lại khách theo số điện thoại; tạo lượt xe mới, liên kết phiếu qua MaXe |
+| ChiTietDichVu là bộ phụ tùng | Gom nhu cầu dùng chung, kiểm tra trạng thái, hạn dùng và tồn trước khi nhận xe; kiểm tra lại lúc lưu |
+| Giá dịch vụ trọn gói | Thành tiền chi tiết phiếu được chốt khi nhận, không cộng phụ tùng thêm lần nữa vào thanh toán |
+| ChiTietPhanCong theo nhân viên/xe | Giới hạn thợ chính 3 xe, thợ phụ 2 xe đang xử lý; đếm theo trạng thái phiếu |
+| HoaDon bắt buộc ngày thanh toán | Phiếu hoàn thành nằm trong danh sách chờ thu; chỉ tạo HoaDon khi nhận tiền, dùng ngày thật và chặn thanh toán lặp |
+| Công theo nhân viên/ngày/ca | ChiTietCaLam lưu giờ thực tế; sửa/đổi ca theo khóa ghép, không dùng mã bảng công cũ |
+| Phụ tùng có nguồn và hạn dùng | Mã phụ tùng phân biệt nhà cung cấp/hạn dùng; không có đơn vị tính; nhập kho và cập nhật tồn trong giao dịch |
 
-Dữ liệu thật dùng trạng thái `Đã hoàn thành`, khác tên `Hoàn thành` trong ứng dụng. Migration đã chuẩn hóa hai cách gọi này để không tính nhầm xe đã xong vào số xe đang nhận; giữ nguyên ngày và tiền.
+Tất cả cột đều NOT NULL. Thời điểm kết thúc của phân công đang xử lý là thời điểm dự kiến hợp lệ; khi hoàn thành cập nhật thời điểm kết thúc thật. Trạng thái đang xử lý lấy từ phiếu, không suy ra từ việc ngày kết thúc đã đến hay chưa. Hóa đơn chưa thu không dùng ngày thanh toán giả.
 
-Migration bổ sung 5 bảng, đưa cấu trúc từ 14 lên 19 bảng. Không xóa dữ liệu, không đổi hàng loạt vai trò/giới hạn cũ, không tự gán lương hoặc diễn giải giá lịch sử. Các cột mới có giá trị mặc định hoặc cho phép NULL để giữ chứng từ cũ.
+## Cách tính công hiện tại
 
-## Ý tưởng thực tế cho bảng công
+Ba ca lấy trực tiếp từ SQL: 07:30–12:00 (4,5 giờ), 13:00–17:30 (4,5 giờ), 17:30–21:00 (3,5 giờ). Giờ thực tế có thể nhỏ/lớn hơn giờ ca; vắng ca nhập 0. Một nhân viên/ngày/ca chỉ có một dòng, tổng giờ ngày không vượt 24.
 
-1. Dùng chi tiết công để nhập ngày, ca, giờ vào/ra và lý do điều chỉnh; tổng hợp lương để chốt kỳ. Hai trang hiện nằm chung trong bộ chọn Chi tiết công / Tổng hợp lương.
-2. Với thợ phụ hoặc bán thời gian, trả lương giờ; thợ nhận việc có thể hưởng thêm mức cố định theo dịch vụ. Phần mềm hiện cộng hai khoản này. Có thể đặt một khoản bằng 0 nếu cửa hàng chỉ áp dụng một cách tính.
-3. Giữ 30 phút giao ca để bàn giao xe; nếu một người làm cả hai ca thì chốt giờ ra ca sáng lúc 13:30 hoặc giờ vào ca tối lúc 14:00. Không tính hai lần cùng khoảng thời gian.
-4. Đi muộn/về sớm trừ theo giờ thực tế. Chỉ dùng Cộng/trừ phút cho bù giờ hoặc điều chỉnh đã được duyệt, có lý do và lịch sử. Vắng ca tính 0; không tự suy diễn thành một khoản phạt tiền.
+`NhanVien.Luong` được hiểu là mức lương tháng đã thỏa thuận. Màn hình dự tính:
 
-## Phần nên bổ sung tiếp
+**Tiền công = tổng giờ thực làm × lương tháng ÷ giờ chuẩn tháng.**
 
-- **Chốt kỳ lương:** bảng kỳ lương, chi tiết bảng lương, khoản thưởng/phạt/ứng lương và người duyệt. Bảng công hiện có thể được chủ sửa và có lịch sử, nhưng chưa khóa kỳ đã trả lương.
-- **Lịch ca dự kiến:** tách lịch đăng ký ca, xin đổi ca và phê duyệt khỏi công thực tế. Hiện việc đổi ca là sửa dòng công đã lưu, chưa có quy trình xin duyệt.
-- **Sổ xuất/nhập và tồn theo lô:** hiện tồn là số gộp trên `PhuTung`; chưa trừ theo từng lô/hạn sử dụng. Bổ sung `PhieuXuat`, chi tiết lô, kiểm kê và điều chỉnh tồn sẽ giúp loại trừ phụ tùng hết hạn.
-- **Thanh toán theo ngày thực thu:** thêm bảng giao dịch, thời gian và số tiền thanh toán, mã chuyển khoản. Hiện chỉ ghi trạng thái/phương thức một lần; thống kê không phân bổ được khách trả nhiều lần hay ngày thu khác ngày hóa đơn.
-- **Bảo hành và sửa phát sinh:** tách phiếu bảo hành, bổ sung dịch vụ cần khách duyệt và chứng từ điều chỉnh hóa đơn. Hiện phiếu chốt khi tiếp nhận, hóa đơn giữ nguyên; không có sửa phát sinh sau phát hành.
-- **Ô tô và độ khó:** thêm năng lực theo loại xe hoặc điểm tải công việc. Hiện cả xe máy và ô tô chiếm một chỗ trong giới hạn đã thống nhất 2/3.
-- **Chia tiền nhiều thợ:** hiện UI phân công một thợ phụ trách mỗi phiếu. Database vẫn giữ khả năng nhiều thợ cho dữ liệu cũ; nếu dùng nhiều người trên một xe cần quy định tỷ lệ chia tiền nhiệm vụ và kiểm tra tổng tỷ lệ 100%.
-- **Cấp quyền tùy biến:** hiện dùng bốn bộ quyền cố định được thực thi trong mã. Nếu muốn chỉnh từng quyền trên UI và lưu SQL, thêm `ChucNang`, `QuyenChucVu` và lịch sử thay đổi; không dùng checkbox chỉ lưu trong bộ nhớ như trước.
+Mặc định 208 giờ (26 ngày × 8 giờ) là giả định của ứng dụng, có ô điều chỉnh theo quy định cửa hàng. Hệ số và khoản điều chỉnh chức vụ được hiển thị để đối chiếu, không tự cộng thêm lần nữa vào mức lương tháng. Các khoản trong `KhoanDieuChinh` là quy định theo chức vụ, không phải ghi nhận phạt/thưởng thực tế cho từng nhân viên trong từng tháng.
 
-Khuyến nghị ưu tiên chốt kỳ lương và sổ tồn theo lô sau khi đối soát phiếu cũ. Hai phần này giúp số thống kê đối chiếu được với tiền trả và phụ tùng thực tế.
+Database mới không lưu giờ vào/ra, lý do sửa công, tiền nhiệm vụ, đơn giá giờ lịch sử hay kỳ đã chốt. Ứng dụng vì vậy không hiển thị những chi tiết này như dữ liệu đã được lưu. Báo cáo công theo mức lương tháng hiện tại; đổi lương có thể làm thay kết quả tính lại các kỳ trước.
+
+## Những phần chưa được cấu trúc SQL biểu diễn
+
+- **Khóa kỳ lương và lịch sử:** cần bảng kỳ lương, chi tiết lương đã chốt, đơn giá áp dụng và lịch sử sửa công nếu muốn tái hiện chính xác số đã trả.
+- **Thưởng/phạt thực tế:** cần bảng ghi nhận từng khoản, ngày áp dụng, nhân viên, lý do và người duyệt; không nên tự áp mọi khoản phạt trong danh mục cho tất cả nhân viên mỗi tháng.
+- **Lịch ca dự kiến:** hiện lưu công thực tế và đổi trực tiếp ca đã nhập, chưa có đăng ký/xin đổi/duyệt ca.
+- **Theo dõi giao dịch thanh toán:** HoaDon hiện lưu tổng tiền và ngày thanh toán, chưa có cột phương thức, mã giao dịch ngân hàng hoặc bảng thu nhiều đợt. Tiền mặt và QR đều ghi hóa đơn một lần khi thu đủ; chưa có xác nhận nhận tiền tự động từ ngân hàng.
+- **Lịch sử chi tiết phụ tùng xuất sửa:** định mức có thể thay đổi sau khi xe đã hoàn thành; SQL chưa lưu bản chụp tên/giá từng phụ tùng trên phiếu tiếp nhận. Không nên suy diễn phần tách tiền phụ tùng lịch sử từ định mức hiện tại.
+- **Sổ xuất và kiểm kê:** nhập kho có chứng từ, nhưng giảm tồn do sửa chữa đang gắn với phiếu tiếp nhận; cần chứng từ xuất/điều chỉnh nếu muốn sổ tồn độc lập và kiểm kê có phê duyệt.
+- **Quyền tùy biến:** các chức vụ có bộ quyền trong mã, trang Phân quyền dùng để xem. Muốn chỉnh từng quyền và lưu SQL cần thêm cấu trúc quyền tương ứng.
+
+Các phần trên là ý tưởng mở rộng, chưa tự thêm bảng/cột ngoài SQL đã được yêu cầu. Ưu tiên chốt kỳ lương và ghi nhận giao dịch nếu nhóm cần đối soát tiền công hoặc thanh toán sau này.

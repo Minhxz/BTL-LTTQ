@@ -28,7 +28,6 @@ namespace QLyCuaHangSuaXe.DanhMuc.DangNhap
             this.grpDangNhap = new Panel();
             this.lblNhanDangNhap = new Label();
             this.lblTieuDe = new Label();
-            this.lblHuongDan = new Label();
             this.lblTenDangNhap = new Label();
             this.pnlTenDangNhap = new Panel();
             this.txtTenDangNhap = new TextBox();
@@ -126,7 +125,6 @@ namespace QLyCuaHangSuaXe.DanhMuc.DangNhap
             this.grpDangNhap.BackColor = Color.White;
             this.grpDangNhap.Controls.Add(this.lblNhanDangNhap);
             this.grpDangNhap.Controls.Add(this.lblTieuDe);
-            this.grpDangNhap.Controls.Add(this.lblHuongDan);
             this.grpDangNhap.Controls.Add(this.lblTenDangNhap);
             this.grpDangNhap.Controls.Add(this.pnlTenDangNhap);
             this.grpDangNhap.Controls.Add(this.lblMatKhau);
@@ -152,12 +150,6 @@ namespace QLyCuaHangSuaXe.DanhMuc.DangNhap
             this.lblTieuDe.Name = "lblTieuDe";
             this.lblTieuDe.Size = new Size(438, 50);
             this.lblTieuDe.Text = "Chào mừng trở lại";
-            this.lblHuongDan.Font = new Font("Segoe UI", 10.5F);
-            this.lblHuongDan.ForeColor = Color.FromArgb(108, 126, 139);
-            this.lblHuongDan.Location = new Point(0, 92);
-            this.lblHuongDan.Name = "lblHuongDan";
-            this.lblHuongDan.Size = new Size(432, 40);
-            this.lblHuongDan.Text = "Nhập thông tin để bắt đầu phiên làm việc.";
             this.lblTenDangNhap.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
             this.lblTenDangNhap.ForeColor = Color.FromArgb(47, 65, 80);
             this.lblTenDangNhap.Location = new Point(0, 150);
@@ -219,7 +211,7 @@ namespace QLyCuaHangSuaXe.DanhMuc.DangNhap
             this.lblMoTa.Location = new Point(0, 398);
             this.lblMoTa.Name = "lblMoTa";
             this.lblMoTa.Size = new Size(432, 40);
-            this.lblMoTa.Text = "Nhấn Enter để đăng nhập.";
+            this.lblMoTa.Text = "";
             this.lblMoTa.Click += new System.EventHandler(this.lblMoTa_Bam);
             this.btnDangNhap.BackColor = Color.FromArgb(27, 91, 116);
             this.btnDangNhap.Cursor = Cursors.Hand;
@@ -298,7 +290,6 @@ namespace QLyCuaHangSuaXe.DanhMuc.DangNhap
         private Panel grpDangNhap;
         private Label lblNhanDangNhap;
         private Label lblTieuDe;
-        private Label lblHuongDan;
         private Label lblTenDangNhap;
         private Panel pnlTenDangNhap;
         private TextBox txtTenDangNhap;

@@ -21,6 +21,7 @@ namespace QLyCuaHangSuaXe.LopDungChung
         readonly decimal tongTien;
         public int SoTrang { get { return cacTrang.Count; } }
         public string MaPhieu { get { return maPhieu; } }
+        public bool LaPhieuNhapKho { get; set; }
 
         public MauInPhieu(string ma, DataTable chiTiet, params string[] thongTin)
         {
@@ -67,9 +68,9 @@ namespace QLyCuaHangSuaXe.LopDungChung
                 {
                     bool duThao = chiTiet.Columns.Contains("TenDichVu");
                     string noiDung = duThao ? dong["TenDichVu"].ToString() : dong["Loai"] + ": " + dong["NoiDung"];
-                    if (duThao && dong["PhuTung"].ToString().Length > 0)
+                    if (duThao && chiTiet.Columns.Contains("PhuTung") && dong["PhuTung"].ToString().Length > 0)
                         noiDung += "\nPhụ tùng: " + dong["PhuTung"];
-                    decimal donGia = duThao ? Convert.ToDecimal(dong["TienCong"]) + Convert.ToDecimal(dong["GiaPhuTung"]) : Convert.ToDecimal(dong["DonGia"]);
+                    decimal donGia = Convert.ToDecimal(dong["DonGia"]);
                     them(new[] { noiDung, dong["SoLuong"].ToString(), donGia.ToString("N0"), Convert.ToDecimal(dong["ThanhTien"]).ToString("N0") }, false);
                 }
                 if (viTri > 770)
@@ -93,7 +94,7 @@ namespace QLyCuaHangSuaXe.LopDungChung
             {
                 ve.Clear(Color.White);
                 ve.SmoothingMode = SmoothingMode.AntiAlias;
-                ve.DrawString("PHIẾU TIẾP NHẬN XE", tieuDe, xanh, 48, 46);
+                ve.DrawString(LaPhieuNhapKho ? "PHIẾU NHẬP KHO" : "PHIẾU TIẾP NHẬN XE", tieuDe, xanh, 48, 46);
                 ve.DrawString("Mã phiếu: " + maPhieu, dam, Brushes.DimGray, 50, 96);
                 float y = 135;
                 float[] x = { 50, 410, 510, 620, 744 };
@@ -118,10 +119,10 @@ namespace QLyCuaHangSuaXe.LopDungChung
                 if (soTrang == SoTrang - 1)
                 {
                     y += 22;
-                    ve.DrawString("TỔNG DỰ KIẾN: " + tongTien.ToString("N0") + " đ", dam, xanh, 410, y);
-                    ve.DrawString("Chi phí được xác nhận theo hạng mục thực tế.", chu, Brushes.DimGray, 50, y + 40);
-                    ve.DrawString("KHÁCH HÀNG", dam, Brushes.Black, 130, y + 90);
-                    ve.DrawString("NGƯỜI TIẾP NHẬN", dam, Brushes.Black, 505, y + 90);
+                    ve.DrawString((LaPhieuNhapKho ? "TỔNG TIỀN: " : "TỔNG DỰ KIẾN: ") + tongTien.ToString("N0") + " đ", dam, xanh, 410, y);
+                    ve.DrawString(LaPhieuNhapKho ? "Đã ghi sổ nhập kho." : "Chi phí được xác nhận theo hạng mục thực tế.", chu, Brushes.DimGray, 50, y + 40);
+                    ve.DrawString(LaPhieuNhapKho ? "NGƯỜI GIAO HÀNG" : "KHÁCH HÀNG", dam, Brushes.Black, 130, y + 90);
+                    ve.DrawString(LaPhieuNhapKho ? "NHÂN VIÊN NHẬP KHO" : "NGƯỜI TIẾP NHẬN", dam, Brushes.Black, 505, y + 90);
                     ve.DrawString("(Ký, ghi rõ họ tên)", chu, Brushes.DimGray, 122, y + 114);
                     ve.DrawString("(Ký, ghi rõ họ tên)", chu, Brushes.DimGray, 510, y + 114);
                 }

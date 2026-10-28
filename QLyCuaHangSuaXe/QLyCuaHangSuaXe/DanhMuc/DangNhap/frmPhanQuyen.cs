@@ -25,7 +25,8 @@ namespace QLyCuaHangSuaXe.DanhMuc.DangNhap
                 chkTiepNhanSuaChua,
                 chkDanhMucDichVu,
                 chkNhapKhoPhuTung,
-                chkBaoCaoThongKe
+                chkBaoCaoThongKe,
+                chkNhanVien, chkPhanCong, chkBangCong, chkHoaDon
             };
             string[] cacQuyen =
             {
@@ -34,7 +35,8 @@ namespace QLyCuaHangSuaXe.DanhMuc.DangNhap
                 "TIEP_NHAN",
                 "DICH_VU",
                 "NHAP_KHO",
-                "BAO_CAO"
+                "BAO_CAO",
+                "NHAN_VIEN", "PHAN_CONG", "CONG_CA_NHAN", "HOA_DON"
             };
             for (int viTri = 0; viTri < cacO.Length; viTri++)
             {
@@ -42,7 +44,7 @@ namespace QLyCuaHangSuaXe.DanhMuc.DangNhap
                 cacO[viTri].AutoCheck = false;
             }
 
-            lblGhiChuPhanQuyen.Text = vaiTro == "Thợ" || vaiTro == "Thợ chính" ? "Được xem xe đã phân công, cập nhật tiến độ và bảng công cá nhân." : vaiTro == "Thu ngân" ? "Được tiếp nhận xe, xem chi tiết phiếu, lập hóa đơn và thu tiền." : "Quản lý toàn bộ chức năng; đổi chức vụ nhân viên tại Tài khoản.";
+
         }
 
         public override void TaiDuLieu()

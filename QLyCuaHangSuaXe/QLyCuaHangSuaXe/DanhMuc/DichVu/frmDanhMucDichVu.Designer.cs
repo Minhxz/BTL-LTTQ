@@ -2,18 +2,18 @@ namespace QLyCuaHangSuaXe.DanhMuc.DichVu
 {
     partial class frmDanhMucDichVu
     {
-        private System.ComponentModel.IContainer components = null;
-        protected override void Dispose(bool disposing)
+        private System.ComponentModel.IContainer thanhPhan = null;
+        protected override void Dispose(bool dangHuy)
         {
-            if (disposing && components != null)
-                components.Dispose();
-            base.Dispose(disposing);
+            if (dangHuy && thanhPhan != null)
+                thanhPhan.Dispose();
+            base.Dispose(dangHuy);
         }
 
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tlpTrang = new System.Windows.Forms.TableLayoutPanel();
             this.lblTieuDe = new System.Windows.Forms.Label();
             this.grpThongTin = new System.Windows.Forms.GroupBox();
@@ -24,10 +24,6 @@ namespace QLyCuaHangSuaXe.DanhMuc.DichVu
             this.txtTenDichVu = new System.Windows.Forms.TextBox();
             this.lblnumGiaDichVu = new System.Windows.Forms.Label();
             this.numGiaDichVu = new System.Windows.Forms.NumericUpDown();
-            this.lblnumLuongNhiemVu = new System.Windows.Forms.Label();
-            this.numLuongNhiemVu = new System.Windows.Forms.NumericUpDown();
-            this.lblnumPhutDuKien = new System.Windows.Forms.Label();
-            this.numPhutDuKien = new System.Windows.Forms.NumericUpDown();
             this.lblcboTrangThai = new System.Windows.Forms.Label();
             this.cboTrangThai = new System.Windows.Forms.ComboBox();
             this.lbltxtMoTa = new System.Windows.Forms.Label();
@@ -35,7 +31,7 @@ namespace QLyCuaHangSuaXe.DanhMuc.DichVu
             this.flpThaoTac = new System.Windows.Forms.FlowLayoutPanel();
             this.btnThem = new System.Windows.Forms.Button();
             this.btnSua = new System.Windows.Forms.Button();
-            this.btnXoa = new System.Windows.Forms.Button();
+            this.btnNgungSuDung = new System.Windows.Forms.Button();
             this.btnDinhMuc = new System.Windows.Forms.Button();
             this.btnKho = new System.Windows.Forms.Button();
             this.btnLamMoi = new System.Windows.Forms.Button();
@@ -44,14 +40,11 @@ namespace QLyCuaHangSuaXe.DanhMuc.DichVu
             this.lblTimKiem = new System.Windows.Forms.Label();
             this.txtTimKiem = new System.Windows.Forms.TextBox();
             this.btnTimKiem = new System.Windows.Forms.Button();
-            this.lblHuongDan = new System.Windows.Forms.Label();
             this.dgvDichVu = new System.Windows.Forms.DataGridView();
             this.tlpTrang.SuspendLayout();
             this.grpThongTin.SuspendLayout();
             this.tlpNhap.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numGiaDichVu)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numLuongNhiemVu)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numPhutDuKien)).BeginInit();
             this.flpThaoTac.SuspendLayout();
             this.flpTimKiem.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvDichVu)).BeginInit();
@@ -63,19 +56,17 @@ namespace QLyCuaHangSuaXe.DanhMuc.DichVu
             this.tlpTrang.Controls.Add(this.grpThongTin, 0, 1);
             this.tlpTrang.Controls.Add(this.flpThaoTac, 0, 2);
             this.tlpTrang.Controls.Add(this.flpTimKiem, 0, 3);
-            this.tlpTrang.Controls.Add(this.lblHuongDan, 0, 5);
             this.tlpTrang.Controls.Add(this.dgvDichVu, 0, 4);
             this.tlpTrang.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tlpTrang.Location = new System.Drawing.Point(0, 0);
             this.tlpTrang.Name = "tlpTrang";
             this.tlpTrang.Padding = new System.Windows.Forms.Padding(20, 12, 20, 12);
-            this.tlpTrang.RowCount = 6;
+            this.tlpTrang.RowCount = 5;
             this.tlpTrang.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
-            this.tlpTrang.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 244F));
+            this.tlpTrang.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 194F));
             this.tlpTrang.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 52F));
             this.tlpTrang.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
             this.tlpTrang.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpTrang.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 32F));
             this.tlpTrang.Size = new System.Drawing.Size(1180, 780);
             this.tlpTrang.TabIndex = 0;
             this.lblTieuDe.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -94,7 +85,7 @@ namespace QLyCuaHangSuaXe.DanhMuc.DichVu
             this.grpThongTin.Margin = new System.Windows.Forms.Padding(0, 4, 0, 8);
             this.grpThongTin.Name = "grpThongTin";
             this.grpThongTin.Padding = new System.Windows.Forms.Padding(8);
-            this.grpThongTin.Size = new System.Drawing.Size(1140, 232);
+            this.grpThongTin.Size = new System.Drawing.Size(1140, 182);
             this.grpThongTin.TabIndex = 1;
             this.grpThongTin.TabStop = false;
             this.grpThongTin.Text = "Thông tin chi tiết";
@@ -109,25 +100,20 @@ namespace QLyCuaHangSuaXe.DanhMuc.DichVu
             this.tlpNhap.Controls.Add(this.txtTenDichVu, 3, 0);
             this.tlpNhap.Controls.Add(this.lblnumGiaDichVu, 0, 1);
             this.tlpNhap.Controls.Add(this.numGiaDichVu, 1, 1);
-            this.tlpNhap.Controls.Add(this.lblnumLuongNhiemVu, 2, 1);
-            this.tlpNhap.Controls.Add(this.numLuongNhiemVu, 3, 1);
-            this.tlpNhap.Controls.Add(this.lblnumPhutDuKien, 0, 2);
-            this.tlpNhap.Controls.Add(this.numPhutDuKien, 1, 2);
-            this.tlpNhap.Controls.Add(this.lblcboTrangThai, 2, 2);
-            this.tlpNhap.Controls.Add(this.cboTrangThai, 3, 2);
-            this.tlpNhap.Controls.Add(this.lbltxtMoTa, 0, 3);
-            this.tlpNhap.Controls.Add(this.txtMoTa, 1, 3);
+            this.tlpNhap.Controls.Add(this.lblcboTrangThai, 2, 1);
+            this.tlpNhap.Controls.Add(this.cboTrangThai, 3, 1);
+            this.tlpNhap.Controls.Add(this.lbltxtMoTa, 0, 2);
+            this.tlpNhap.Controls.Add(this.txtMoTa, 1, 2);
             this.tlpNhap.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tlpNhap.Location = new System.Drawing.Point(8, 31);
             this.tlpNhap.Margin = new System.Windows.Forms.Padding(0);
             this.tlpNhap.Name = "tlpNhap";
             this.tlpNhap.Padding = new System.Windows.Forms.Padding(8);
-            this.tlpNhap.RowCount = 4;
+            this.tlpNhap.RowCount = 3;
             this.tlpNhap.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 46F));
             this.tlpNhap.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 46F));
             this.tlpNhap.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 46F));
-            this.tlpNhap.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 46F));
-            this.tlpNhap.Size = new System.Drawing.Size(1124, 193);
+            this.tlpNhap.Size = new System.Drawing.Size(1124, 143);
             this.tlpNhap.TabIndex = 0;
             this.lbltxtMaDV.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lbltxtMaDV.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(82)))), ((int)(((byte)(99)))));
@@ -177,54 +163,23 @@ namespace QLyCuaHangSuaXe.DanhMuc.DichVu
             0,
             0,
             0});
+            this.numGiaDichVu.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             this.numGiaDichVu.Name = "numGiaDichVu";
             this.numGiaDichVu.Size = new System.Drawing.Size(394, 30);
             this.numGiaDichVu.TabIndex = 5;
             this.numGiaDichVu.ThousandsSeparator = true;
-            this.lblnumLuongNhiemVu.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblnumLuongNhiemVu.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(82)))), ((int)(((byte)(99)))));
-            this.lblnumLuongNhiemVu.Location = new System.Drawing.Point(566, 58);
-            this.lblnumLuongNhiemVu.Margin = new System.Windows.Forms.Padding(4, 4, 8, 4);
-            this.lblnumLuongNhiemVu.Name = "lblnumLuongNhiemVu";
-            this.lblnumLuongNhiemVu.Size = new System.Drawing.Size(128, 38);
-            this.lblnumLuongNhiemVu.TabIndex = 6;
-            this.lblnumLuongNhiemVu.Text = "Lương nhiệm vụ (đ)";
-            this.lblnumLuongNhiemVu.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.numLuongNhiemVu.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.numLuongNhiemVu.Location = new System.Drawing.Point(706, 61);
-            this.numLuongNhiemVu.Margin = new System.Windows.Forms.Padding(4, 7, 16, 7);
-            this.numLuongNhiemVu.Maximum = new decimal(new int[] {
-            1000000000,
+            this.numGiaDichVu.Value = new decimal(new int[] {
+            1,
             0,
             0,
             0});
-            this.numLuongNhiemVu.Name = "numLuongNhiemVu";
-            this.numLuongNhiemVu.Size = new System.Drawing.Size(394, 30);
-            this.numLuongNhiemVu.TabIndex = 7;
-            this.numLuongNhiemVu.ThousandsSeparator = true;
-            this.lblnumPhutDuKien.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblnumPhutDuKien.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(82)))), ((int)(((byte)(99)))));
-            this.lblnumPhutDuKien.Location = new System.Drawing.Point(12, 104);
-            this.lblnumPhutDuKien.Margin = new System.Windows.Forms.Padding(4, 4, 8, 4);
-            this.lblnumPhutDuKien.Name = "lblnumPhutDuKien";
-            this.lblnumPhutDuKien.Size = new System.Drawing.Size(128, 38);
-            this.lblnumPhutDuKien.TabIndex = 8;
-            this.lblnumPhutDuKien.Text = "Thời gian (phút)";
-            this.lblnumPhutDuKien.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.numPhutDuKien.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.numPhutDuKien.Location = new System.Drawing.Point(152, 107);
-            this.numPhutDuKien.Margin = new System.Windows.Forms.Padding(4, 7, 16, 7);
-            this.numPhutDuKien.Maximum = new decimal(new int[] {
-            1440,
-            0,
-            0,
-            0});
-            this.numPhutDuKien.Name = "numPhutDuKien";
-            this.numPhutDuKien.Size = new System.Drawing.Size(394, 30);
-            this.numPhutDuKien.TabIndex = 9;
             this.lblcboTrangThai.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblcboTrangThai.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(82)))), ((int)(((byte)(99)))));
-            this.lblcboTrangThai.Location = new System.Drawing.Point(566, 104);
+            this.lblcboTrangThai.Location = new System.Drawing.Point(566, 58);
             this.lblcboTrangThai.Margin = new System.Windows.Forms.Padding(4, 4, 8, 4);
             this.lblcboTrangThai.Name = "lblcboTrangThai";
             this.lblcboTrangThai.Size = new System.Drawing.Size(128, 38);
@@ -233,14 +188,14 @@ namespace QLyCuaHangSuaXe.DanhMuc.DichVu
             this.lblcboTrangThai.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.cboTrangThai.Dock = System.Windows.Forms.DockStyle.Fill;
             this.cboTrangThai.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cboTrangThai.Location = new System.Drawing.Point(706, 107);
+            this.cboTrangThai.Location = new System.Drawing.Point(706, 61);
             this.cboTrangThai.Margin = new System.Windows.Forms.Padding(4, 7, 16, 7);
             this.cboTrangThai.Name = "cboTrangThai";
             this.cboTrangThai.Size = new System.Drawing.Size(394, 31);
             this.cboTrangThai.TabIndex = 11;
             this.lbltxtMoTa.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lbltxtMoTa.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(82)))), ((int)(((byte)(99)))));
-            this.lbltxtMoTa.Location = new System.Drawing.Point(12, 150);
+            this.lbltxtMoTa.Location = new System.Drawing.Point(12, 104);
             this.lbltxtMoTa.Margin = new System.Windows.Forms.Padding(4, 4, 8, 4);
             this.lbltxtMoTa.Name = "lbltxtMoTa";
             this.lbltxtMoTa.Size = new System.Drawing.Size(128, 38);
@@ -248,7 +203,7 @@ namespace QLyCuaHangSuaXe.DanhMuc.DichVu
             this.lbltxtMoTa.Text = "Mô tả";
             this.lbltxtMoTa.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.txtMoTa.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtMoTa.Location = new System.Drawing.Point(152, 153);
+            this.txtMoTa.Location = new System.Drawing.Point(152, 107);
             this.txtMoTa.Margin = new System.Windows.Forms.Padding(4, 7, 16, 7);
             this.txtMoTa.Name = "txtMoTa";
             this.txtMoTa.Size = new System.Drawing.Size(394, 30);
@@ -256,13 +211,13 @@ namespace QLyCuaHangSuaXe.DanhMuc.DichVu
             this.flpThaoTac.AutoScroll = true;
             this.flpThaoTac.Controls.Add(this.btnThem);
             this.flpThaoTac.Controls.Add(this.btnSua);
-            this.flpThaoTac.Controls.Add(this.btnXoa);
+            this.flpThaoTac.Controls.Add(this.btnNgungSuDung);
             this.flpThaoTac.Controls.Add(this.btnDinhMuc);
             this.flpThaoTac.Controls.Add(this.btnKho);
             this.flpThaoTac.Controls.Add(this.btnLamMoi);
             this.flpThaoTac.Controls.Add(this.btnDong);
             this.flpThaoTac.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.flpThaoTac.Location = new System.Drawing.Point(20, 306);
+            this.flpThaoTac.Location = new System.Drawing.Point(20, 256);
             this.flpThaoTac.Margin = new System.Windows.Forms.Padding(0);
             this.flpThaoTac.Name = "flpThaoTac";
             this.flpThaoTac.Padding = new System.Windows.Forms.Padding(0, 4, 0, 0);
@@ -301,22 +256,22 @@ namespace QLyCuaHangSuaXe.DanhMuc.DichVu
             this.btnSua.TabIndex = 1;
             this.btnSua.Text = "Lưu dịch vụ";
             this.btnSua.UseVisualStyleBackColor = false;
-            this.btnXoa.AutoSize = true;
-            this.btnXoa.BackColor = System.Drawing.Color.White;
-            this.btnXoa.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnXoa.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(172)))), ((int)(((byte)(172)))));
-            this.btnXoa.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnXoa.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold);
-            this.btnXoa.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(164)))), ((int)(((byte)(59)))), ((int)(((byte)(59)))));
-            this.btnXoa.Location = new System.Drawing.Point(278, 8);
-            this.btnXoa.Margin = new System.Windows.Forms.Padding(0, 4, 10, 4);
-            this.btnXoa.MinimumSize = new System.Drawing.Size(108, 36);
-            this.btnXoa.Name = "btnXoa";
-            this.btnXoa.Padding = new System.Windows.Forms.Padding(12, 2, 12, 2);
-            this.btnXoa.Size = new System.Drawing.Size(185, 37);
-            this.btnXoa.TabIndex = 2;
-            this.btnXoa.Text = "Xóa / ngừng dùng";
-            this.btnXoa.UseVisualStyleBackColor = false;
+            this.btnNgungSuDung.AutoSize = true;
+            this.btnNgungSuDung.BackColor = System.Drawing.Color.White;
+            this.btnNgungSuDung.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnNgungSuDung.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(172)))), ((int)(((byte)(172)))));
+            this.btnNgungSuDung.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnNgungSuDung.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold);
+            this.btnNgungSuDung.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(164)))), ((int)(((byte)(59)))), ((int)(((byte)(59)))));
+            this.btnNgungSuDung.Location = new System.Drawing.Point(278, 8);
+            this.btnNgungSuDung.Margin = new System.Windows.Forms.Padding(0, 4, 10, 4);
+            this.btnNgungSuDung.MinimumSize = new System.Drawing.Size(108, 36);
+            this.btnNgungSuDung.Name = "btnNgungSuDung";
+            this.btnNgungSuDung.Padding = new System.Windows.Forms.Padding(12, 2, 12, 2);
+            this.btnNgungSuDung.Size = new System.Drawing.Size(185, 37);
+            this.btnNgungSuDung.TabIndex = 2;
+            this.btnNgungSuDung.Text = "Ngừng áp dụng";
+            this.btnNgungSuDung.UseVisualStyleBackColor = false;
             this.btnDinhMuc.AutoSize = true;
             this.btnDinhMuc.BackColor = System.Drawing.Color.White;
             this.btnDinhMuc.Cursor = System.Windows.Forms.Cursors.Hand;
@@ -386,7 +341,7 @@ namespace QLyCuaHangSuaXe.DanhMuc.DichVu
             this.flpTimKiem.Controls.Add(this.txtTimKiem);
             this.flpTimKiem.Controls.Add(this.btnTimKiem);
             this.flpTimKiem.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.flpTimKiem.Location = new System.Drawing.Point(20, 358);
+            this.flpTimKiem.Location = new System.Drawing.Point(20, 308);
             this.flpTimKiem.Margin = new System.Windows.Forms.Padding(0);
             this.flpTimKiem.Name = "flpTimKiem";
             this.flpTimKiem.Padding = new System.Windows.Forms.Padding(0, 4, 0, 0);
@@ -422,39 +377,30 @@ namespace QLyCuaHangSuaXe.DanhMuc.DichVu
             this.btnTimKiem.TabIndex = 2;
             this.btnTimKiem.Text = "Tìm kiếm";
             this.btnTimKiem.UseVisualStyleBackColor = false;
-            this.lblHuongDan.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblHuongDan.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(82)))), ((int)(((byte)(99)))));
-            this.lblHuongDan.Location = new System.Drawing.Point(24, 740);
-            this.lblHuongDan.Margin = new System.Windows.Forms.Padding(4, 4, 8, 4);
-            this.lblHuongDan.Name = "lblHuongDan";
-            this.lblHuongDan.Size = new System.Drawing.Size(1128, 24);
-            this.lblHuongDan.TabIndex = 4;
-            this.lblHuongDan.Text = "Chọn một dòng trong bảng để xem hoặc cập nhật thông tin.";
-            this.lblHuongDan.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.dgvDichVu.AllowUserToAddRows = false;
             this.dgvDichVu.AllowUserToDeleteRows = false;
             this.dgvDichVu.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvDichVu.BackgroundColor = System.Drawing.Color.White;
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(243)))), ((int)(((byte)(251)))));
-            dataGridViewCellStyle5.Font = new System.Drawing.Font("Segoe UI", 10F);
-            dataGridViewCellStyle5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(58)))), ((int)(((byte)(74)))));
-            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvDichVu.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(243)))), ((int)(((byte)(251)))));
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 10F);
+            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(58)))), ((int)(((byte)(74)))));
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvDichVu.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dgvDichVu.ColumnHeadersHeight = 40;
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle6.Font = new System.Drawing.Font("Segoe UI", 10F);
-            dataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(216)))), ((int)(((byte)(234)))), ((int)(((byte)(249)))));
-            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(42)))), ((int)(((byte)(56)))));
-            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvDichVu.DefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 10F);
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(216)))), ((int)(((byte)(234)))), ((int)(((byte)(249)))));
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(42)))), ((int)(((byte)(56)))));
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvDichVu.DefaultCellStyle = dataGridViewCellStyle2;
             this.dgvDichVu.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvDichVu.EnableHeadersVisualStyles = false;
-            this.dgvDichVu.Location = new System.Drawing.Point(20, 414);
+            this.dgvDichVu.Location = new System.Drawing.Point(20, 364);
             this.dgvDichVu.Margin = new System.Windows.Forms.Padding(0, 6, 0, 0);
             this.dgvDichVu.MultiSelect = false;
             this.dgvDichVu.Name = "dgvDichVu";
@@ -463,7 +409,7 @@ namespace QLyCuaHangSuaXe.DanhMuc.DichVu
             this.dgvDichVu.RowHeadersWidth = 51;
             this.dgvDichVu.RowTemplate.Height = 34;
             this.dgvDichVu.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvDichVu.Size = new System.Drawing.Size(1140, 322);
+            this.dgvDichVu.Size = new System.Drawing.Size(1140, 404);
             this.dgvDichVu.TabIndex = 5;
             this.AutoScaleDimensions = new System.Drawing.SizeF(120F, 120F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
@@ -473,14 +419,12 @@ namespace QLyCuaHangSuaXe.DanhMuc.DichVu
             this.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.MinimumSize = new System.Drawing.Size(960, 650);
             this.Name = "frmDanhMucDichVu";
-            this.Text = "frmDanhMucDichVu";
+            this.Text = "Danh mục dịch vụ";
             this.tlpTrang.ResumeLayout(false);
             this.grpThongTin.ResumeLayout(false);
             this.tlpNhap.ResumeLayout(false);
             this.tlpNhap.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numGiaDichVu)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numLuongNhiemVu)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numPhutDuKien)).EndInit();
             this.flpThaoTac.ResumeLayout(false);
             this.flpThaoTac.PerformLayout();
             this.flpTimKiem.ResumeLayout(false);
@@ -496,24 +440,19 @@ namespace QLyCuaHangSuaXe.DanhMuc.DichVu
         private System.Windows.Forms.TableLayoutPanel tlpNhap;
         private System.Windows.Forms.FlowLayoutPanel flpThaoTac;
         private System.Windows.Forms.FlowLayoutPanel flpTimKiem;
-        private System.Windows.Forms.Label lblHuongDan;
         private System.Windows.Forms.Label lbltxtMaDV;
         private System.Windows.Forms.TextBox txtMaDV;
         private System.Windows.Forms.Label lbltxtTenDichVu;
         private System.Windows.Forms.TextBox txtTenDichVu;
         private System.Windows.Forms.Label lblnumGiaDichVu;
         private System.Windows.Forms.NumericUpDown numGiaDichVu;
-        private System.Windows.Forms.Label lblnumLuongNhiemVu;
-        private System.Windows.Forms.NumericUpDown numLuongNhiemVu;
-        private System.Windows.Forms.Label lblnumPhutDuKien;
-        private System.Windows.Forms.NumericUpDown numPhutDuKien;
         private System.Windows.Forms.Label lblcboTrangThai;
         private System.Windows.Forms.ComboBox cboTrangThai;
         private System.Windows.Forms.Label lbltxtMoTa;
         private System.Windows.Forms.TextBox txtMoTa;
         private System.Windows.Forms.Button btnThem;
         private System.Windows.Forms.Button btnSua;
-        private System.Windows.Forms.Button btnXoa;
+        private System.Windows.Forms.Button btnNgungSuDung;
         private System.Windows.Forms.Button btnDinhMuc;
         private System.Windows.Forms.Button btnKho;
         private System.Windows.Forms.Button btnLamMoi;

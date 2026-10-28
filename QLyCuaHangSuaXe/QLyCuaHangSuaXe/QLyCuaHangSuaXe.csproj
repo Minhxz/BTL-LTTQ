@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -41,6 +41,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="QRCoder">
+      <HintPath>..\..\vendor\QRCoder\1.8.0\QRCoder.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
     <Reference Include="System.Core" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
@@ -53,12 +57,47 @@
     <Reference Include="System.IO.Compression.FileSystem" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DanhMuc\TiepNhan\frmChiTietPhieu.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DanhMuc\DichVu\frmDinhMuc.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DanhMuc\DichVu\frmDinhMuc.Designer.cs">
+      <DependentUpon>frmDinhMuc.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DanhMuc\TiepNhan\frmChiTietPhieu.Designer.cs">
+      <DependentUpon>frmChiTietPhieu.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DanhMuc\frmHoaDon.Designer.cs">
+      <DependentUpon>frmHoaDon.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DanhMuc\frmChiTietHoaDon.Designer.cs">
+      <DependentUpon>frmChiTietHoaDon.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DanhMuc\frmPhanCong.Designer.cs">
+      <DependentUpon>frmPhanCong.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DanhMuc\frmBangCong.Designer.cs">
+      <DependentUpon>frmBangCong.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DanhMuc\frmThongKe.Designer.cs">
+      <DependentUpon>frmThongKe.cs</DependentUpon>
+    </Compile>
     <Compile Include="Classes\BaoMat.cs" />
+    <Compile Include="Classes\ThanhToanQR.cs" />
+    <Compile Include="DanhMuc\frmThanhToanQR.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DanhMuc\frmThanhToanQR.Designer.cs">
+      <DependentUpon>frmThanhToanQR.cs</DependentUpon>
+    </Compile>
     <Compile Include="Classes\MauInPhieu.cs" />
     <Compile Include="Classes\QuanLyNhanSu.cs" />
     <Compile Include="Classes\ChamCong.cs" />
-    <Compile Include="Classes\DataProcessor.cs" />
+    <Compile Include="Classes\XuLyDuLieu.cs" />
     <Compile Include="Classes\GiaoDien.cs" />
+    <Compile Include="Classes\QuanLyKho.cs" />
     <Compile Include="Classes\NghiepVuSuaXe.cs" />
     <Compile Include="Classes\PhanQuyenNguoiDung.cs" />
     <Compile Include="Classes\TrangThietKe.cs">
@@ -99,7 +138,16 @@
     <Compile Include="DanhMuc\frmBangCong.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="DanhMuc\frmNghiepVu.cs">
+    <Compile Include="DanhMuc\frmPhanCong.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DanhMuc\frmHoaDon.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DanhMuc\frmChiTietHoaDon.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DanhMuc\frmThongKe.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="DanhMuc\frmNhanVien.cs">
@@ -126,11 +174,11 @@
     <Compile Include="DanhMuc\TiepNhan\frmTiepNhan.Designer.cs">
       <DependentUpon>frmTiepNhan.cs</DependentUpon>
     </Compile>
-    <Compile Include="Form1.cs">
+    <Compile Include="frmChinh.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="frmChinh.Designer.cs">
+      <DependentUpon>frmChinh.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\*.cs" />
@@ -149,8 +197,20 @@
     <EmbeddedResource Include="DanhMuc\DichVu\frmDanhMucDichVu.resx">
       <DependentUpon>frmDanhMucDichVu.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="DanhMuc\frmBangCong.resx">
+      <DependentUpon>frmBangCong.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DanhMuc\frmHoaDon.resx">
+      <DependentUpon>frmHoaDon.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="DanhMuc\frmNhanVien.resx">
       <DependentUpon>frmNhanVien.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DanhMuc\frmPhanCong.resx">
+      <DependentUpon>frmPhanCong.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DanhMuc\frmThongKe.resx">
+      <DependentUpon>frmThongKe.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="DanhMuc\TiepNhan\frmKiemTraTiepNhan.resx">
       <DependentUpon>frmKiemTraTiepNhan.cs</DependentUpon>
@@ -158,42 +218,54 @@
     <EmbeddedResource Include="DanhMuc\TiepNhan\frmTiepNhan.resx">
       <DependentUpon>frmTiepNhan.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <EmbeddedResource Include="frmChinh.resx">
+      <DependentUpon>frmChinh.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx" />
-    <Compile Include="..\..\Kho\Kho\btl\Form1.cs">
-      <Link>DanhMuc\Kho\Form1.cs</Link>
+    <Compile Include="DanhMuc\Kho\frmNhapPhieuNhap.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="..\..\Kho\Kho\btl\Form1.Designer.cs">
-      <Link>DanhMuc\Kho\Form1.Designer.cs</Link>
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="DanhMuc\Kho\frmNhapPhieuNhap.Designer.cs">
+      <DependentUpon>frmNhapPhieuNhap.cs</DependentUpon>
     </Compile>
-    <Compile Include="..\..\Kho\Kho\btl\frmKho.cs">
-      <Link>DanhMuc\Kho\frmKho.cs</Link>
+    <Compile Include="DanhMuc\Kho\frmKho.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="..\..\Kho\Kho\btl\frmKho.Designer.cs">
-      <Link>DanhMuc\Kho\frmKho.Designer.cs</Link>
+    <Compile Include="DanhMuc\Kho\frmKho.Designer.cs">
       <DependentUpon>frmKho.cs</DependentUpon>
     </Compile>
-    <Compile Include="..\..\Kho\Kho\btl\frmPhieuNhap.cs">
-      <Link>DanhMuc\Kho\frmPhieuNhap.cs</Link>
+    <Compile Include="DanhMuc\Kho\frmPhieuNhap.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="..\..\Kho\Kho\btl\frmPhieuNhap.Designer.cs">
-      <Link>DanhMuc\Kho\frmPhieuNhap.Designer.cs</Link>
+    <Compile Include="DanhMuc\Kho\frmPhieuNhap.Designer.cs">
       <DependentUpon>frmPhieuNhap.cs</DependentUpon>
     </Compile>
-    <Compile Include="..\..\Kho\Kho\btl\frmThemNCC.cs">
-      <Link>DanhMuc\Kho\frmThemNCC.cs</Link>
+    <Compile Include="DanhMuc\Kho\frmThemNCC.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="..\..\Kho\Kho\btl\frmThemNCC.Designer.cs">
-      <Link>DanhMuc\Kho\frmThemNCC.Designer.cs</Link>
+    <Compile Include="DanhMuc\Kho\frmThemNCC.Designer.cs">
       <DependentUpon>frmThemNCC.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="DanhMuc\Kho\frmNhapPhieuNhap.resx">
+      <DependentUpon>frmNhapPhieuNhap.cs</DependentUpon>
+      <LogicalName>btl.frmNhapPhieuNhap.resources</LogicalName>
+      <ManifestResourceName>btl.frmNhapPhieuNhap</ManifestResourceName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DanhMuc\Kho\frmKho.resx">
+      <DependentUpon>frmKho.cs</DependentUpon>
+      <LogicalName>btl.frmKho.resources</LogicalName>
+      <ManifestResourceName>btl.frmKho</ManifestResourceName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DanhMuc\Kho\frmPhieuNhap.resx">
+      <DependentUpon>frmPhieuNhap.cs</DependentUpon>
+      <LogicalName>btl.frmPhieuNhap.resources</LogicalName>
+      <ManifestResourceName>btl.frmPhieuNhap</ManifestResourceName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DanhMuc\Kho\frmThemNCC.resx">
+      <DependentUpon>frmThemNCC.cs</DependentUpon>
+      <LogicalName>btl.frmThemNCC.resources</LogicalName>
+      <ManifestResourceName>btl.frmThemNCC</ManifestResourceName>
+    </EmbeddedResource>
     <None Include="App.config" />
     <None Include="Properties\Settings.settings" />
   </ItemGroup>

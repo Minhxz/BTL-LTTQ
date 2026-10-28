@@ -2,28 +2,37 @@ namespace QLyCuaHangSuaXe.DanhMuc.TiepNhan
 {
     partial class frmXemBanInPhieu
     {
-        System.ComponentModel.IContainer components = null;
-        protected override void Dispose(bool disposing)
+        System.ComponentModel.IContainer thanhPhan = null;
+        protected override void Dispose(bool dangHuy)
         {
-            if (disposing)
+            if (dangHuy)
             {
                 if (picPhieu != null && picPhieu.Image != null) { picPhieu.Image.Dispose(); picPhieu.Image = null; }
-                if (components != null) components.Dispose();
+                if (thanhPhan != null) thanhPhan.Dispose();
             }
-            base.Dispose(disposing);
+            base.Dispose(dangHuy);
         }
 
         void InitializeComponent()
         {
             this.tlpTrang = new System.Windows.Forms.TableLayoutPanel();
+            this.tlpTrang.Name = "tlpTrang";
             this.flpThaoTac = new System.Windows.Forms.FlowLayoutPanel();
+            this.flpThaoTac.Name = "flpThaoTac";
             this.btnIn = new System.Windows.Forms.Button();
+            this.btnIn.Name = "btnIn";
             this.btnTruoc = new System.Windows.Forms.Button();
+            this.btnTruoc.Name = "btnTruoc";
             this.btnSau = new System.Windows.Forms.Button();
+            this.btnSau.Name = "btnSau";
             this.btnDong = new System.Windows.Forms.Button();
+            this.btnDong.Name = "btnDong";
             this.lblTrang = new System.Windows.Forms.Label();
+            this.lblTrang.Name = "lblTrang";
             this.pnlBanIn = new System.Windows.Forms.Panel();
+            this.pnlBanIn.Name = "pnlBanIn";
             this.picPhieu = new System.Windows.Forms.PictureBox();
+            this.picPhieu.Name = "picPhieu";
             this.tlpTrang.SuspendLayout();
             this.flpThaoTac.SuspendLayout();
             this.pnlBanIn.SuspendLayout();
@@ -70,6 +79,7 @@ namespace QLyCuaHangSuaXe.DanhMuc.TiepNhan
             this.ClientSize = new System.Drawing.Size(884, 820);
             this.MinimumSize = new System.Drawing.Size(870, 540);
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            this.Name = "frmXemBanInPhieu";
             this.Text = "Xem trước phiếu tiếp nhận";
             this.CancelButton = this.btnDong;
             this.Controls.Add(this.tlpTrang);
