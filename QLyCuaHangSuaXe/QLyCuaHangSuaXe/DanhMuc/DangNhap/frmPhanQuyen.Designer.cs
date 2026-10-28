@@ -2,12 +2,12 @@ namespace QLyCuaHangSuaXe.DanhMuc.DangNhap
 {
     partial class frmPhanQuyen
     {
-        private System.ComponentModel.IContainer components = null;
-        protected override void Dispose(bool disposing)
+        private System.ComponentModel.IContainer thanhPhan = null;
+        protected override void Dispose(bool dangHuy)
         {
-            if (disposing && components != null)
-                components.Dispose();
-            base.Dispose(disposing);
+            if (dangHuy && thanhPhan != null)
+                thanhPhan.Dispose();
+            base.Dispose(dangHuy);
         }
 
         private void InitializeComponent()
@@ -24,7 +24,10 @@ namespace QLyCuaHangSuaXe.DanhMuc.DangNhap
             this.chkDanhMucDichVu = new System.Windows.Forms.CheckBox();
             this.chkNhapKhoPhuTung = new System.Windows.Forms.CheckBox();
             this.chkBaoCaoThongKe = new System.Windows.Forms.CheckBox();
-            this.lblGhiChuPhanQuyen = new System.Windows.Forms.Label();
+            this.chkNhanVien = new System.Windows.Forms.CheckBox();
+            this.chkPhanCong = new System.Windows.Forms.CheckBox();
+            this.chkBangCong = new System.Windows.Forms.CheckBox();
+            this.chkHoaDon = new System.Windows.Forms.CheckBox();
             this.grpPhanQuyen.SuspendLayout();
             this.SuspendLayout();
             this.lblTieuDe.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Bold);
@@ -34,7 +37,7 @@ namespace QLyCuaHangSuaXe.DanhMuc.DangNhap
             this.lblTieuDe.Size = new System.Drawing.Size(660, 36);
             this.lblTieuDe.TabIndex = 7;
             this.lblTieuDe.Text = "PHÂN QUYỀN CHỨC NĂNG";
-            this.btnDong.Location = new System.Drawing.Point(560, 394);
+            this.btnDong.Location = new System.Drawing.Point(660, 520);
             this.btnDong.Name = "btnDong";
             this.btnDong.Size = new System.Drawing.Size(120, 34);
             this.btnDong.TabIndex = 1;
@@ -55,12 +58,11 @@ namespace QLyCuaHangSuaXe.DanhMuc.DangNhap
             this.grpPhanQuyen.Controls.Add(this.chkDanhMucDichVu);
             this.grpPhanQuyen.Controls.Add(this.chkNhapKhoPhuTung);
             this.grpPhanQuyen.Controls.Add(this.chkBaoCaoThongKe);
-            this.grpPhanQuyen.Controls.Add(this.lblGhiChuPhanQuyen);
             this.grpPhanQuyen.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.grpPhanQuyen.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(27)))), ((int)(((byte)(64)))), ((int)(((byte)(96)))));
             this.grpPhanQuyen.Location = new System.Drawing.Point(20, 80);
             this.grpPhanQuyen.Name = "grpPhanQuyen";
-            this.grpPhanQuyen.Size = new System.Drawing.Size(660, 298);
+            this.grpPhanQuyen.Size = new System.Drawing.Size(760, 420);
             this.grpPhanQuyen.TabIndex = 6;
             this.grpPhanQuyen.TabStop = false;
             this.grpPhanQuyen.Text = "Phân quyền chức năng";
@@ -77,77 +79,70 @@ namespace QLyCuaHangSuaXe.DanhMuc.DangNhap
             this.lstVaiTro.FormattingEnabled = true;
             this.lstVaiTro.IntegralHeight = false;
             this.lstVaiTro.ItemHeight = 20;
-            this.lstVaiTro.Items.AddRange(new object[] { "Chủ cửa hàng", "Thu ngân", "Kho", "Thợ" });
+            this.lstVaiTro.Items.AddRange(new object[] { "Quản lý cửa hàng", "Kỹ thuật viên chính", "Kỹ thuật viên", "Thợ phụ", "Lễ tân - Cố vấn dịch vụ", "Thủ kho", "Kế toán - Thu ngân" });
             this.lstVaiTro.Location = new System.Drawing.Point(16, 60);
             this.lstVaiTro.Name = "lstVaiTro";
-            this.lstVaiTro.Size = new System.Drawing.Size(200, 120);
+            this.lstVaiTro.Size = new System.Drawing.Size(280, 220);
             this.lstVaiTro.TabIndex = 1;
             this.lblChucNang.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblChucNang.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(35)))));
-            this.lblChucNang.Location = new System.Drawing.Point(250, 32);
+            this.lblChucNang.Location = new System.Drawing.Point(320, 32);
             this.lblChucNang.Name = "lblChucNang";
-            this.lblChucNang.Size = new System.Drawing.Size(390, 20);
+            this.lblChucNang.Size = new System.Drawing.Size(420, 20);
             this.lblChucNang.TabIndex = 2;
             this.lblChucNang.Text = "Chức năng được hiển thị:";
             this.chkQuanLyTaiKhoan.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.chkQuanLyTaiKhoan.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(35)))));
-            this.chkQuanLyTaiKhoan.Location = new System.Drawing.Point(250, 64);
+            this.chkQuanLyTaiKhoan.Location = new System.Drawing.Point(320, 64);
             this.chkQuanLyTaiKhoan.Name = "chkQuanLyTaiKhoan";
-            this.chkQuanLyTaiKhoan.Size = new System.Drawing.Size(390, 24);
+            this.chkQuanLyTaiKhoan.Size = new System.Drawing.Size(420, 24);
             this.chkQuanLyTaiKhoan.TabIndex = 3;
             this.chkQuanLyTaiKhoan.Text = "Quản lý tài khoản";
             this.chkQuanLyTaiKhoan.UseVisualStyleBackColor = true;
             this.chkPhanQuyen.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.chkPhanQuyen.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(35)))));
-            this.chkPhanQuyen.Location = new System.Drawing.Point(250, 98);
+            this.chkPhanQuyen.Location = new System.Drawing.Point(320, 98);
             this.chkPhanQuyen.Name = "chkPhanQuyen";
-            this.chkPhanQuyen.Size = new System.Drawing.Size(390, 24);
+            this.chkPhanQuyen.Size = new System.Drawing.Size(420, 24);
             this.chkPhanQuyen.TabIndex = 4;
             this.chkPhanQuyen.Text = "Phân quyền";
             this.chkPhanQuyen.UseVisualStyleBackColor = true;
             this.chkTiepNhanSuaChua.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.chkTiepNhanSuaChua.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(35)))));
-            this.chkTiepNhanSuaChua.Location = new System.Drawing.Point(250, 132);
+            this.chkTiepNhanSuaChua.Location = new System.Drawing.Point(320, 132);
             this.chkTiepNhanSuaChua.Name = "chkTiepNhanSuaChua";
-            this.chkTiepNhanSuaChua.Size = new System.Drawing.Size(390, 24);
+            this.chkTiepNhanSuaChua.Size = new System.Drawing.Size(420, 24);
             this.chkTiepNhanSuaChua.TabIndex = 5;
             this.chkTiepNhanSuaChua.Text = "Tiếp nhận và sửa chữa xe";
             this.chkTiepNhanSuaChua.UseVisualStyleBackColor = true;
             this.chkDanhMucDichVu.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.chkDanhMucDichVu.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(35)))));
-            this.chkDanhMucDichVu.Location = new System.Drawing.Point(250, 166);
+            this.chkDanhMucDichVu.Location = new System.Drawing.Point(320, 166);
             this.chkDanhMucDichVu.Name = "chkDanhMucDichVu";
-            this.chkDanhMucDichVu.Size = new System.Drawing.Size(390, 24);
+            this.chkDanhMucDichVu.Size = new System.Drawing.Size(420, 24);
             this.chkDanhMucDichVu.TabIndex = 6;
             this.chkDanhMucDichVu.Text = "Danh mục dịch vụ";
             this.chkDanhMucDichVu.UseVisualStyleBackColor = true;
             this.chkNhapKhoPhuTung.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.chkNhapKhoPhuTung.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(35)))));
-            this.chkNhapKhoPhuTung.Location = new System.Drawing.Point(250, 200);
+            this.chkNhapKhoPhuTung.Location = new System.Drawing.Point(320, 200);
             this.chkNhapKhoPhuTung.Name = "chkNhapKhoPhuTung";
-            this.chkNhapKhoPhuTung.Size = new System.Drawing.Size(390, 24);
+            this.chkNhapKhoPhuTung.Size = new System.Drawing.Size(420, 24);
             this.chkNhapKhoPhuTung.TabIndex = 7;
             this.chkNhapKhoPhuTung.Text = "Nhập kho phụ tùng";
             this.chkNhapKhoPhuTung.UseVisualStyleBackColor = true;
             this.chkBaoCaoThongKe.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.chkBaoCaoThongKe.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(35)))));
-            this.chkBaoCaoThongKe.Location = new System.Drawing.Point(250, 234);
+            this.chkBaoCaoThongKe.Location = new System.Drawing.Point(320, 234);
             this.chkBaoCaoThongKe.Name = "chkBaoCaoThongKe";
-            this.chkBaoCaoThongKe.Size = new System.Drawing.Size(390, 24);
+            this.chkBaoCaoThongKe.Size = new System.Drawing.Size(420, 24);
             this.chkBaoCaoThongKe.TabIndex = 8;
             this.chkBaoCaoThongKe.Text = "Báo cáo và thống kê";
             this.chkBaoCaoThongKe.UseVisualStyleBackColor = true;
-            this.lblGhiChuPhanQuyen.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblGhiChuPhanQuyen.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(98)))), ((int)(((byte)(98)))), ((int)(((byte)(98)))));
-            this.lblGhiChuPhanQuyen.Location = new System.Drawing.Point(16, 204);
-            this.lblGhiChuPhanQuyen.Name = "lblGhiChuPhanQuyen";
-            this.lblGhiChuPhanQuyen.Size = new System.Drawing.Size(200, 55);
-            this.lblGhiChuPhanQuyen.TabIndex = 8;
-            this.lblGhiChuPhanQuyen.Text = "Chọn vị trí để xem quyền truy cập.";
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(247)))), ((int)(((byte)(250)))));
-            this.ClientSize = new System.Drawing.Size(700, 448);
+            this.ClientSize = new System.Drawing.Size(800, 580);
             this.Controls.Add(this.grpPhanQuyen);
             this.Controls.Add(this.lblTieuDe);
             this.Controls.Add(this.btnDong);
@@ -157,10 +152,38 @@ namespace QLyCuaHangSuaXe.DanhMuc.DangNhap
             this.Name = "frmPhanQuyen";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Phân quyền";
+            this.grpPhanQuyen.Controls.Add(this.chkNhanVien);
+            this.chkNhanVien.Name = "chkNhanVien";
+            this.chkNhanVien.Text = "Quản lý nhân viên";
+            this.chkNhanVien.Location = new System.Drawing.Point(320, 268);
+            this.chkNhanVien.Size = new System.Drawing.Size(420,24);
+            this.chkNhanVien.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.grpPhanQuyen.Controls.Add(this.chkPhanCong);
+            this.chkPhanCong.Name = "chkPhanCong";
+            this.chkPhanCong.Text = "Phân công và tiến độ";
+            this.chkPhanCong.Location = new System.Drawing.Point(320, 302);
+            this.chkPhanCong.Size = new System.Drawing.Size(420,24);
+            this.chkPhanCong.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.grpPhanQuyen.Controls.Add(this.chkBangCong);
+            this.chkBangCong.Name = "chkBangCong";
+            this.chkBangCong.Text = "Bảng công cá nhân";
+            this.chkBangCong.Location = new System.Drawing.Point(320, 336);
+            this.chkBangCong.Size = new System.Drawing.Size(420,24);
+            this.chkBangCong.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.grpPhanQuyen.Controls.Add(this.chkHoaDon);
+            this.chkHoaDon.Name = "chkHoaDon";
+            this.chkHoaDon.Text = "Hóa đơn và thanh toán";
+            this.chkHoaDon.Location = new System.Drawing.Point(320, 370);
+            this.chkHoaDon.Size = new System.Drawing.Size(420,24);
+            this.chkHoaDon.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.grpPhanQuyen.ResumeLayout(false);
             this.ResumeLayout(false);
         }
 
+        private System.Windows.Forms.CheckBox chkNhanVien;
+        private System.Windows.Forms.CheckBox chkPhanCong;
+        private System.Windows.Forms.CheckBox chkBangCong;
+        private System.Windows.Forms.CheckBox chkHoaDon;
         private System.Windows.Forms.Label lblTieuDe;
         private System.Windows.Forms.Button btnDong;
         private System.Windows.Forms.GroupBox grpPhanQuyen;
@@ -173,6 +196,5 @@ namespace QLyCuaHangSuaXe.DanhMuc.DangNhap
         private System.Windows.Forms.CheckBox chkDanhMucDichVu;
         private System.Windows.Forms.CheckBox chkNhapKhoPhuTung;
         private System.Windows.Forms.CheckBox chkBaoCaoThongKe;
-        private System.Windows.Forms.Label lblGhiChuPhanQuyen;
     }
 }

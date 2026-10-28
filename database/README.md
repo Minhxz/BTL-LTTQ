@@ -1,13 +1,22 @@
-# Database QuanLySuaXe
+﻿# Database QuanLySuaXe
 
-Xem README ở gốc repo để cấu hình kết nối, phân quyền và chạy ứng dụng.
+Bản đang dùng là **QuanLySuaXe_DayDu_20261028.sql**. File này có cấu trúc và dữ liệu SQL mới đã chỉnh về năm nhân viên theo yêu cầu, gồm **18 bảng**, không có cột cho phép NULL. Chạy duy nhất file này khi cài từ đầu; không chạy nối các script cũ.
 
-Chạy theo thứ tự: `QuanLySuaXe.sql` → `QuanLySuaXe_FakeData.sql` (chỉ khi cần demo) → `QuanLySuaXe_NghiepVu.sql`. Chạy script bằng SQL Server Management Studio hoặc SQL Client trên đúng instance chứa dữ liệu của bạn. Các script cấu trúc không xóa dữ liệu.
+- [Hướng dẫn cài cho nhóm](CAI_DAT_CHO_NHOM.md).
+- [Bản SQL đầy đủ](QuanLySuaXe_DayDu_20261028.sql).
+- [Số dòng và SHA-256 dữ liệu từng bảng](QuanLySuaXe_DoiChieu_20261028.json).
 
-`QuanLySuaXe.sql` chứa 14 bảng ban đầu. `QuanLySuaXe_NghiepVu.sql` bổ sung 5 bảng định mức dịch vụ, phụ tùng chốt cho tiếp nhận, ca làm, bảng công và lịch sử công; thêm giá/tên/lương chốt và trigger khóa hóa đơn.
+Tài khoản quản lý ban đầu: **minh / 123**. Có đúng năm nhân viên **Minh, An, Huy, Mai, Cường** tương ứng các tên đăng nhập **minh, an, huy, mai, cuong**, đều dùng mật khẩu ban đầu `123`. Nhân viên nghỉ việc bị chặn; tài khoản mới tạo qua ứng dụng cũng mặc định `123`. Mật khẩu lưu trong `NhanVien.MatKhau`, băm SHA-256 dạng HEX 64 ký tự.
 
-Tài khoản mẫu dùng `Demo1234`, lưu PBKDF2-SHA256: `demo_admin`, `demo_thungan`, `demo_tho01`, `demo_tho02`. Vai trò `Kho` cũ không thuộc bốn chức vụ mới; chủ phải đổi vai trò của `demo_kho` nếu muốn dùng. `demo_nghiviec` không được đăng nhập. Tài khoản, số điện thoại và chứng từ mẫu đều giả lập.
+| Nhóm | Bảng |
+| --- | --- |
+| Nhân sự và công | ChucVu, KhoanDieuChinh, ChucVuDieuChinh, NhanVien, CaLam, ChiTietCaLam |
+| Khách, xe và phân công | KhachHang, Xe, ChiTietPhanCong |
+| Dịch vụ và kho | DichVu, ChiTietDichVu, PhuTung, NhaCungCap, PhieuNhap, ChiTietPhieuNhap |
+| Tiếp nhận và thanh toán | PhieuTiepNhan, ChiTietPhieuTiepNhan, HoaDon |
 
-Migration giữ nguyên dữ liệu cũ, không tự trừ kho phiếu cũ, không suy diễn giá hoặc lương lịch sử. Chủ phải đối soát phiếu cũ trước khi chốt phụ tùng. Lương giờ và lương nhiệm vụ mới có mặc định 0 để chủ nhập chính xác mức của cửa hàng.
+Giá trọn gói và tổng tiền phiếu lấy từ `ChiTietPhieuTiepNhan.ThanhTien`. Hóa đơn chỉ lưu khi xác nhận đã thanh toán; phiếu hoàn thành chưa có hóa đơn là khoản chờ thu. Công lấy giờ thực tế từ `ChiTietCaLam`, ca từ `CaLam`, lương tháng từ `NhanVien.Luong`.
 
-Đã chạy cấu trúc, dữ liệu mẫu và migration hai lần trên LocalDB kiểm thử riêng; 80 kiểm tra tích hợp đã qua. Database thật `(localdb)\MSSQLLocalDB / QuanLySuaXe` cũng đã được sao lưu, kiểm tra checksum và nâng cấp. Tài khoản hiện có trên database thật là `mau_admin`, `mau_thungan`, `mau_kho`, `mau_tho`, dùng mật khẩu cũ; `mau_kho` cần chủ đổi sang một trong bốn chức vụ mới nếu muốn đăng nhập. Các tài khoản `demo_` chỉ thuộc bộ dữ liệu mẫu, không được nạp vào database thật trong lần nâng cấp này.
+App.config mặc định `(localdb)\MSSQLLocalDB / QuanLySuaXe`. LocalDB trên các máy khác nhau là các bản dữ liệu độc lập; muốn cập nhật chung phải cấu hình tất cả máy kết nối cùng SQL Server.
+
+Các bản SQL, migration và kiểm thử dành cho cấu trúc cũ là tài liệu lưu trữ, không dùng để cài hoặc nâng cấp bản này. Không nhập SQL của repo kho riêng đè lên database hiện tại.

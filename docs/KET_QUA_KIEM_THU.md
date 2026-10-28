@@ -1,17 +1,15 @@
-# Kết quả kiểm tra
+﻿# Kết quả kiểm tra 28/10/2026
 
-- Build Debug và Release: ứng dụng chính, project DanhMuc và project Kho.
-- 20 kiểm tra không cần SQL: mở đăng nhập, bốn vai trò, quyền truy cập, tính giờ và tiền công chính xác theo phút; đối chiếu băm mật khẩu với PBKDF2 tham chiếu; xem trước phiếu A4 không cần SQL hoặc máy in và phân trang phiếu dài.
-- 124 kiểm tra tích hợp trên LocalDB riêng: đăng nhập/đổi mật khẩu, tạo tài khoản và hồ sơ nguyên tử, cấp tài khoản cho nhân viên có sẵn, chống tên đăng nhập trùng, khóa tài khoản tách trạng thái làm việc, tiền ca khớp SQL, giữ lương giờ đã chốt, đối chiếu nhiệm vụ và tổng lương; thiếu/gom phụ tùng, giới hạn 2/3 xe, tiếp nhận đồng thời, rollback, hoàn kho một lần, khóa giá/hóa đơn, thanh toán một lần, quyền từng thợ, các form và 7 báo cáo, xuất XLSX.
-- 25 kiểm tra thao tác tài khoản: tạo mới ngay trong form, liên kết nhân viên cũ và giữ lương, đổi mật khẩu nhúng trong cùng trang, sai mật khẩu cũ/xác nhận lệch giữ nguyên hash, đổi thành công đăng nhập được, hạ quyền xóa dữ liệu quản lý trên form đang mở; cả ba vai trò còn lại chỉ xem mật khẩu cá nhân.
-- 14 form nạp thành công bằng bộ thiết kế WinForms. Có kiểm tra tên component không trùng field kế thừa; phiếu tiếp nhận dùng nhãn riêng `lblTrangThaiPhieu` để tránh trùng `lblThongBao` của lớp cha.
-- Migration chạy hai lần trên database kiểm thử.
-- Database thật: đọc 11 trang và sidebar, kiểm tra đăng nhập bằng thông tin được truyền khi chạy, không ghi chứng từ kiểm thử. Đã đối chiếu: 19 bảng, 4 nhân viên, 3 hóa đơn, tổng 770.000đ. Minh — Chủ/Quản lý, An — Thợ chính (3 xe), Huy — Thợ (2 xe), Mai — Thu ngân. Giữ nguyên mã nhân viên, tên đăng nhập và password hash khi đổi tên. Tài khoản chủ là `minh`; thông tin đăng nhập thật không ghi trong source.
-- Sao lưu trước tách trạng thái tài khoản và đổi tên nhân viên bằng COPY_ONLY CHECKSUM, đã RESTORE VERIFYONLY; các bản sao nằm ở `checks/output/backups`.
-- Giao diện dùng màu xanh gốc: sidebar xanh đậm có icon/nút bo góc, nút chọn hiện màu xanh, khối thông tin trắng và bảng dễ đọc. Đã thêm xác nhận khi thoát cửa sổ chính/đăng nhập và nút Thoát phiếu tiếp nhận.
-- Backup trước nâng cấp: `checks/output/backups/QuanLySuaXe_before_20261024_224234.bak`, đã RESTORE VERIFYONLY WITH CHECKSUM.
-- Ảnh render dữ liệu thật: `checks/output/database-thuc.png`. Ảnh trạng thái đủ phụ tùng từ database kiểm thử: `checks/output/sidebar-ready.png`. File Excel kiểm tra: `checks/output/BangCong.xlsx`.
+Debug và Release đã biên dịch thành công. Bộ kiểm tra WinForms DesignSurface nạp đủ 22 form. Đã sửa frmChinh: tên file trùng tên lớp, lớp cha Form ghi đầy đủ, constructor dành cho Designer chỉ khởi tạo giao diện; bỏ tham chiếu System.dll theo đường dẫn riêng của máy. Khôi phục cột native Designer của hóa đơn và phân công. Designer frmChinh đã mở trực tiếp trong Visual Studio, hiển thị đầy đủ sidebar và không còn lỗi System.Void. Designer Nhân viên cũng đã mở trực tiếp, hiển thị hai thẻ và nút Nghỉ việc. Cần biên dịch lại sau Clean, đóng/mở lại Designer lỗi cũ để Visual Studio nạp lớp cha mới. Cả 22 form đã nạp qua DesignSurface. Đã mở trực tiếp bốn Designer: frmChinh, frmNhanVien, frmBangCong, frmChiTietHoaDon. Chưa xác nhận mở tay từng form còn lại: công cụ điều khiển liên tục báo user input was detected dù đã đọc lại cửa sổ, nên dừng để tránh can thiệp thao tác người dùng.
 
-Các file trong checks/output được gitignore. Bộ ghi nghiệp vụ dùng `(localdb)\CodexQuanLySuaXeTest / QuanLySuaXe_CodexChecks` để không ảnh hưởng chứng từ thật. `VerifyDatabaseReadOnly.cs` chỉ đọc dữ liệu thật; nhận thông tin đăng nhập qua biến môi trường hoặc dùng phiên quản lý trong tiến trình kiểm thử riêng.
+135 kiểm tra chức năng đã đạt trên database thử riêng: kho, dịch vụ, tiếp nhận, thanh toán, giới hạn xe, tài khoản, nghỉ việc, sáu chức vụ, công cá nhân và bảng công tích hợp. Có kiểm tra tìm tên/điện thoại, không tìm mã phiếu/biển số; bộ lọc bốn mục và không còn cột Nhắc hẹn.
 
-`Clean.ps1 -BienDichLai` dọn bin/obj của đúng ba project rồi build lại. Các file kiểm thử và bản sao ứng dụng nằm ở `checks/output/kiemthu`; bin chỉ giữ ứng dụng, cấu hình và PDB của bản build. Đã bỏ form trống Form11, lớp Function không dùng và hai bộ kiểm tra giao diện cũ. Đã xóa comment trong mã C# và SQL.
+Đã mở 22 form với SQL thật, 7 thống kê và 3 bảng công. SHA-256 toàn bộ 18 bảng không thay đổi sau lượt chỉ đọc. Sidebar thẳng hàng/cùng kích thước ở 100% và 125%, không còn nút bảng công riêng. Đăng nhập đầu tiên đo 395 ms, truy vấn tài khoản 4 ms.
+
+Database được thu gọn, giữ đúng năm tài khoản minh/an/huy/mai/cuong, mật khẩu 123. Bản xuất hiện có 16 phiếu tiếp nhận, 16 lượt xe, 15 khách, 8 hóa đơn, 3 phiếu nhập, 10 chi tiết nhập, 37 chi tiết tiếp nhận, 12 phân công và 55 dòng công. Giữ 22 dịch vụ, 30 phụ tùng, 8 nhà cung cấp. Sáu chức vụ: Chủ, Quản lý, Thợ phụ, Thợ chính, Thu ngân, Thủ kho. Không có cột cho phép NULL. DBCC CHECKDB PHYSICAL_ONLY/MAXDOP1 và kiểm tra ràng buộc đạt.
+
+Đã xuất database/QuanLySuaXe_DayDu_20261028.sql, cài lại vào bản thử và đối chiếu cấu trúc cùng từng giá trị của 18 bảng; khớp hoàn toàn. ZIP giao nhóm gồm SQL, số dòng/SHA-256 và hướng dẫn cài. Sau kiểm tra đã gỡ đúng ba database CodexChecks/CodexInstall/CodexUpgrade, giữ database thật và các bài khác.
+
+Đã bỏ hai project mở trung gian, công cụ tạm và kết quả cũ; bản sao trước sửa được giữ ngoài project tại ../SaoLuuSuaXe. Bin Debug chỉ giữ ứng dụng, cấu hình, PDB và QRCoder.dll. Clean mặc định biên dịch lại sau dọn; -ChiDon chỉ dùng khi chủ động muốn bỏ cả đầu ra cần cho Designer. Mã C# sản phẩm không có comment thừa; tên điều khiển/hiển thị tiếng Việt, API và biến do Designer sinh theo chuẩn Windows Forms.
+
+Chạy lại: checks/Run.ps1 -Designer, -SqlMoi, -ReadOnly, -Performance. Các lượt ghi chỉ vào database thử. Cần gỡ database thử sau khi chạy xong. LocalDB trên mỗi máy độc lập; để dùng chung trực tiếp cần một SQL Server chung và chỉnh kết nối tất cả máy.

@@ -7,252 +7,116 @@ using System.Windows.Forms;
 
 namespace QLyCuaHangSuaXe.DanhMuc
 {
-    public class frmBangCong : TrangDuLieu
+    public partial class frmBangCong : TrangThietKe
     {
-        readonly bool laQuanLy = PhanQuyenNguoiDung.CoQuyen(PhienDangNhap.VaiTro, "BANG_CONG");
-        readonly ComboBox cboNhanVien = GiaoDien.TaoDanhSachChon(), cboCa = GiaoDien.TaoDanhSachChon(), cboBangCong = GiaoDien.TaoDanhSachChon();
-        readonly DateTimePicker dtpNgayLam = new DateTimePicker
-        {
-            Format = DateTimePickerFormat.Custom,
-            CustomFormat = "dd/MM/yyyy"
-        }, dtpTuNgay = new DateTimePicker
-        {
-            Format = DateTimePickerFormat.Custom,
-            CustomFormat = "dd/MM/yyyy",
-            Value = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1)
-        }, dtpDenNgay = new DateTimePicker
-        {
-            Format = DateTimePickerFormat.Custom,
-            CustomFormat = "dd/MM/yyyy"
-        };
-        readonly DateTimePicker dtpGioVao = new DateTimePicker
-        {
-            Format = DateTimePickerFormat.Custom,
-            CustomFormat = "HH:mm",
-            ShowUpDown = true
-        }, dtpGioRa = new DateTimePicker
-        {
-            Format = DateTimePickerFormat.Custom,
-            CustomFormat = "HH:mm",
-            ShowUpDown = true
-        };
-        readonly CheckBox chkVang = new CheckBox
-        {
-            Text = "Vắng cả ca",
-            AutoSize = true
-        };
-        readonly NumericUpDown numDieuChinhPhut = new NumericUpDown
-        {
-            Minimum = -390,
-            Maximum = 390
-        };
-        readonly TextBox txtLyDo = new TextBox();
-        readonly Label lblCachTinh = new Label { Dock = DockStyle.Fill, Padding = new Padding(12, 8, 12, 4), ForeColor = Color.FromArgb(37, 65, 90) };
-        readonly Label lblTongHop = new Label { Dock = DockStyle.Top, Height = 44, Padding = new Padding(12, 8, 8, 4), Font = new Font("Segoe UI", 10, FontStyle.Bold), ForeColor = GiaoDien.Xanh };
-        readonly GroupBox grbCachTinh = new GroupBox { Text = "Cách tính tiền công", Dock = DockStyle.Top, Height = 130, Padding = new Padding(8), BackColor = Color.FromArgb(240, 247, 253) };
-        readonly ComboBox cboLocNhanVien = GiaoDien.TaoDanhSachChon();
+        readonly bool laQuanLy = PhanQuyenNguoiDung.CoQuyen(PhienDangNhap.VaiTro,"BANG_CONG");
         Control vungChinhSua, thanhChinhSua;
-        Button btnLuuCong;
-        bool dangChonDong;
-        decimal? luongGioDaChot;
-        string maNhanVienDaChot;
-        int maBangCong;
-        public frmBangCong() : base("Bảng công & lương")
+        string maNhanVienCu, maCaCu;
+        DateTime? ngayCu;
+        bool dangGan;
+        public frmBangCong()
         {
-            if (laQuanLy)
-            {
-                var tblThongTin = GiaoDien.TaoBangNhap();
-                GiaoDien.ThemTruongNhap(tblThongTin, "Nhân viên *", cboNhanVien);
-                GiaoDien.ThemTruongNhap(tblThongTin, "Ngày làm", dtpNgayLam);
-                GiaoDien.ThemTruongNhap(tblThongTin, "Ca làm *", cboCa);
-                GiaoDien.ThemTruongNhap(tblThongTin, "Vắng", chkVang);
-                GiaoDien.ThemTruongNhap(tblThongTin, "Giờ vào", dtpGioVao);
-                GiaoDien.ThemTruongNhap(tblThongTin, "Giờ ra", dtpGioRa);
-                GiaoDien.ThemTruongNhap(tblThongTin, "Cộng/trừ phút", numDieuChinhPhut);
-                GiaoDien.ThemTruongNhap(tblThongTin, "Lý do", txtLyDo);
-                ThemVungNhap(tblThongTin);
-                vungChinhSua = tblThongTin;
-                thanhChinhSua = GiaoDien.TaoThanhThaoTac();
-                thanhChinhSua.Controls.Add(GiaoDien.TaoNut("Thêm dòng công", () =>
-                {
-                    maBangCong = 0;
-                    luongGioDaChot = null;
-                    dtpNgayLam.Value = DateTime.Today;
-                    cboCa.SelectedIndex = -1;
-                    cboNhanVien.SelectedIndex = -1;
-                    chkVang.Checked = false;
-                    numDieuChinhPhut.Value = 0;
-                    txtLyDo.Clear();
-                    lblThongBao.Text = "Đang thêm dòng mới.";
-                    HienDuTinh();
-                }));
-                btnLuuCong = GiaoDien.TaoNut("Lưu / đổi ca", Luu);
-                thanhChinhSua.Controls.Add(btnLuuCong);
-                ThemVungNhap(thanhChinhSua);
-            }
-
-            cboBangCong.Items.AddRange(new object[] { "Chi tiết công", "Tổng hợp lương", "Tiền nhiệm vụ hoàn thành" });
+            InitializeComponent();
+            GanThietKe(dgvBangCong);
             cboBangCong.SelectedIndex = 0;
-            cboBangCong.Width = 205;
-            dtpTuNgay.Width = dtpDenNgay.Width = 120;
-            cboLocNhanVien.Width = 200;
-            var giaTriThuHai = GiaoDien.TaoThanhThaoTac();
-            giaTriThuHai.Controls.Add(GiaoDien.TaoNhan("Từ"));
-            giaTriThuHai.Controls.Add(dtpTuNgay);
-            giaTriThuHai.Controls.Add(GiaoDien.TaoNhan("Đến"));
-            giaTriThuHai.Controls.Add(dtpDenNgay);
-            if (laQuanLy) giaTriThuHai.Controls.Add(cboLocNhanVien);
-            giaTriThuHai.Controls.Add(cboBangCong);
-            giaTriThuHai.Controls.Add(GiaoDien.TaoNut("Xem bảng công", TaiDuLieu));
-            giaTriThuHai.Controls.Add(GiaoDien.TaoNut("Xuất Excel", () => XuatExcel.LuuExcel((DataTable)dgvDanhSach.DataSource, "Bảng công " + dtpTuNgay.Value.ToString("dd/MM/yyyy") + " – " + dtpDenNgay.Value.ToString("dd/MM/yyyy"))));
-            ThemVungNhap(giaTriThuHai);
-            grbCachTinh.Controls.Add(lblCachTinh);
-            ThemVungNhap(grbCachTinh);
-            ThemVungNhap(lblTongHop);
-            cboCa.SelectedIndexChanged += (doiTuongGui, suKien) =>
+            vungChinhSua = grpNhapCong;
+            thanhChinhSua = flpChinhSua;
+            btnThemDongCong.Click += (nguoiGui,suKien) => GiaoDien.ThucHien(ThemMoi);
+            btnLuuCong.Click += (nguoiGui,suKien) => GiaoDien.ThucHien(Luu);
+            btnXemBangCong.Click += (nguoiGui,suKien) => GiaoDien.ThucHien(TaiDuLieu);
+            btnXuatExcel.Click += (nguoiGui,suKien) => GiaoDien.ThucHien(() => XuatExcel.LuuExcel((DataTable)dgvDanhSach.DataSource,"Bảng công "+dtpTuNgay.Value.ToString("dd/MM/yyyy")+" – "+dtpDenNgay.Value.ToString("dd/MM/yyyy")));
+            cboCa.SelectedIndexChanged += (nguoiGui,suKien) =>
             {
-                var dongHienThi = cboCa.SelectedItem as DataRowView;
-                if (dongHienThi == null)
-                    return;
-                dtpGioVao.Value = DateTime.Today.Add((TimeSpan)dongHienThi["GioBatDau"]);
-                dtpGioRa.Value = DateTime.Today.Add((TimeSpan)dongHienThi["GioKetThuc"]);
+                if(dangGan) return;
+                var dong = cboCa.SelectedItem as DataRowView;
+                if(dong != null) numGioThucLam.Value = Math.Min(24,Convert.ToDecimal(dong["ThoiGianCaLam"]));
                 HienDuTinh();
             };
-            chkVang.CheckedChanged += (doiTuongGui, suKien) =>
+            cboNhanVien.SelectedIndexChanged += (nguoiGui,suKien) => HienDuTinh();
+            numGioThucLam.ValueChanged += (nguoiGui,suKien) => HienDuTinh();
+            numGioChuanThang.ValueChanged += (nguoiGui,suKien) => HienDuTinh();
+            dgvDanhSach.SelectionChanged += (nguoiGui,suKien) => ChonDong();
+            if (!DesignMode && System.ComponentModel.LicenseManager.UsageMode != System.ComponentModel.LicenseUsageMode.Designtime)
             {
-                dtpGioVao.Enabled = dtpGioRa.Enabled = !chkVang.Checked;
-                if (chkVang.Checked)
-                    numDieuChinhPhut.Value = 0;
-                numDieuChinhPhut.Enabled = !chkVang.Checked;
-                HienDuTinh();
-            };
-            dtpGioVao.ValueChanged += (nguoiGui, suKien) => HienDuTinh();
-            dtpGioRa.ValueChanged += (nguoiGui, suKien) => HienDuTinh();
-            numDieuChinhPhut.ValueChanged += (nguoiGui, suKien) => HienDuTinh();
-            cboNhanVien.SelectedIndexChanged += (nguoiGui, suKien) => HienDuTinh();
-            txtLyDo.MaxLength = 300;
-            dgvDanhSach.SelectionChanged += (doiTuongGui, suKien) => ChonDong();
+                dtpTuNgay.Value = new DateTime(DateTime.Today.Year,DateTime.Today.Month,1);
+                dtpDenNgay.Value = dtpNgayLam.Value = DateTime.Today;
+                cboLocNhanVien.Visible = lblLocNhanVien.Visible = laQuanLy;
+                DatCheDoChinhSua(laQuanLy);
+            }
         }
-
+        void DatCheDoChinhSua(bool hien)
+        {
+            vungChinhSua.Visible = thanhChinhSua.Visible = hien;
+            tlpTrang.RowStyles[1].Height = hien ? 104 : 0;
+            tlpTrang.RowStyles[2].Height = hien ? 48 : 0;
+        }
         public override void TaiDuLieu()
         {
-            PhienDangNhap.YeuCau(laQuanLy ? "BANG_CONG" : "CONG_CA_NHAN");
-            if (dtpTuNgay.Value.Date > dtpDenNgay.Value.Date)
-                throw new InvalidOperationException("Ngày bắt đầu phải trước ngày kết thúc.");
-            if (laQuanLy)
+            PhienDangNhap.YeuCau(laQuanLy?"BANG_CONG":"CONG_CA_NHAN");
+            if(dtpTuNgay.Value.Date>dtpDenNgay.Value.Date) throw new InvalidOperationException("Ngày bắt đầu phải trước ngày kết thúc.");
+            string locCu=GiaoDien.GiaTriDangChon(cboLocNhanVien);
+            dangGan=true;
+            try
             {
-                string nhanVienCu = GiaoDien.GiaTriDangChon(cboNhanVien), caCu = GiaoDien.GiaTriDangChon(cboCa), locCu = GiaoDien.GiaTriDangChon(cboLocNhanVien);
-                dangChonDong = true;
-                try
+                if(laQuanLy)
                 {
-                GiaoDien.GanDuLieu(cboNhanVien, duLieu.DocBang("SELECT MaNhanVien,TenNhanVien,LuongGio FROM dbo.NhanVien WHERE TrangThai=N'Đang làm'"), "TenNhanVien", "MaNhanVien");
-                GiaoDien.GanDuLieu(cboCa, duLieu.DocBang("SELECT * FROM dbo.CaLam ORDER BY GioBatDau"), "TenCa", "MaCa");
-                var boLoc = duLieu.DocBang("SELECT MaNhanVien,TenNhanVien FROM dbo.NhanVien ORDER BY TenNhanVien");
-                var tatCa = boLoc.NewRow(); tatCa[0] = ""; tatCa[1] = "Tất cả nhân viên"; boLoc.Rows.InsertAt(tatCa, 0);
-                GiaoDien.GanDuLieu(cboLocNhanVien, boLoc, "TenNhanVien", "MaNhanVien");
-                cboLocNhanVien.SelectedIndex = 0;
-                if (nhanVienCu.Length > 0) cboNhanVien.SelectedValue = nhanVienCu;
-                if (caCu.Length > 0) cboCa.SelectedValue = caCu;
-                cboLocNhanVien.SelectedValue = locCu;
+                    GiaoDien.GanDuLieu(cboNhanVien,duLieu.DocBang("SELECT MaNhanVien,HoTen,Luong FROM dbo.NhanVien WHERE TrangThai=N'Đang làm' ORDER BY HoTen"),"HoTen","MaNhanVien");
+                    GiaoDien.GanDuLieu(cboCa,duLieu.DocBang("SELECT *,MaCaLam+N'  '+CONVERT(VARCHAR(5),ThoiGianBatDau,108)+N' – '+CONVERT(VARCHAR(5),ThoiGianKetThuc,108) AS TenCa FROM dbo.CaLam ORDER BY ThoiGianBatDau"),"TenCa","MaCaLam");
+                    var boLoc=duLieu.DocBang("SELECT MaNhanVien,HoTen FROM dbo.NhanVien ORDER BY HoTen"); var tatCa=boLoc.NewRow(); tatCa[0]="";tatCa[1]="Tất cả nhân viên";boLoc.Rows.InsertAt(tatCa,0);
+                    GiaoDien.GanDuLieu(cboLocNhanVien,boLoc,"HoTen","MaNhanVien"); cboLocNhanVien.SelectedValue=locCu;
+                    if(cboLocNhanVien.SelectedIndex<0)cboLocNhanVien.SelectedIndex=0;
                 }
-                finally { dangChonDong = false; }
-            }
-
-            string[] cauLenh = {
-                @"SELECT MaBangCong,MaNhanVien,TenNhanVien,Ngay,MaCa,TenCa,GioBatDau,GioKetThuc,GioVao,GioRa,Vang,PhutThucTe,DieuChinhPhut,LyDo,LuongGio,PhutTinhCong,GioTinhCong,PhutMuon,PhutVeSom,TienLuong FROM dbo.vBangCong WHERE Ngay>=@a AND Ngay<@b AND (@all=1 OR MaNhanVien=@nv) AND (@loc='' OR MaNhanVien=@loc) ORDER BY Ngay DESC,TenNhanVien",
-                @"SELECT n.MaNhanVien,n.TenNhanVien,COALESCE(b.SoCa,0) AS SoCaCoMat,COALESCE(b.Vang,0) AS SoCaVang,COALESCE(b.Muon,0) AS PhutMuon,COALESCE(b.Som,0) AS PhutVeSom,COALESCE(b.DieuChinh,0) AS DieuChinhPhut,CAST(COALESCE(b.Phut,0)/60.0 AS DECIMAL(12,2)) AS GioTinhCong,COALESCE(b.Luong,0) AS LuongTheoGio,COALESCE(p.SoViec,0) AS NhiemVuHoanThanh,COALESCE(p.Tien,0) AS LuongNhiemVu,COALESCE(b.Luong,0)+COALESCE(p.Tien,0) AS TongLuong
-                FROM dbo.NhanVien n OUTER APPLY(SELECT SUM(CASE WHEN Vang=0 THEN 1 ELSE 0 END) AS SoCa,SUM(CASE WHEN Vang=1 THEN 1 ELSE 0 END) AS Vang,SUM(PhutMuon) AS Muon,SUM(PhutVeSom) AS Som,SUM(DieuChinhPhut) AS DieuChinh,SUM(PhutTinhCong) AS Phut,SUM(TienLuong) AS Luong FROM dbo.vBangCong c WHERE c.MaNhanVien=n.MaNhanVien AND Ngay>=@a AND Ngay<@b) b
-                OUTER APPLY(SELECT COUNT(*) AS SoViec,SUM(TienCong) AS Tien FROM dbo.PhanCongTho c WHERE c.MaNhanVien=n.MaNhanVien AND TrangThaiCongViec=N'Hoàn thành' AND NgayGhiNhanCong>=@a AND NgayGhiNhanCong<@b) p WHERE (@all=1 OR n.MaNhanVien=@nv) AND (@loc='' OR n.MaNhanVien=@loc)",
-                @"SELECT p.MaNhanVien,n.TenNhanVien,p.MaPhieuTiepNhan,x.BienSo,p.ThoiGianKetThuc,p.NgayGhiNhanCong,p.TienCong FROM dbo.PhanCongTho p JOIN dbo.NhanVien n ON n.MaNhanVien=p.MaNhanVien JOIN dbo.PhieuTiepNhan t ON t.MaPhieuTiepNhan=p.MaPhieuTiepNhan JOIN dbo.Xe x ON x.MaXe=t.MaXe
-                WHERE p.TrangThaiCongViec=N'Hoàn thành' AND p.NgayGhiNhanCong>=@a AND p.NgayGhiNhanCong<@b AND (@all=1 OR p.MaNhanVien=@nv) AND (@loc='' OR p.MaNhanVien=@loc) ORDER BY p.NgayGhiNhanCong DESC"
+            } finally { dangGan=false; }
+            string[] sql={
+                @"SELECT ct.MaNhanVien,n.HoTen AS TenNhanVien,ct.NgayLam,ct.MaCaLam,c.ThoiGianBatDau,c.ThoiGianKetThuc,c.ThoiGianCaLam AS GioCa,ct.TongThoiGianLamThucTe AS GioThucLam,n.Luong AS LuongThang,CAST(n.Luong/@chuan AS DECIMAL(18,2)) AS DonGiaGio,ROUND(ct.TongThoiGianLamThucTe*n.Luong/@chuan,0) AS TienCong FROM dbo.ChiTietCaLam ct JOIN dbo.NhanVien n ON n.MaNhanVien=ct.MaNhanVien JOIN dbo.CaLam c ON c.MaCaLam=ct.MaCaLam WHERE ct.NgayLam>=@a AND ct.NgayLam<@b AND (@all=1 OR ct.MaNhanVien=@nv) AND (@loc='' OR ct.MaNhanVien=@loc) ORDER BY ct.NgayLam DESC,n.HoTen,c.ThoiGianBatDau",
+                @"SELECT n.MaNhanVien,n.HoTen AS TenNhanVien,c.TenChucVu,n.Luong AS LuongThang,c.HeSoLuong,c.TienDieuChinh,CAST(n.Luong/@chuan AS DECIMAL(18,2)) AS DonGiaGio,COUNT(ct.MaCaLam) AS SoCa,SUM(CASE WHEN ct.TongThoiGianLamThucTe=0 THEN 1 ELSE 0 END) AS CaVang,COALESCE(SUM(ct.TongThoiGianLamThucTe),0) AS GioThucLam,ROUND(COALESCE(SUM(ct.TongThoiGianLamThucTe),0)*n.Luong/@chuan,0) AS TienCong FROM dbo.NhanVien n JOIN dbo.ChucVu c ON c.MaChucVu=n.MaChucVu LEFT JOIN dbo.ChiTietCaLam ct ON ct.MaNhanVien=n.MaNhanVien AND ct.NgayLam>=@a AND ct.NgayLam<@b WHERE (@all=1 OR n.MaNhanVien=@nv) AND (@loc='' OR n.MaNhanVien=@loc) GROUP BY n.MaNhanVien,n.HoTen,c.TenChucVu,n.Luong,c.HeSoLuong,c.TienDieuChinh ORDER BY n.HoTen",
+                @"SELECT n.MaNhanVien,n.HoTen AS TenNhanVien,c.TenChucVu,k.TenKhoanDieuChinh,k.SoTien FROM dbo.NhanVien n JOIN dbo.ChucVu c ON c.MaChucVu=n.MaChucVu JOIN dbo.ChucVuDieuChinh cd ON cd.MaChucVu=c.MaChucVu JOIN dbo.KhoanDieuChinh k ON k.MaKhoanDieuChinh=cd.MaKhoanDieuChinh WHERE (@all=1 OR n.MaNhanVien=@nv) AND (@loc='' OR n.MaNhanVien=@loc) ORDER BY n.HoTen,k.MaKhoanDieuChinh"
             };
-            bool chiTiet = cboBangCong.SelectedIndex == 0;
-            if (laQuanLy) { vungChinhSua.Visible = thanhChinhSua.Visible = chiTiet; btnLuuCong.Enabled = chiTiet; }
-            var bang = duLieu.DocBang(cauLenh[cboBangCong.SelectedIndex], XuLyDuLieu.ThamSo("@a", dtpTuNgay.Value.Date), XuLyDuLieu.ThamSo("@b", dtpDenNgay.Value.Date.AddDays(1)), XuLyDuLieu.ThamSo("@all", laQuanLy), XuLyDuLieu.ThamSo("@nv", PhienDangNhap.MaNhanVien), XuLyDuLieu.ThamSo("@loc", laQuanLy ? GiaoDien.GiaTriDangChon(cboLocNhanVien) : ""));
-            dgvDanhSach.DataSource = bang;
-            string[] cacCot = chiTiet ? new[] { "TenNhanVien", "Ngay", "TenCa", "GioVao", "GioRa", "PhutTinhCong", "DieuChinhPhut", "TienLuong" }
-                : cboBangCong.SelectedIndex == 1 ? new[] { "TenNhanVien", "SoCaCoMat", "SoCaVang", "GioTinhCong", "LuongTheoGio", "LuongNhiemVu", "TongLuong" }
-                : new[] { "TenNhanVien", "MaPhieuTiepNhan", "BienSo", "ThoiGianKetThuc", "NgayGhiNhanCong", "TienCong" };
-            for (int i = cacCot.Length - 1; i >= 0; i--) dgvDanhSach.Columns[cacCot[i]].DisplayIndex = 0;
-            foreach (DataGridViewColumn cot in dgvDanhSach.Columns)
-            {
-                cot.Visible = cacCot.Contains(cot.Name);
-                cot.MinimumWidth = 60;
-                if (cot.ValueType == typeof(TimeSpan)) cot.DefaultCellStyle.Format = @"hh\:mm";
-            }
-            DoiTenCot("PhutTinhCong", "Phút tính công"); DoiTenCot("DieuChinhPhut", "+/− phút"); DoiTenCot("TienLuong", "Tiền ca (đ)");
-            DoiTenCot("SoCaCoMat", "Ca có mặt"); DoiTenCot("SoCaVang", "Ca vắng"); DoiTenCot("LuongTheoGio", "Lương giờ (đ)"); DoiTenCot("LuongNhiemVu", "Nhiệm vụ (đ)"); DoiTenCot("TongLuong", "Tổng lương (đ)");
-            DoiTenCot("TienCong", "Tiền nhiệm vụ (đ)"); DoiTenCot("NgayGhiNhanCong", "Ngày ghi nhận");
-            string cotTien = chiTiet ? "TienLuong" : cboBangCong.SelectedIndex == 1 ? "TongLuong" : "TienCong";
-            lblTongHop.Text = dtpTuNgay.Value.ToString("dd/MM") + " – " + dtpDenNgay.Value.ToString("dd/MM/yyyy") + "   •   " + bang.Rows.Count + (chiTiet ? " dòng công" : cboBangCong.SelectedIndex == 1 ? " nhân viên" : " nhiệm vụ") + "   •   Tổng: " + bang.AsEnumerable().Sum(dong => Convert.ToDecimal(dong[cotTien])).ToString("N2") + " đ";
-            lblThongBao.Text = "Ca sáng 07:30–14:00; chiều tối 13:30–20:00. Chọn dòng để xem cách tính. Xuất Excel có đầy đủ số phút, đơn giá và lý do.";
+            bool chiTiet=cboBangCong.SelectedIndex==0;
+            DatCheDoChinhSua(laQuanLy && chiTiet);
+            var bang=duLieu.DocBang(sql[cboBangCong.SelectedIndex],XuLyDuLieu.ThamSo("@a",dtpTuNgay.Value.Date),XuLyDuLieu.ThamSo("@b",dtpDenNgay.Value.Date.AddDays(1)),XuLyDuLieu.ThamSo("@all",laQuanLy),XuLyDuLieu.ThamSo("@nv",PhienDangNhap.MaNhanVien),XuLyDuLieu.ThamSo("@loc",laQuanLy?GiaoDien.GiaTriDangChon(cboLocNhanVien):""),XuLyDuLieu.ThamSo("@chuan",numGioChuanThang.Value));
+            dgvDanhSach.DataSource=bang;
+            if(dgvDanhSach.Columns.Contains("LuongThang"))dgvDanhSach.Columns["LuongThang"].HeaderText="Lương tháng (đ)";
+            if(dgvDanhSach.Columns.Contains("DonGiaGio"))dgvDanhSach.Columns["DonGiaGio"].HeaderText="Đơn giá giờ (đ)";
+            if(dgvDanhSach.Columns.Contains("GioThucLam")) { dgvDanhSach.Columns["GioThucLam"].HeaderText="Giờ thực làm"; dgvDanhSach.Columns["GioThucLam"].DefaultCellStyle.Format="N2"; }
+            if(dgvDanhSach.Columns.Contains("TienCong"))dgvDanhSach.Columns["TienCong"].HeaderText="Tiền công (đ)";
+            foreach(DataGridViewColumn cot in dgvDanhSach.Columns) { if(cot.ValueType==typeof(TimeSpan))cot.DefaultCellStyle.Format=@"hh\:mm"; if(cot.ValueType==typeof(DateTime))cot.DefaultCellStyle.Format="dd/MM/yyyy"; }
+            lblTongHop.Text=bang.Rows.Count+" dòng"+(bang.Columns.Contains("TienCong")?"   •   Tổng tiền công: "+bang.AsEnumerable().Sum(d=>Convert.ToDecimal(d["TienCong"])).ToString("N0")+" đ":"");
             ChonDong();
         }
-
+        void ThemMoi()
+        {
+            maNhanVienCu=maCaCu=null;ngayCu=null;dtpNgayLam.Value=DateTime.Today;
+            if(cboCa.Items.Count>0)cboCa.SelectedIndex=0;
+            var ca=cboCa.SelectedItem as DataRowView;numGioThucLam.Value=ca==null?0:Math.Min(24,Convert.ToDecimal(ca["ThoiGianCaLam"]));HienDuTinh();
+        }
         void ChonDong()
         {
-            if (dgvDanhSach.CurrentRow == null) { lblCachTinh.Text = "Chưa có dữ liệu trong khoảng ngày đã chọn. Chưa chấm công không được tự tính thành vắng."; return; }
-            var dong = ((DataRowView)dgvDanhSach.CurrentRow.DataBoundItem).Row;
-            if (!dong.Table.Columns.Contains("MaBangCong"))
+            var dong=dgvDanhSach.CurrentRow==null?null:dgvDanhSach.CurrentRow.DataBoundItem as DataRowView;
+            if(dong==null){lblCachTinh.Text="";return;}
+            if(dong.DataView.Table.Columns.Contains("NgayLam"))
             {
-                if (dong.Table.Columns.Contains("TongLuong"))
-                    lblCachTinh.Text = dong["TenNhanVien"] + " • Có mặt " + dong["SoCaCoMat"] + " ca • Vắng " + dong["SoCaVang"] + " ca • Muộn " + dong["PhutMuon"] + " phút • Về sớm " + dong["PhutVeSom"] + " phút\n"
-                        + "Tổng lương = " + Convert.ToDecimal(dong["LuongTheoGio"]).ToString("N2") + " đ tiền ca + " + Convert.ToDecimal(dong["LuongNhiemVu"]).ToString("N2") + " đ từ " + dong["NhiemVuHoanThanh"] + " nhiệm vụ hoàn thành = " + Convert.ToDecimal(dong["TongLuong"]).ToString("N2") + " đ.\n"
-                        + "Tiền ca cộng từ từng dòng công theo đơn giá đã chốt; nhiệm vụ tính theo ngày ghi nhận hoàn thành. Chưa chấm công không tự tính là vắng.";
-                else lblCachTinh.Text = dong["TenNhanVien"] + " • Phiếu " + dong["MaPhieuTiepNhan"] + " • Biển số " + dong["BienSo"] + "\nTiền nhiệm vụ đã chốt: " + Convert.ToDecimal(dong["TienCong"]).ToString("N2") + " đ. Chỉ cộng sau khi hoàn thành.\nKhoản này cộng riêng với tiền ca, không nhân tiếp với số giờ làm.";
-                return;
+                if(laQuanLy)
+                {
+                    dangGan=true;
+                    try {maNhanVienCu=dong["MaNhanVien"].ToString();maCaCu=dong["MaCaLam"].ToString();ngayCu=(DateTime)dong["NgayLam"];cboNhanVien.SelectedValue=maNhanVienCu;cboCa.SelectedValue=maCaCu;dtpNgayLam.Value=ngayCu.Value;numGioThucLam.Value=Convert.ToDecimal(dong["GioThucLam"]);} finally {dangGan=false;}
+                }
+                lblCachTinh.Text=dong["TenNhanVien"]+"  •  "+((DateTime)dong["NgayLam"]).ToString("dd/MM/yyyy")+"\nTiền ca = "+Convert.ToDecimal(dong["GioThucLam"]).ToString("N2")+" giờ × "+Convert.ToDecimal(dong["LuongThang"]).ToString("N0")+" đ ÷ "+numGioChuanThang.Value+" giờ = "+Convert.ToDecimal(dong["TienCong"]).ToString("N0")+" đ.";
             }
-            var tinhCong = ChamCong.TinhChiTiet((TimeSpan)dong["GioBatDau"], (TimeSpan)dong["GioKetThuc"], dong["GioVao"] == DBNull.Value ? TimeSpan.Zero : (TimeSpan)dong["GioVao"], dong["GioRa"] == DBNull.Value ? TimeSpan.Zero : (TimeSpan)dong["GioRa"], Convert.ToBoolean(dong["Vang"]), Convert.ToInt32(dong["DieuChinhPhut"]), Convert.ToDecimal(dong["LuongGio"]));
-            lblCachTinh.Text = "ĐÃ LƯU • " + dong["TenNhanVien"] + " • " + Convert.ToDateTime(dong["Ngay"]).ToString("dd/MM/yyyy") + " • " + dong["TenCa"] + "\n" + tinhCong.GiaiThich();
-            if (dong["LyDo"].ToString().Length > 0) lblCachTinh.Text += "\nLý do: " + dong["LyDo"];
-            if (!laQuanLy) return;
-            dangChonDong = true;
-            try
-            {
-            maBangCong = Convert.ToInt32(GiaoDien.GiaTriO(dgvDanhSach, "MaBangCong"));
-            cboNhanVien.SelectedValue = GiaoDien.GiaTriO(dgvDanhSach, "MaNhanVien");
-            dtpNgayLam.Value = Convert.ToDateTime(dgvDanhSach.CurrentRow.Cells["Ngay"].Value);
-            cboCa.SelectedValue = GiaoDien.GiaTriO(dgvDanhSach, "MaCa");
-            chkVang.Checked = Convert.ToBoolean(dgvDanhSach.CurrentRow.Cells["Vang"].Value);
-            if (!chkVang.Checked)
-            {
-                dtpGioVao.Value = DateTime.Today.Add((TimeSpan)dgvDanhSach.CurrentRow.Cells["GioVao"].Value);
-                dtpGioRa.Value = DateTime.Today.Add((TimeSpan)dgvDanhSach.CurrentRow.Cells["GioRa"].Value);
-            }
-
-            numDieuChinhPhut.Value = Convert.ToDecimal(dgvDanhSach.CurrentRow.Cells["DieuChinhPhut"].Value);
-            txtLyDo.Text = GiaoDien.GiaTriO(dgvDanhSach, "LyDo");
-            maNhanVienDaChot = dong["MaNhanVien"].ToString();
-            luongGioDaChot = Convert.ToDecimal(dong["LuongGio"]);
-            }
-            finally { dangChonDong = false; }
+            else if(dong.DataView.Table.Columns.Contains("LuongThang"))
+                lblCachTinh.Text=dong["TenNhanVien"]+"  •  "+dong["SoCa"]+" ca  •  Vắng "+dong["CaVang"]+" ca\nTiền công = "+Convert.ToDecimal(dong["GioThucLam"]).ToString("N2")+" giờ × "+Convert.ToDecimal(dong["LuongThang"]).ToString("N0")+" đ ÷ "+numGioChuanThang.Value+" giờ = "+Convert.ToDecimal(dong["TienCong"]).ToString("N0")+" đ. Lương tháng đã là mức lương thỏa thuận; hệ số và khoản chức vụ không cộng thêm lần nữa.";
+            else lblCachTinh.Text=dong["TenNhanVien"]+"  •  "+dong["TenKhoanDieuChinh"]+": "+Convert.ToDecimal(dong["SoTien"]).ToString("N0")+" đ. Khoản quy định theo chức vụ; không tự trừ hoặc cộng lặp vào công thực tế.";
         }
-
-        void DoiTenCot(string ten, string nhan)
-        {
-            if (dgvDanhSach.Columns.Contains(ten)) dgvDanhSach.Columns[ten].HeaderText = nhan;
-        }
-
         void HienDuTinh()
         {
-            if (dangChonDong || !laQuanLy) return;
-            var ca = cboCa.SelectedItem as DataRowView;
-            var nv = cboNhanVien.SelectedItem as DataRowView;
-            if (ca == null || nv == null) { lblCachTinh.Text = "Chọn nhân viên và ca làm để xem trước cách tính tiền ca."; return; }
-            decimal giaGio = luongGioDaChot.HasValue && nv["MaNhanVien"].ToString() == maNhanVienDaChot ? luongGioDaChot.Value : Convert.ToDecimal(nv["LuongGio"]);
-            try
-            {
-                var tinh = ChamCong.TinhChiTiet((TimeSpan)ca["GioBatDau"], (TimeSpan)ca["GioKetThuc"], dtpGioVao.Value.TimeOfDay, dtpGioRa.Value.TimeOfDay, chkVang.Checked, (int)numDieuChinhPhut.Value, giaGio);
-                lblCachTinh.Text = "DỰ TÍNH CHƯA LƯU • " + nv["TenNhanVien"] + " • Đơn giá " + (luongGioDaChot.HasValue && nv["MaNhanVien"].ToString() == maNhanVienDaChot ? "đã chốt" : "hiện tại") + "\n" + tinh.GiaiThich();
-            }
-            catch (InvalidOperationException loi) { lblCachTinh.Text = loi.Message; }
+            if(dangGan||!laQuanLy)return;var dong=cboNhanVien.SelectedItem as DataRowView;if(dong==null)return;
+            decimal luong=Convert.ToDecimal(dong["Luong"]);
+            lblCachTinh.Text="Tiền ca dự kiến = "+numGioThucLam.Value.ToString("N2")+" giờ × "+luong.ToString("N0")+" đ/tháng ÷ "+numGioChuanThang.Value+" giờ = "+ChamCong.TinhTienCong(numGioThucLam.Value,luong,numGioChuanThang.Value).ToString("N0")+" đ.\nGiờ thực làm đã bao gồm thời gian đi muộn, về sớm và làm thêm; vắng cả ca nhập 0 giờ.";
         }
-
         void Luu()
         {
-            ChamCong.LuuCong(maBangCong, GiaoDien.GiaTriDangChon(cboNhanVien), dtpNgayLam.Value, GiaoDien.GiaTriDangChon(cboCa), dtpGioVao.Value.TimeOfDay, dtpGioRa.Value.TimeOfDay, chkVang.Checked, (int)numDieuChinhPhut.Value, txtLyDo.Text);
+            ChamCong.LuuCong(GiaoDien.GiaTriDangChon(cboNhanVien),dtpNgayLam.Value.Date,GiaoDien.GiaTriDangChon(cboCa),numGioThucLam.Value,maNhanVienCu,ngayCu,maCaCu);
             TaiDuLieu();
-            lblThongBao.Text = "Đã lưu công và lịch sử điều chỉnh.";
         }
     }
 }

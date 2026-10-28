@@ -63,7 +63,7 @@ namespace QLyCuaHangSuaXe.DanhMuc.DangNhap
             txtMatKhauHienTai.Clear(); txtMatKhauMoi.Clear(); txtXacNhanMatKhauMoi.Clear();
             chkHienMatKhau.Checked = false;
             lblGhiChuMatKhau.ForeColor = Color.FromArgb(64, 82, 99);
-            lblGhiChuMatKhau.Text = "Nhập mật khẩu hiện tại và mật khẩu mới của bạn.";
+            lblGhiChuMatKhau.Text = "";
         }
     }
 }

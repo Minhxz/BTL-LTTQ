@@ -17,11 +17,15 @@ namespace QLyCuaHangSuaXe.LopDungChung
         protected void GanThietKe(DataGridView bang, Label thongBao = null)
         {
             dgvDanhSach = bang;
+            if (System.ComponentModel.LicenseManager.UsageMode == System.ComponentModel.LicenseUsageMode.Designtime || DesignMode)
+                return;
             if (thongBao != null)
                 lblThongBao = thongBao;
             else if (bang != null)
                 Controls.Add(lblThongBao);
             lblThongBao.AutoEllipsis = true;
+            if (thongBao != null && GetType().Name != "frmTiepNhan" && GetType().Name != "frmKiemTraTiepNhan") GiaoDien.AnHuongDan(thongBao);
+            if (thongBao == null) lblThongBao.Visible = false;
             StartPosition = FormStartPosition.CenterParent;
             GiaoDien.ApDungMauTiepNhan(this);
             if (bang != null)

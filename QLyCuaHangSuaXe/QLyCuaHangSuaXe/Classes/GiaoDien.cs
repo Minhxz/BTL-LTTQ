@@ -12,6 +12,39 @@ namespace QLyCuaHangSuaXe.LopDungChung
     {
         static readonly Dictionary<string, string> Cot = new Dictionary<string, string>
         {
+            { "LuongThang", "Lương tháng (đ)" },
+            { "DonGiaGio", "Đơn giá giờ (đ)" },
+            { "GioThucLam", "Giờ thực làm" },
+            { "GioCa", "Giờ theo ca" },
+            { "SoXeHoanThanh", "Xe hoàn thành" },
+            { "TongPhut", "Tổng phút" },
+            { "TenKhoanDieuChinh", "Khoản điều chỉnh" },
+            { "SoTien", "Số tiền (đ)" },
+            { "Can", "Cần dùng" },
+            { "Ton", "Tồn kho" },
+            { "HoTen", "Họ tên" },
+            { "Luong", "Lương tháng (đ)" },
+            { "HeSoLuong", "Hệ số lương" },
+            { "TienDieuChinh", "Điều chỉnh chức vụ (đ)" },
+            { "MaChucVu", "Mã chức vụ" },
+            { "MaCaLam", "Mã ca làm" },
+            { "NgayLam", "Ngày làm" },
+            { "ThoiGianCaLam", "Số giờ của ca" },
+            { "ThoiGianHoanThanh", "Hoàn thành dự kiến" },
+            { "TongThoiGianLamThucTe", "Giờ thực làm" },
+            { "MaNhaCungCap", "Mã nhà cung cấp" },
+            { "TenNhaCungCap", "Nhà cung cấp" },
+            { "TongTienNhap", "Tổng tiền nhập (đ)" },
+            { "ThanhTienDichVu", "Giá dịch vụ (đ)" },
+            { "TienThanhToan", "Thanh toán (đ)" },
+            { "NgayThanhToan", "Ngày thanh toán" },
+            { "BienXe", "Biển số xe" },
+            { "HangSanXuat", "Hãng sản xuất" },
+            { "MauSac", "Màu sắc" },
+            { "LoaiXe", "Loại xe" },
+            { "NgayHen", "Hẹn trả xe" },
+            { "MaXe", "Mã xe" },
+            { "MaKhachHang", "Mã khách hàng" },
             {
                 "TenTho",
                 "Thợ phụ trách"
@@ -129,12 +162,20 @@ namespace QLyCuaHangSuaXe.LopDungChung
                 "Mã phụ tùng"
             },
             {
+                "MaChiTietPhieuNhap",
+                "Mã chi tiết"
+            },
+            {
                 "TenPhuTung",
                 "Phụ tùng"
             },
             {
-                "DonViTinh",
-                "Đơn vị"
+                "SoLuongNhap",
+                "Số lượng nhập"
+            },
+            {
+                "TongSoLuongNhap",
+                "Tổng số lượng"
             },
             {
                 "SoLuongTon",
@@ -218,7 +259,7 @@ namespace QLyCuaHangSuaXe.LopDungChung
             },
             {
                 "TienCong",
-                "Tiền nhiệm vụ (đ)"
+                "Tiền công (đ)"
             },
             {
                 "ThoiGianBatDau",
@@ -367,6 +408,20 @@ namespace QLyCuaHangSuaXe.LopDungChung
             return false;
         }
 
+        public static void AnHuongDan(Control nhan)
+        {
+            nhan.Visible = false;
+            var bang = nhan.Parent as TableLayoutPanel;
+            if (bang == null) return;
+            int dong = bang.GetRow(nhan), soDieuKhien = 0;
+            foreach (Control con in bang.Controls) if (bang.GetRow(con) == dong) soDieuKhien++;
+            if (soDieuKhien == 1 && dong < bang.RowStyles.Count)
+            {
+                bang.RowStyles[dong].SizeType = SizeType.Absolute;
+                bang.RowStyles[dong].Height = 0;
+            }
+        }
+
         public static void ApDungMauTiepNhan(Control goc)
         {
             goc.BackColor = goc is GroupBox || TrongKhung(goc) ? Color.White : Color.FromArgb(244, 247, 251);
@@ -384,6 +439,7 @@ namespace QLyCuaHangSuaXe.LopDungChung
                     dieuKhien.BackColor = Color.White;
                 if (dieuKhien is Label && dieuKhien.Font.Size >= 16)
                     dieuKhien.ForeColor = Xanh;
+                if (dieuKhien.Name == "lblHuongDan") AnHuongDan(dieuKhien);
                 if (dieuKhien is GroupBox)
                 {
                     dieuKhien.ForeColor = Xanh;
@@ -562,8 +618,21 @@ namespace QLyCuaHangSuaXe.LopDungChung
             khung.Resize += (nguoiGui, suKien) => khung.Invalidate();
         }
 
+        static void DinhDangNgayTrong(object nguoiGui, DataGridViewCellFormattingEventArgs suKien)
+        {
+            if (!(suKien.Value is DateTime)) return;
+            var ngay = (DateTime)suKien.Value;
+            if (ngay.Year == 1 || ngay.Year == 9999)
+            {
+                suKien.Value = ngay.Year == 9999 ? "Không hạn" : "";
+                suKien.FormattingApplied = true;
+            }
+        }
+
         public static void DinhDangBang(DataGridView bang)
         {
+            bang.CellFormatting -= DinhDangNgayTrong;
+            bang.CellFormatting += DinhDangNgayTrong;
             bang.BackgroundColor = Color.White;
             bang.EnableHeadersVisualStyles = false;
             bang.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(235, 243, 251);
@@ -583,17 +652,30 @@ namespace QLyCuaHangSuaXe.LopDungChung
             bang.ReadOnly = true;
             bang.RowHeadersVisible = false;
             bang.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            bang.DataBindingComplete += (nguoiGui, suKien) =>
+            bang.DataBindingComplete -= DinhDangCot;
+            bang.DataBindingComplete += DinhDangCot;
+        }
+
+        static void DinhDangCot(object nguoiGui, DataGridViewBindingCompleteEventArgs suKien)
+        {
+            var bang = (DataGridView)nguoiGui;
+            foreach (DataGridViewColumn cot in bang.Columns)
             {
-                foreach (DataGridViewColumn cot in bang.Columns)
+                string ten = cot.DataPropertyName.Length > 0 ? cot.DataPropertyName : cot.Name;
+                cot.HeaderText = TenCot(ten);
+                bool tenDai = ten.StartsWith("Ten") || ten == "HoTen" || ten == "NoiDung" || ten == "MoTa";
+                cot.FillWeight = tenDai ? 170 : ten.StartsWith("Ma") ? 80 : 115;
+                cot.MinimumWidth = tenDai ? 135 : ten.StartsWith("Ma") ? 80 : 100;
+                if (cot.ValueType == typeof(decimal))
                 {
-                    cot.HeaderText = TenCot(cot.DataPropertyName.Length > 0 ? cot.DataPropertyName : cot.Name);
-                    if (cot.ValueType == typeof(decimal))
-                        cot.DefaultCellStyle.Format = "N0";
-                    if (cot.ValueType == typeof(DateTime))
-                        cot.DefaultCellStyle.Format = "dd/MM/yyyy HH:mm";
+                    bool soGio = (ten.Contains("Gio") && !ten.Contains("Gia") && !ten.StartsWith("Luong")) || ten.Contains("ThoiGian") || ten.Contains("HeSo");
+                    cot.DefaultCellStyle.Format = soGio || ten == "DonGiaGio" ? "N2" : "N0";
+                    cot.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
                 }
-            };
+                if (cot.ValueType == typeof(TimeSpan)) cot.DefaultCellStyle.Format = @"hh\:mm";
+                if (cot.ValueType == typeof(DateTime))
+                    cot.DefaultCellStyle.Format = ten.StartsWith("Ngay") || ten == "HanSuDung" || ten == "ThoiGianNhan" || ten == "HenTra" ? "dd/MM/yyyy" : "dd/MM/yyyy HH:mm";
+            }
         }
 
         public static void ChuanHoa(Form bieuMau)
@@ -643,7 +725,7 @@ namespace QLyCuaHangSuaXe.LopDungChung
             }
             catch (Exception loi)
             {
-                MessageBox.Show(loi is System.Data.SqlClient.SqlException ? "Không thể xử lý dữ liệu. Kiểm tra SQL Server, App.config và chạy script nâng cấp.\n" + loi.Message : loi.Message, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(loi is System.Data.SqlClient.SqlException ? "Không thể xử lý dữ liệu. Kiểm tra kết nối SQL và dữ liệu vừa nhập.\n" + loi.Message : loi.Message, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 
@@ -671,22 +753,7 @@ namespace QLyCuaHangSuaXe.LopDungChung
             dgvDanhSach.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(245, 248, 252);
             dgvDanhSach.DefaultCellStyle.SelectionBackColor = Color.FromArgb(201, 226, 249);
             dgvDanhSach.DefaultCellStyle.SelectionForeColor = Color.Black;
-            dgvDanhSach.DataBindingComplete += (doiTuongGui, suKien) =>
-            {
-                foreach (DataGridViewColumn cot in dgvDanhSach.Columns)
-                {
-                    cot.HeaderText = TenCot(cot.Name);
-                    cot.MinimumWidth = cot.ValueType == typeof(bool) ? 65 : 115;
-                    if (cot.ValueType == typeof(decimal))
-                    {
-                        cot.DefaultCellStyle.Format = cot.Name == "GioTinhCong" ? "N2" : "N0";
-                        cot.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-                    }
-
-                    if (cot.ValueType == typeof(DateTime))
-                        cot.DefaultCellStyle.Format = cot.Name == "Ngay" || cot.Name == "HanSuDung" ? "dd/MM/yyyy" : "dd/MM/yyyy HH:mm";
-                }
-            };
+            DinhDangBang(dgvDanhSach);
             return dgvDanhSach;
         }
 
@@ -817,6 +884,7 @@ namespace QLyCuaHangSuaXe.LopDungChung
             Controls.Add(VungNhap);
             Controls.Add(lblTieuDe);
             Controls.Add(lblThongBao);
+            lblThongBao.Visible = false;
         }
 
         protected void ThemVungNhap(Control dieuKhien)

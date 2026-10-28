@@ -1,7 +1,7 @@
-param([switch]$BienDichLai,[ValidateSet('Debug','Release')][string]$CauHinh='Debug')
+param([switch]$BienDichLai,[switch]$ChiDon,[ValidateSet('Debug','Release')][string]$CauHinh='Debug')
 $ErrorActionPreference='Stop'
 $thuMucGoc=(Resolve-Path -LiteralPath $PSScriptRoot).ProviderPath
-$cacProject=@('QLyCuaHangSuaXe/QLyCuaHangSuaXe','DanhMuc/DanhMuc','Kho/Kho/btl')
+$cacProject=@('QLyCuaHangSuaXe/QLyCuaHangSuaXe')
 $cacDich=@()
 foreach($project in $cacProject){
     foreach($ten in @('bin','obj')){
@@ -19,7 +19,8 @@ foreach($dich in $cacDich){
     Remove-Item -LiteralPath $dich -Recurse -Force
     Write-Output "Đã dọn $soFile file trong $dich"
 }
-if($BienDichLai){
+if($BienDichLai -or -not $ChiDon){
+    Write-Output 'Biên dịch lại để Designer nạp được các lớp giao diện dùng chung.'
     & (Join-Path $thuMucGoc 'checks/Run.ps1') -Configuration $CauHinh
     if($LASTEXITCODE -ne 0){throw 'Biên dịch hoặc kiểm tra chưa thành công.'}
 }

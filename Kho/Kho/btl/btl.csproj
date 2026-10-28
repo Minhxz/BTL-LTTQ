@@ -1,6 +1,0 @@
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
-  <PropertyGroup><Configuration Condition="'$(Configuration)'==''">Debug</Configuration><Platform Condition="'$(Platform)'==''">AnyCPU</Platform><ProjectGuid>{B3E0BB7A-C675-49DE-9F31-771391274701}</ProjectGuid><OutputType>WinExe</OutputType><RootNamespace>btl</RootNamespace><AssemblyName>btl</AssemblyName><TargetFrameworkVersion>v4.8</TargetFrameworkVersion><OutputPath>bin\$(Configuration)\</OutputPath></PropertyGroup>
-  <ItemGroup><Reference Include="System" /><Reference Include="System.Windows.Forms" /><Compile Include="Program.cs" /><None Include="App.config" /><ProjectReference Include="..\..\..\QLyCuaHangSuaXe\QLyCuaHangSuaXe\QLyCuaHangSuaXe.csproj"><Project>{7746BF1F-178B-4F59-9DBA-17035FDD1DC2}</Project><Name>QLyCuaHangSuaXe</Name></ProjectReference></ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-</Project>
