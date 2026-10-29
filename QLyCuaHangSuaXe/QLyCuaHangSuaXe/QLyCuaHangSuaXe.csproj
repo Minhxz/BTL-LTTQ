@@ -47,6 +47,7 @@
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Windows.Forms.DataVisualization" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.IO.Compression" />
@@ -108,6 +109,13 @@
     <Compile Include="DanhMuc\frmNhanVien.Designer.cs">
       <DependentUpon>frmNhanVien.cs</DependentUpon>
     </Compile>
+    <Compile Include="DanhMuc\ThongKe\frmThongKe.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DanhMuc\ThongKe\frmThongKe.Designer.cs">
+      <DependentUpon>frmThongKe.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DanhMuc\ThongKe\ThongKeDAL.cs" />
     <Compile Include="DanhMuc\TiepNhan\frmTiepNhan.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -151,6 +159,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DanhMuc\frmNhanVien.resx">
       <DependentUpon>frmNhanVien.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DanhMuc\ThongKe\frmThongKe.resx">
+      <DependentUpon>frmThongKe.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="DanhMuc\TiepNhan\frmKiemTraTiepNhan.resx">
       <DependentUpon>frmKiemTraTiepNhan.cs</DependentUpon>
