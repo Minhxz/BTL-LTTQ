@@ -29,7 +29,7 @@ namespace QLyCuaHangSuaXe.DanhMuc
             btnTaiLai.Text = "Làm mới";
             btnTaiLai.Click += (nguoiGui, suKien) => GiaoDien.ThucHien(() => { TaiDuLieu(); ThemMoi(); });
             btnTimKiem.Click += (nguoiGui, suKien) => Loc();
-            dgvNhanVien.SelectionChanged += (nguoiGui, suKien) => ChonDong();
+            dgvNhanVien.CurrentCellChanged += (nguoiGui, suKien) => ChonDong();
             btnPhanCong.Click += (nguoiGui, suKien) => GiaoDien.ThucHien(() => { using (var trang = new frmPhanCong()) trang.ShowDialog(this); });
             btnBangCong.Click += (nguoiGui, suKien) => GiaoDien.ThucHien(() => { tabNhanSu.SelectedTab = tabBangCong; HienBangCong(); });
             tabNhanSu.SelectedIndexChanged += (nguoiGui, suKien) =>

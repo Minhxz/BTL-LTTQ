@@ -35,7 +35,7 @@ namespace QLyCuaHangSuaXe.DanhMuc
             cboNhanVien.SelectedIndexChanged += (nguoiGui,suKien) => HienDuTinh();
             numGioThucLam.ValueChanged += (nguoiGui,suKien) => HienDuTinh();
             numGioChuanThang.ValueChanged += (nguoiGui,suKien) => HienDuTinh();
-            dgvDanhSach.SelectionChanged += (nguoiGui,suKien) => ChonDong();
+            dgvDanhSach.CurrentCellChanged += (nguoiGui,suKien) => ChonDong();
             if (!DesignMode && System.ComponentModel.LicenseManager.UsageMode != System.ComponentModel.LicenseUsageMode.Designtime)
             {
                 dtpTuNgay.Value = new DateTime(DateTime.Today.Year,DateTime.Today.Month,1);
@@ -107,6 +107,12 @@ namespace QLyCuaHangSuaXe.DanhMuc
                 lblCachTinh.Text=dong["TenNhanVien"]+"  •  "+dong["SoCa"]+" ca  •  Vắng "+dong["CaVang"]+" ca\nTiền công = "+Convert.ToDecimal(dong["GioThucLam"]).ToString("N2")+" giờ × "+Convert.ToDecimal(dong["LuongThang"]).ToString("N0")+" đ ÷ "+numGioChuanThang.Value+" giờ = "+Convert.ToDecimal(dong["TienCong"]).ToString("N0")+" đ. Lương tháng đã là mức lương thỏa thuận; hệ số và khoản chức vụ không cộng thêm lần nữa.";
             else lblCachTinh.Text=dong["TenNhanVien"]+"  •  "+dong["TenKhoanDieuChinh"]+": "+Convert.ToDecimal(dong["SoTien"]).ToString("N0")+" đ. Khoản quy định theo chức vụ; không tự trừ hoặc cộng lặp vào công thực tế.";
         }
+
+        private void lblTieuDe_Click(object sender, EventArgs e)
+        {
+
+        }
+
         void HienDuTinh()
         {
             if(dangGan||!laQuanLy)return;var dong=cboNhanVien.SelectedItem as DataRowView;if(dong==null)return;

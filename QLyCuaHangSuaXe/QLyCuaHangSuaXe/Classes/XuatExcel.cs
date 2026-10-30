@@ -1,9 +1,11 @@
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
 using System.IO;
 using System.IO.Compression;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System.Xml;
 
@@ -28,6 +30,108 @@ namespace QLyCuaHangSuaXe.LopDungChung
                     GhiTep(bangDuLieu, hopThoai.FileName, tieuDe);
                     MessageBox.Show("Đã xuất Excel: " + hopThoai.FileName);
                 }
+        }
+
+        public static void LuuNhieuBang(DataTable[] cacBang, string[] tieuDe)
+        {
+            KiemTraCacBang(cacBang, tieuDe);
+            using (var hopThoai = new SaveFileDialog
+            {
+                Filter = "Tệp Excel (*.xlsx)|*.xlsx",
+                Title = "Xuất kho và lịch sử ra Excel",
+                FileName = "KhoPhuTung_" + DateTime.Today.ToString("yyyyMMdd") + ".xlsx"
+            })
+            {
+                if (hopThoai.ShowDialog() != DialogResult.OK) return;
+                GhiNhieuBang(cacBang, hopThoai.FileName, tieuDe);
+                MessageBox.Show("Đã xuất Excel: " + hopThoai.FileName);
+            }
+        }
+
+        static void KiemTraCacBang(DataTable[] cacBang, string[] tieuDe)
+        {
+            if (cacBang == null || tieuDe == null || cacBang.Length == 0 || cacBang.Length != tieuDe.Length)
+                throw new InvalidOperationException("Chọn đủ bảng dữ liệu và tiêu đề để xuất.");
+            foreach (var bang in cacBang)
+                if (bang == null) throw new InvalidOperationException("Chưa có dữ liệu để xuất.");
+        }
+
+        public static void GhiNhieuBang(DataTable[] cacBang, string duongDan, string[] tieuDe)
+        {
+            KiemTraCacBang(cacBang, tieuDe);
+            var cacTen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            using (var luongTep = new FileStream(duongDan, FileMode.Create, FileAccess.Write))
+            using (var tepNen = new ZipArchive(luongTep, ZipArchiveMode.Create))
+            {
+                var noiDungLoai = new StringBuilder("<Types xmlns=\"http://schemas.openxmlformats.org/package/2006/content-types\"><Default Extension=\"rels\" ContentType=\"application/vnd.openxmlformats-package.relationships+xml\"/><Default Extension=\"xml\" ContentType=\"application/xml\"/><Override PartName=\"/xl/workbook.xml\" ContentType=\"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml\"/>");
+                var cacLienKet = new StringBuilder("<Relationships xmlns=\"http://schemas.openxmlformats.org/package/2006/relationships\">");
+                var soLamViec = new StringBuilder("<workbook xmlns=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\" xmlns:r=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\"><sheets>");
+                for (int i = 0; i < cacBang.Length; i++)
+                {
+                    string so = (i + 1).ToString(CultureInfo.InvariantCulture);
+                    string tenGoc = Regex.Replace(tieuDe[i] ?? "Báo cáo", @"[\[\]:*?/\\]", " ").Trim(' ', '\'');
+                    if (tenGoc.Length == 0) tenGoc = "Báo cáo";
+                    if (tenGoc.Length > 31) tenGoc = tenGoc.Substring(0, 31);
+                    string ten = tenGoc;
+                    for (int trung = 2; !cacTen.Add(ten); trung++)
+                    {
+                        string hauTo = " " + trung.ToString(CultureInfo.InvariantCulture);
+                        ten = tenGoc.Substring(0, Math.Min(tenGoc.Length, 31 - hauTo.Length)) + hauTo;
+                    }
+                    noiDungLoai.Append("<Override PartName=\"/xl/worksheets/sheet" + so + ".xml\" ContentType=\"application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml\"/>");
+                    cacLienKet.Append("<Relationship Id=\"rId" + so + "\" Type=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet\" Target=\"worksheets/sheet" + so + ".xml\"/>");
+                    soLamViec.Append("<sheet name=\"" + System.Security.SecurityElement.Escape(ten) + "\" sheetId=\"" + so + "\" r:id=\"rId" + so + "\"/>");
+                    using (var boNho = new MemoryStream())
+                    {
+                        GhiTrang(cacBang[i], boNho, tieuDe[i]);
+                        var muc = tepNen.CreateEntry("xl/worksheets/sheet" + so + ".xml");
+                        using (var dich = muc.Open())
+                        {
+                            boNho.Position = 0;
+                            boNho.CopyTo(dich);
+                        }
+                    }
+                }
+                GhiMucVanBan(tepNen, "[Content_Types].xml", noiDungLoai.Append("</Types>").ToString());
+                GhiMucVanBan(tepNen, "_rels/.rels", "<Relationships xmlns=\"http://schemas.openxmlformats.org/package/2006/relationships\"><Relationship Id=\"rId1\" Type=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument\" Target=\"xl/workbook.xml\"/></Relationships>");
+                GhiMucVanBan(tepNen, "xl/_rels/workbook.xml.rels", cacLienKet.Append("</Relationships>").ToString());
+                GhiMucVanBan(tepNen, "xl/workbook.xml", soLamViec.Append("</sheets></workbook>").ToString());
+            }
+        }
+
+        static void GhiTrang(DataTable bangDuLieu, Stream luong, string tieuDe)
+        {
+            using (var boGhiXml = XmlWriter.Create(luong, new XmlWriterSettings { Encoding = new UTF8Encoding(false), CloseOutput = false }))
+            {
+                boGhiXml.WriteStartElement("worksheet", "http://schemas.openxmlformats.org/spreadsheetml/2006/main");
+                boGhiXml.WriteStartElement("sheetViews");
+                boGhiXml.WriteStartElement("sheetView");
+                boGhiXml.WriteAttributeString("workbookViewId", "0");
+                boGhiXml.WriteStartElement("pane");
+                boGhiXml.WriteAttributeString("ySplit", "2");
+                boGhiXml.WriteAttributeString("topLeftCell", "A3");
+                boGhiXml.WriteAttributeString("state", "frozen");
+                boGhiXml.WriteEndElement(); boGhiXml.WriteEndElement(); boGhiXml.WriteEndElement();
+                boGhiXml.WriteStartElement("cols");
+                boGhiXml.WriteStartElement("col");
+                boGhiXml.WriteAttributeString("min", "1");
+                boGhiXml.WriteAttributeString("max", Math.Max(1, bangDuLieu.Columns.Count).ToString(CultureInfo.InvariantCulture));
+                boGhiXml.WriteAttributeString("width", "23");
+                boGhiXml.WriteAttributeString("customWidth", "1");
+                boGhiXml.WriteEndElement(); boGhiXml.WriteEndElement();
+                boGhiXml.WriteStartElement("sheetData");
+                boGhiXml.WriteStartElement("row"); GhiO(boGhiXml, tieuDe); boGhiXml.WriteEndElement();
+                boGhiXml.WriteStartElement("row");
+                foreach (DataColumn cot in bangDuLieu.Columns) GhiO(boGhiXml, GiaoDien.TenCot(cot.ColumnName));
+                boGhiXml.WriteEndElement();
+                foreach (DataRow dong in bangDuLieu.Rows)
+                {
+                    boGhiXml.WriteStartElement("row");
+                    foreach (object giaTri in dong.ItemArray) GhiO(boGhiXml, giaTri);
+                    boGhiXml.WriteEndElement();
+                }
+                boGhiXml.WriteEndElement(); boGhiXml.WriteEndElement();
+            }
         }
 
         static void GhiMucVanBan(ZipArchive tepNen, string ten, string giaTri)

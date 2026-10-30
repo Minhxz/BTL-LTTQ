@@ -22,7 +22,7 @@ namespace QLyCuaHangSuaXe.DanhMuc.DichVu
             btnTimKiem.Click += (nguoiGui, suKien) => GiaoDien.ThucHien(TaiDuLieu);
             btnLamMoi.Click += (nguoiGui, suKien) => GiaoDien.ThucHien(() => { TaiDuLieu(); LamMoi(); });
             btnDong.Click += (nguoiGui, suKien) => Close();
-            dgvDichVu.SelectionChanged += (nguoiGui, suKien) => ChonDong();
+            dgvDichVu.CurrentCellChanged += (nguoiGui, suKien) => ChonDong();
         }
         void LamMoi()
         {
@@ -67,6 +67,11 @@ namespace QLyCuaHangSuaXe.DanhMuc.DichVu
         {
             if (maDichVuDangChon.Length == 0) throw new InvalidOperationException("Lưu hoặc chọn dịch vụ trước.");
             using (var trang = new frmDinhMuc(maDichVuDangChon)) trang.ShowDialog(this);
+        }
+
+        private void lblTieuDe_Click(object sender, EventArgs e)
+        {
+
         }
     }
 

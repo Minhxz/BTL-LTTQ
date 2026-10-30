@@ -27,5 +27,10 @@ namespace QLyCuaHangSuaXe.DanhMuc
         {
             string ma=GiaoDien.GiaTriO(dgvDanhSach,"MaPhieuTiepNhan");if(ma.Length==0)throw new InvalidOperationException("Chọn phiếu cần xem hoặc thanh toán.");using(var trang=new frmChiTietHoaDon(ma))trang.ShowDialog(this);TaiDuLieu();
         }
+
+        private void lblTieuDe_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

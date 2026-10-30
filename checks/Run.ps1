@@ -22,7 +22,7 @@ foreach($name in @('QLyCuaHangSuaXe.exe','QLyCuaHangSuaXe.exe.config','QLyCuaHan
 }
 $verification=Join-Path $testOutput "$source.exe"
 $cacNguon=@((Join-Path $PSScriptRoot "$source.cs"))
-if($ghiDuLieu){$cacNguon+=@('VerifyKhoSqlMoi.cs','VerifyNhanSuSqlMoi.cs','VerifyTiepNhanSqlMoi.cs') | ForEach-Object {Join-Path $PSScriptRoot $_}}
+if($ghiDuLieu){$cacNguon+=@('VerifyKhoSqlMoi.cs','VerifyNhanSuSqlMoi.cs','VerifyTiepNhanSqlMoi.cs','VerifyDieuChinhKho.cs','VerifyPhieuNhapMoRong.cs','VerifyNutKho.cs') | ForEach-Object {Join-Path $PSScriptRoot $_}}
 & $compiler /nologo /target:exe "/out:$verification" "/reference:$assembly" /reference:System.dll /reference:System.Core.dll /reference:System.Data.dll /reference:System.Data.DataSetExtensions.dll /reference:System.Drawing.dll /reference:System.Windows.Forms.dll /reference:System.Design.dll /reference:System.IO.Compression.dll /reference:System.IO.Compression.FileSystem.dll $cacNguon
 if($LASTEXITCODE -ne 0){throw 'Verification compile failed.'}
 Copy-Item -LiteralPath (Join-Path $output 'QLyCuaHangSuaXe.exe.config') -Destination "$verification.config" -Force

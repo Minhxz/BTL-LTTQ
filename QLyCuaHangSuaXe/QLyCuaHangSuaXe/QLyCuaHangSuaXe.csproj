@@ -40,7 +40,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
+    <Reference Include="System">
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\System.dll</HintPath>
+    </Reference>
     <Reference Include="QRCoder">
       <HintPath>..\..\vendor\QRCoder\1.8.0\QRCoder.dll</HintPath>
       <Private>true</Private>
@@ -51,6 +53,7 @@
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Windows.Forms.DataVisualization" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.IO.Compression" />
@@ -98,6 +101,7 @@
     <Compile Include="Classes\XuLyDuLieu.cs" />
     <Compile Include="Classes\GiaoDien.cs" />
     <Compile Include="Classes\QuanLyKho.cs" />
+    <Compile Include="Classes\QuanLyDieuChinhKho.cs" />
     <Compile Include="Classes\NghiepVuSuaXe.cs" />
     <Compile Include="Classes\PhanQuyenNguoiDung.cs" />
     <Compile Include="Classes\TrangThietKe.cs">
@@ -196,6 +200,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DanhMuc\DichVu\frmDanhMucDichVu.resx">
       <DependentUpon>frmDanhMucDichVu.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DanhMuc\DichVu\frmDinhMuc.resx">
+      <DependentUpon>frmDinhMuc.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="DanhMuc\frmBangCong.resx">
       <DependentUpon>frmBangCong.cs</DependentUpon>

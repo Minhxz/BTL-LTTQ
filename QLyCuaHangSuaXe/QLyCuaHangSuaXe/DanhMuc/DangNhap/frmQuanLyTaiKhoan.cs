@@ -23,7 +23,7 @@ namespace QLyCuaHangSuaXe.DanhMuc.DangNhap
             cboLocVaiTro.Items.Add("Tất cả chức vụ");
             cboLocVaiTro.Items.AddRange(PhanQuyenNguoiDung.VaiTro);
             cboLocVaiTro.SelectedIndex = 0;
-            dgvTaiKhoan.SelectionChanged += (nguoiGui, suKien) => ChonDong();
+            dgvTaiKhoan.CurrentCellChanged += (nguoiGui, suKien) => ChonDong();
             btnThemMoi.Click += (nguoiGui, suKien) => GiaoDien.ThucHien(BatDauThem);
             btnHuyThem.Click += (nguoiGui, suKien) => { CheDoThem(false); ChonDong(); };
             btnLuuTaiKhoan.Click += (nguoiGui, suKien) => GiaoDien.ThucHien(Luu);

@@ -46,5 +46,10 @@ namespace QLyCuaHangSuaXe.DanhMuc.DichVu
                 return 0;
             }); Close();
         }
+
+        private void lblTieuDe_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

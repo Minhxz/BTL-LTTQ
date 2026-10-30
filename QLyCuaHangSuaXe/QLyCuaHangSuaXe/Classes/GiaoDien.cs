@@ -12,7 +12,16 @@ namespace QLyCuaHangSuaXe.LopDungChung
     {
         static readonly Dictionary<string, string> Cot = new Dictionary<string, string>
         {
+            { "DoanhThu", "Doanh thu (đ)" },
             { "LuongThang", "Lương tháng (đ)" },
+            { "MaDieuChinh", "Mã điều chỉnh tồn" },
+            { "MaDieuChinhGia", "Mã điều chỉnh giá" },
+            { "NgayDieuChinh", "Ngày điều chỉnh" },
+            { "SoLuongCu", "Số lượng cũ" },
+            { "SoLuongMoi", "Số lượng mới" },
+            { "GiaTriChenhLech", "Giá trị chênh lệch (đ)" },
+            { "GiaBanCu", "Giá bán cũ (đ)" },
+            { "GiaBanMoi", "Giá bán mới (đ)" },
             { "DonGiaGio", "Đơn giá giờ (đ)" },
             { "GioThucLam", "Giờ thực làm" },
             { "GioCa", "Giờ theo ca" },

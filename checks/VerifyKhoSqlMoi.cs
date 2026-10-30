@@ -145,6 +145,8 @@ public static class KiemTraKho
         PhaiBaoLoi(() => QuanLyKho.GhiSo(phieuLoi, "", chiTietDaLuu), typeof(InvalidOperationException));
         Dung(KhongCoPhieu(phieuLoi) && Ton("PT001") == tonCu + 2 && Ton(phuTungMoi) == 5, "Mã phụ tùng mới bị chiếm hoàn tác cả phiếu và tồn dòng trước");
         var saiLienKet = chiTietDaLuu.Copy();
+        saiLienKet.Rows[0]["GiaNhapGoc"] = GiaTri("SELECT DonGiaNhap FROM dbo.PhuTung WHERE MaPhuTung='PT001'");
+        saiLienKet.Rows[0]["GiaBanGoc"] = GiaTri("SELECT DonGiaBan FROM dbo.PhuTung WHERE MaPhuTung='PT001'");
         string maPhuTungLoi = XuLyDuLieu.TaoMaMoi("PT");
         saiLienKet.Rows[1]["MaPhuTung"] = maPhuTungLoi;
         saiLienKet.Rows[1]["MaNhaCungCap"] = "NCC999999";

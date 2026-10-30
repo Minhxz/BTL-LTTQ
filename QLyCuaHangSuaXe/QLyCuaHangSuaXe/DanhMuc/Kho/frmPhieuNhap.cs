@@ -10,7 +10,7 @@ namespace btl
         public frmPhieuNhap()
         {
             InitializeComponent();
-            dgvPhieuNhap.SelectionChanged += (s, e) => GiaoDien.ThucHien(TaiChiTiet);
+            dgvPhieuNhap.CurrentCellChanged += (s, e) => GiaoDien.ThucHien(TaiChiTiet);
             GanThietKe(dgvPhieuNhap);
         }
         public override void TaiDuLieu()
@@ -25,7 +25,29 @@ namespace btl
         }
         void dgvPhieuNhap_CellClick(object s,DataGridViewCellEventArgs e){GiaoDien.ThucHien(TaiChiTiet);}
         void btnThemPhieuNhap_Bam(object s,EventArgs e){GiaoDien.ThucHien(()=>{using(var trang=new frmNhapPhieuNhap())trang.ShowDialog(this);TaiDuLieu();});}
-        void btnSuaPhieuNhap_Bam(object s,EventArgs e){GiaoDien.ThucHien(TaiDuLieu);}
+        void btnSuaPhieuNhap_Bam(object s,EventArgs e)
+        {
+            GiaoDien.ThucHien(() =>
+            {
+                string ma = GiaoDien.GiaTriO(dgvPhieuNhap, "MaPhieuNhap");
+                if (ma.Length == 0) throw new InvalidOperationException("Chọn phiếu nhập cần sửa.");
+                using (var trang = new frmNhapPhieuNhap(ma)) trang.ShowDialog(this);
+                TaiDuLieu();
+            });
+        }
+        void btnXoaPhieuNhap_Bam(object s, EventArgs e)
+        {
+            GiaoDien.ThucHien(() =>
+            {
+                string ma = GiaoDien.GiaTriO(dgvPhieuNhap, "MaPhieuNhap");
+                if (ma.Length == 0) throw new InvalidOperationException("Chọn phiếu nhập cần xóa.");
+                var phieu = QuanLyKho.DocPhieuNhap(ma);
+                if (MessageBox.Show(this, "Xóa phiếu nhập " + ma + " và toàn bộ chi tiết? Số lượng nhập sẽ được rút khỏi tồn kho, có lưu lịch sử; chỉ thực hiện khi còn đủ hàng. Danh mục phụ tùng được giữ nguyên.", "Xác nhận xóa phiếu nhập", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes) return;
+                QuanLyKho.XoaPhieu(ma, phieu.ExtendedProperties["DauVet"].ToString());
+                TaiDuLieu();
+            });
+        }
+        void btnTaiLaiPhieu_Bam(object s, EventArgs e) { GiaoDien.ThucHien(TaiDuLieu); }
         MauInPhieu TaoBanIn()
         {
             PhienDangNhap.YeuCau("NHAP_KHO");

@@ -46,11 +46,23 @@ namespace QLyCuaHangSuaXe.LopDungChung
                 case "TN": tienTo="PTN"; bang="PhieuTiepNhan"; cot="MaPhieuTiepNhan"; break;
                 case "PTN": bang="PhieuTiepNhan"; cot="MaPhieuTiepNhan"; break;
                 case "HD": bang="HoaDon"; cot="MaHoaDon"; break;
+                case "DC": bang="DieuChinhTonKho"; cot="MaDieuChinh"; break;
+                case "DG": bang="DieuChinhGiaBan"; cot="MaDieuChinhGia"; break;
                 default: throw new ArgumentException("Loại mã không hợp lệ.");
             }
             string khoa = giaoDich == null ? "" : " WITH(UPDLOCK,HOLDLOCK)";
             int viTri = tienTo.Length + 1;
-            var ketQua = DocDuLieu(ketNoi, giaoDich, "SELECT ISNULL(MAX(TRY_CONVERT(INT,SUBSTRING(["+cot+"],@v,10))),0)+1 FROM dbo.["+bang+"]"+khoa+" WHERE ["+cot+"] LIKE @p AND SUBSTRING(["+cot+"],@v,10) NOT LIKE '%[^0-9]%'", ThamSo("@p", tienTo+"%"), ThamSo("@v", viTri));
+            DataTable ketQua;
+            if (tienTo == "PN")
+            {
+                string cauLenh = "SELECT ISNULL(MAX(So),0)+1 FROM (" +
+                    "SELECT TRY_CONVERT(INT,SUBSTRING(MaPhieuNhap,3,8)) AS So FROM dbo.PhieuNhap" + khoa +
+                    " UNION ALL SELECT TRY_CONVERT(INT,SUBSTRING(LyDo,LEN(@xoa)+1,8)) FROM dbo.DieuChinhTonKho" + khoa + " WHERE LEFT(LyDo,LEN(@xoa))=@xoa" +
+                    " UNION ALL SELECT TRY_CONVERT(INT,SUBSTRING(LyDo,LEN(@sua)+1,8)) FROM dbo.DieuChinhTonKho" + khoa + " WHERE LEFT(LyDo,LEN(@sua))=@sua) AS CacMa";
+                ketQua = DocDuLieu(ketNoi, giaoDich, cauLenh, ThamSo("@xoa", "Xóa phiếu nhập PN"), ThamSo("@sua", "Sửa phiếu nhập PN"));
+            }
+            else
+                ketQua = DocDuLieu(ketNoi, giaoDich, "SELECT ISNULL(MAX(TRY_CONVERT(INT,SUBSTRING(["+cot+"],@v,10))),0)+1 FROM dbo.["+bang+"]"+khoa+" WHERE ["+cot+"] LIKE @p AND SUBSTRING(["+cot+"],@v,10) NOT LIKE '%[^0-9]%'", ThamSo("@p", tienTo+"%"), ThamSo("@v", viTri));
             string ma = tienTo + Convert.ToInt32(ketQua.Rows[0][0]).ToString("D3");
             if (ma.Length > 10) throw new InvalidOperationException("Đã hết dải mã. Hãy kiểm tra dữ liệu trước khi tạo mới.");
             return ma;

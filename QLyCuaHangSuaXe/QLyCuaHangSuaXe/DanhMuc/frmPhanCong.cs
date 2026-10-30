@@ -21,7 +21,7 @@ namespace QLyCuaHangSuaXe.DanhMuc
                 nghiepVu.HuyChuaSua(GiaoDien.GiaTriO(dgvPhanCong, "MaPhieuTiepNhan"));
                 TaiDuLieu();
             });
-            dgvPhanCong.SelectionChanged += (nguoiGui, suKien) => txtMaPhieu.Text = GiaoDien.GiaTriO(dgvPhanCong, "MaPhieuTiepNhan");
+            dgvPhanCong.CurrentCellChanged += (nguoiGui, suKien) => txtMaPhieu.Text = GiaoDien.GiaTriO(dgvPhanCong, "MaPhieuTiepNhan");
         }
         public override void TaiDuLieu()
         {

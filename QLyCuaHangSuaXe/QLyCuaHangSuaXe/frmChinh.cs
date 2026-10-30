@@ -11,7 +11,7 @@ namespace QLyCuaHangSuaXe
         public string TenDangNhap { get; private set; }
         public string VaiTro { get; private set; }
         public event EventHandler DangXuatDuocYeuCau;
-        bool dangDangXuat;
+        bool dangDangXuat;  
 
         readonly Dictionary<string, Form> cacTrang = new Dictionary<string, Form>();
         readonly Dictionary<string, Button> cacNutMenu = new Dictionary<string, Button>();

@@ -1,6 +1,6 @@
 # Đối chiếu SQL mới và phạm vi ứng dụng
 
-Ứng dụng dùng cấu trúc từ file `QuanLySuaXe.sql` mới được cung cấp ngày 28/10/2026. Bản giao cho nhóm là `database/QuanLySuaXe_DayDu_20261028.sql`, gồm 18 bảng và dữ liệu đã thu gọn theo yêu cầu. Không ghép lại các bảng/cột của phiên bản trước vào database mới. Dữ liệu nhân viên có Minh (chủ), An (thợ chính), Huy (thợ phụ), Mai (thu ngân), Cường (thủ kho); năm tên đăng nhập không dấu đều dùng mật khẩu ban đầu 123. Giữ các phiếu mẫu đại diện và dữ liệu mới đang có; công chỉ lấy từ năm hồ sơ đại diện, không cộng dồn giờ của tất cả nhân viên mẫu.
+Ứng dụng dùng cấu trúc từ file `QuanLySuaXe.sql` được cung cấp ngày 28/10/2026, bổ sung hai bảng lịch sử kho ngày 29/10/2026. Bản giao cho nhóm là `database/QuanLySuaXe_DayDu_20261029.sql`, gồm đủ 20 bảng và mọi dữ liệu hiện đang dùng. Dữ liệu nhân viên giữ Minh (chủ), An (thợ chính), Huy (thợ phụ), Mai (thu ngân), Cường (thủ kho) và hồ sơ Hường / Huong được tạo thêm. Năm tên đăng nhập mẫu không dấu vẫn dùng mật khẩu ban đầu 123. Migration không đặt lại tài khoản hoặc dữ liệu đã nhập.
 
 ## Những thay đổi theo SQL
 
@@ -16,6 +16,8 @@
 | HoaDon bắt buộc ngày thanh toán | Phiếu hoàn thành nằm trong danh sách chờ thu; chỉ tạo HoaDon khi nhận tiền, dùng ngày thật và chặn thanh toán lặp |
 | Công theo nhân viên/ngày/ca | ChiTietCaLam lưu giờ thực tế; sửa/đổi ca theo khóa ghép, không dùng mã bảng công cũ |
 | Phụ tùng có nguồn và hạn dùng | Mã phụ tùng phân biệt nhà cung cấp/hạn dùng; không có đơn vị tính; nhập kho và cập nhật tồn trong giao dịch |
+| Hai lịch sử kho | DieuChinhTonKho lưu lượng cũ/mới, giá nhập và giá trị chênh lệch tự tính; DieuChinhGiaBan lưu giá cũ/mới, ngày, lý do và người thực hiện |
+| Sửa/xóa phiếu nhập | Tính chênh lệch lượng nhập để sửa tồn, chặn thiếu hàng; giữ danh mục/giá hiện tại, dùng dấu vết để phát hiện phiếu đã bị phiên khác sửa |
 
 Tất cả cột đều NOT NULL. Thời điểm kết thúc của phân công đang xử lý là thời điểm dự kiến hợp lệ; khi hoàn thành cập nhật thời điểm kết thúc thật. Trạng thái đang xử lý lấy từ phiếu, không suy ra từ việc ngày kết thúc đã đến hay chưa. Hóa đơn chưa thu không dùng ngày thanh toán giả.
 
@@ -38,7 +40,7 @@ Database mới không lưu giờ vào/ra, lý do sửa công, tiền nhiệm v�
 - **Lịch ca dự kiến:** hiện lưu công thực tế và đổi trực tiếp ca đã nhập, chưa có đăng ký/xin đổi/duyệt ca.
 - **Theo dõi giao dịch thanh toán:** HoaDon hiện lưu tổng tiền và ngày thanh toán, chưa có cột phương thức, mã giao dịch ngân hàng hoặc bảng thu nhiều đợt. Tiền mặt và QR đều ghi hóa đơn một lần khi thu đủ; chưa có xác nhận nhận tiền tự động từ ngân hàng.
 - **Lịch sử chi tiết phụ tùng xuất sửa:** định mức có thể thay đổi sau khi xe đã hoàn thành; SQL chưa lưu bản chụp tên/giá từng phụ tùng trên phiếu tiếp nhận. Không nên suy diễn phần tách tiền phụ tùng lịch sử từ định mức hiện tại.
-- **Sổ xuất và kiểm kê:** nhập kho có chứng từ, nhưng giảm tồn do sửa chữa đang gắn với phiếu tiếp nhận; cần chứng từ xuất/điều chỉnh nếu muốn sổ tồn độc lập và kiểm kê có phê duyệt.
+- **Sổ xuất và kiểm kê có duyệt:** đã có lịch sử điều chỉnh tồn/giá và lịch sử khi sửa/xóa phiếu nhập. Giảm tồn do sửa chữa vẫn gắn với phiếu tiếp nhận; chưa có chứng từ xuất độc lập và quy trình duyệt kiểm kê.
 - **Quyền tùy biến:** các chức vụ có bộ quyền trong mã, trang Phân quyền dùng để xem. Muốn chỉnh từng quyền và lưu SQL cần thêm cấu trúc quyền tương ứng.
 
-Các phần trên là ý tưởng mở rộng, chưa tự thêm bảng/cột ngoài SQL đã được yêu cầu. Ưu tiên chốt kỳ lương và ghi nhận giao dịch nếu nhóm cần đối soát tiền công hoặc thanh toán sau này.
+Các phần trên là ý tưởng mở rộng, chưa triển khai. Hai bảng lịch sử kho đã được thêm theo yêu cầu tích hợp kho; các cột của 18 bảng trước đó được giữ nguyên. Ưu tiên chốt kỳ lương và ghi nhận giao dịch nếu nhóm cần đối soát tiền công hoặc thanh toán sau này.

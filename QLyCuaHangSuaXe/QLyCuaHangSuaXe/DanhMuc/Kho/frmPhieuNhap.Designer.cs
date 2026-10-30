@@ -21,8 +21,10 @@ namespace btl
             this.flpThaoTac = new System.Windows.Forms.FlowLayoutPanel();
             this.btnThemPhieuNhap = new System.Windows.Forms.Button();
             this.btnSuaPhieuNhap = new System.Windows.Forms.Button();
+            this.btnXoaPhieuNhap = new System.Windows.Forms.Button();
             this.btnInPhieuNhap = new System.Windows.Forms.Button();
             this.btnXuatChiTiet = new System.Windows.Forms.Button();
+            this.btnTaiLaiPhieu = new System.Windows.Forms.Button();
             this.btnThoat = new System.Windows.Forms.Button();
             this.tlpTrang.SuspendLayout();
             this.tlpTimKiem.SuspendLayout();
@@ -31,6 +33,9 @@ namespace btl
             ((System.ComponentModel.ISupportInitialize)(this.dgvChiTietPhieuNhap)).BeginInit();
             this.flpThaoTac.SuspendLayout();
             this.SuspendLayout();
+            // 
+            // tlpTrang
+            // 
             this.tlpTrang.ColumnCount = 1;
             this.tlpTrang.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpTrang.Controls.Add(this.lblTieuDe, 0, 0);
@@ -49,6 +54,9 @@ namespace btl
             this.tlpTrang.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 65F));
             this.tlpTrang.Size = new System.Drawing.Size(1475, 975);
             this.tlpTrang.TabIndex = 0;
+            // 
+            // lblTieuDe
+            // 
             this.lblTieuDe.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblTieuDe.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Bold);
             this.lblTieuDe.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(85)))), ((int)(((byte)(130)))));
@@ -59,6 +67,9 @@ namespace btl
             this.lblTieuDe.TabIndex = 0;
             this.lblTieuDe.Text = "PHIẾU NHẬP KHO";
             this.lblTieuDe.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // tlpTimKiem
+            // 
             this.tlpTimKiem.ColumnCount = 2;
             this.tlpTimKiem.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 188F));
             this.tlpTimKiem.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
@@ -72,6 +83,9 @@ namespace btl
             this.tlpTimKiem.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpTimKiem.Size = new System.Drawing.Size(1435, 60);
             this.tlpTimKiem.TabIndex = 1;
+            // 
+            // lblTimPhieu
+            // 
             this.lblTimPhieu.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblTimPhieu.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(85)))), ((int)(((byte)(130)))));
             this.lblTimPhieu.Location = new System.Drawing.Point(4, 0);
@@ -81,6 +95,9 @@ namespace btl
             this.lblTimPhieu.TabIndex = 0;
             this.lblTimPhieu.Text = "Tìm phiếu nhập";
             this.lblTimPhieu.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // txtTimPhieuNhap
+            // 
             this.txtTimPhieuNhap.Dock = System.Windows.Forms.DockStyle.Fill;
             this.txtTimPhieuNhap.Location = new System.Drawing.Point(193, 10);
             this.txtTimPhieuNhap.Margin = new System.Windows.Forms.Padding(5, 10, 15, 8);
@@ -88,6 +105,9 @@ namespace btl
             this.txtTimPhieuNhap.Size = new System.Drawing.Size(1227, 30);
             this.txtTimPhieuNhap.TabIndex = 1;
             this.txtTimPhieuNhap.TextChanged += new System.EventHandler(this.txtTim_TextChanged);
+            // 
+            // tlpHaiBang
+            // 
             this.tlpHaiBang.ColumnCount = 1;
             this.tlpHaiBang.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpHaiBang.Controls.Add(this.lblDanhSach, 0, 0);
@@ -105,6 +125,9 @@ namespace btl
             this.tlpHaiBang.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tlpHaiBang.Size = new System.Drawing.Size(1435, 738);
             this.tlpHaiBang.TabIndex = 2;
+            // 
+            // lblDanhSach
+            // 
             this.lblDanhSach.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblDanhSach.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(85)))), ((int)(((byte)(130)))));
             this.lblDanhSach.Location = new System.Drawing.Point(4, 0);
@@ -114,6 +137,9 @@ namespace btl
             this.lblDanhSach.TabIndex = 0;
             this.lblDanhSach.Text = "DANH SÁCH PHIẾU NHẬP";
             this.lblDanhSach.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // dgvPhieuNhap
+            // 
             this.dgvPhieuNhap.AllowUserToAddRows = false;
             this.dgvPhieuNhap.AllowUserToDeleteRows = false;
             this.dgvPhieuNhap.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
@@ -141,6 +167,9 @@ namespace btl
             this.dgvPhieuNhap.Size = new System.Drawing.Size(1435, 321);
             this.dgvPhieuNhap.TabIndex = 1;
             this.dgvPhieuNhap.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvPhieuNhap_CellClick);
+            // 
+            // lblChiTiet
+            // 
             this.lblChiTiet.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblChiTiet.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(85)))), ((int)(((byte)(130)))));
             this.lblChiTiet.Location = new System.Drawing.Point(4, 369);
@@ -150,6 +179,9 @@ namespace btl
             this.lblChiTiet.TabIndex = 2;
             this.lblChiTiet.Text = "CHI TIẾT PHIẾU ĐANG CHỌN";
             this.lblChiTiet.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // dgvChiTietPhieuNhap
+            // 
             this.dgvChiTietPhieuNhap.AllowUserToAddRows = false;
             this.dgvChiTietPhieuNhap.AllowUserToDeleteRows = false;
             this.dgvChiTietPhieuNhap.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
@@ -176,11 +208,16 @@ namespace btl
             this.dgvChiTietPhieuNhap.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvChiTietPhieuNhap.Size = new System.Drawing.Size(1435, 321);
             this.dgvChiTietPhieuNhap.TabIndex = 3;
+            // 
+            // flpThaoTac
+            // 
             this.flpThaoTac.AutoScroll = true;
             this.flpThaoTac.Controls.Add(this.btnThemPhieuNhap);
             this.flpThaoTac.Controls.Add(this.btnSuaPhieuNhap);
+            this.flpThaoTac.Controls.Add(this.btnXoaPhieuNhap);
             this.flpThaoTac.Controls.Add(this.btnInPhieuNhap);
             this.flpThaoTac.Controls.Add(this.btnXuatChiTiet);
+            this.flpThaoTac.Controls.Add(this.btnTaiLaiPhieu);
             this.flpThaoTac.Controls.Add(this.btnThoat);
             this.flpThaoTac.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flpThaoTac.Location = new System.Drawing.Point(20, 890);
@@ -189,6 +226,9 @@ namespace btl
             this.flpThaoTac.Size = new System.Drawing.Size(1435, 65);
             this.flpThaoTac.TabIndex = 3;
             this.flpThaoTac.WrapContents = false;
+            // 
+            // btnThemPhieuNhap
+            // 
             this.btnThemPhieuNhap.BackColor = System.Drawing.Color.White;
             this.btnThemPhieuNhap.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(207)))), ((int)(((byte)(220)))));
             this.btnThemPhieuNhap.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -197,63 +237,110 @@ namespace btl
             this.btnThemPhieuNhap.Location = new System.Drawing.Point(0, 8);
             this.btnThemPhieuNhap.Margin = new System.Windows.Forms.Padding(0, 8, 12, 5);
             this.btnThemPhieuNhap.Name = "btnThemPhieuNhap";
-            this.btnThemPhieuNhap.Size = new System.Drawing.Size(200, 45);
+            this.btnThemPhieuNhap.Size = new System.Drawing.Size(140, 45);
             this.btnThemPhieuNhap.TabIndex = 0;
             this.btnThemPhieuNhap.Text = "Lập phiếu nhập";
             this.btnThemPhieuNhap.UseVisualStyleBackColor = false;
             this.btnThemPhieuNhap.Click += new System.EventHandler(this.btnThemPhieuNhap_Bam);
+            // 
+            // btnSuaPhieuNhap
+            // 
             this.btnSuaPhieuNhap.BackColor = System.Drawing.Color.White;
             this.btnSuaPhieuNhap.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(207)))), ((int)(((byte)(220)))));
             this.btnSuaPhieuNhap.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSuaPhieuNhap.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold);
             this.btnSuaPhieuNhap.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(85)))), ((int)(((byte)(130)))));
-            this.btnSuaPhieuNhap.Location = new System.Drawing.Point(212, 8);
+            this.btnSuaPhieuNhap.Location = new System.Drawing.Point(152, 8);
             this.btnSuaPhieuNhap.Margin = new System.Windows.Forms.Padding(0, 8, 12, 5);
             this.btnSuaPhieuNhap.Name = "btnSuaPhieuNhap";
-            this.btnSuaPhieuNhap.Size = new System.Drawing.Size(200, 45);
+            this.btnSuaPhieuNhap.Size = new System.Drawing.Size(140, 45);
             this.btnSuaPhieuNhap.TabIndex = 1;
-            this.btnSuaPhieuNhap.Text = "Tải lại phiếu";
+            this.btnSuaPhieuNhap.Text = "Sửa phiếu nhập";
             this.btnSuaPhieuNhap.UseVisualStyleBackColor = false;
             this.btnSuaPhieuNhap.Click += new System.EventHandler(this.btnSuaPhieuNhap_Bam);
+            // 
+            // btnXoaPhieuNhap
+            // 
+            this.btnXoaPhieuNhap.BackColor = System.Drawing.Color.White;
+            this.btnXoaPhieuNhap.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(207)))), ((int)(((byte)(220)))));
+            this.btnXoaPhieuNhap.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnXoaPhieuNhap.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold);
+            this.btnXoaPhieuNhap.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(175)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
+            this.btnXoaPhieuNhap.Location = new System.Drawing.Point(304, 8);
+            this.btnXoaPhieuNhap.Margin = new System.Windows.Forms.Padding(0, 8, 12, 5);
+            this.btnXoaPhieuNhap.Name = "btnXoaPhieuNhap";
+            this.btnXoaPhieuNhap.Size = new System.Drawing.Size(140, 45);
+            this.btnXoaPhieuNhap.TabIndex = 2;
+            this.btnXoaPhieuNhap.Text = "Xóa phiếu nhập";
+            this.btnXoaPhieuNhap.UseVisualStyleBackColor = false;
+            this.btnXoaPhieuNhap.Click += new System.EventHandler(this.btnXoaPhieuNhap_Bam);
+            // 
+            // btnInPhieuNhap
+            // 
             this.btnInPhieuNhap.BackColor = System.Drawing.Color.White;
             this.btnInPhieuNhap.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(207)))), ((int)(((byte)(220)))));
             this.btnInPhieuNhap.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnInPhieuNhap.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold);
             this.btnInPhieuNhap.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(85)))), ((int)(((byte)(130)))));
-            this.btnInPhieuNhap.Location = new System.Drawing.Point(424, 8);
+            this.btnInPhieuNhap.Location = new System.Drawing.Point(456, 8);
             this.btnInPhieuNhap.Margin = new System.Windows.Forms.Padding(0, 8, 12, 5);
             this.btnInPhieuNhap.Name = "btnInPhieuNhap";
-            this.btnInPhieuNhap.Size = new System.Drawing.Size(200, 45);
+            this.btnInPhieuNhap.Size = new System.Drawing.Size(140, 45);
             this.btnInPhieuNhap.TabIndex = 2;
             this.btnInPhieuNhap.Text = "In phiếu nhập";
             this.btnInPhieuNhap.UseVisualStyleBackColor = false;
             this.btnInPhieuNhap.Click += new System.EventHandler(this.btnInPhieuNhap_Bam);
+            // 
+            // btnXuatChiTiet
+            // 
             this.btnXuatChiTiet.BackColor = System.Drawing.Color.White;
             this.btnXuatChiTiet.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(207)))), ((int)(((byte)(220)))));
             this.btnXuatChiTiet.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnXuatChiTiet.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold);
             this.btnXuatChiTiet.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(85)))), ((int)(((byte)(130)))));
-            this.btnXuatChiTiet.Location = new System.Drawing.Point(636, 8);
+            this.btnXuatChiTiet.Location = new System.Drawing.Point(608, 8);
             this.btnXuatChiTiet.Margin = new System.Windows.Forms.Padding(0, 8, 12, 5);
             this.btnXuatChiTiet.Name = "btnXuatChiTiet";
-            this.btnXuatChiTiet.Size = new System.Drawing.Size(200, 45);
+            this.btnXuatChiTiet.Size = new System.Drawing.Size(140, 45);
             this.btnXuatChiTiet.TabIndex = 3;
             this.btnXuatChiTiet.Text = "Xuất Excel";
             this.btnXuatChiTiet.UseVisualStyleBackColor = false;
             this.btnXuatChiTiet.Click += new System.EventHandler(this.btnXuatChiTiet_Bam);
+            // 
+            // btnTaiLaiPhieu
+            // 
+            this.btnTaiLaiPhieu.BackColor = System.Drawing.Color.White;
+            this.btnTaiLaiPhieu.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(207)))), ((int)(((byte)(220)))));
+            this.btnTaiLaiPhieu.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnTaiLaiPhieu.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold);
+            this.btnTaiLaiPhieu.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(85)))), ((int)(((byte)(130)))));
+            this.btnTaiLaiPhieu.Location = new System.Drawing.Point(760, 8);
+            this.btnTaiLaiPhieu.Margin = new System.Windows.Forms.Padding(0, 8, 12, 5);
+            this.btnTaiLaiPhieu.Name = "btnTaiLaiPhieu";
+            this.btnTaiLaiPhieu.Size = new System.Drawing.Size(140, 45);
+            this.btnTaiLaiPhieu.TabIndex = 5;
+            this.btnTaiLaiPhieu.Text = "Tải lại danh sách";
+            this.btnTaiLaiPhieu.UseVisualStyleBackColor = false;
+            this.btnTaiLaiPhieu.Click += new System.EventHandler(this.btnTaiLaiPhieu_Bam);
+            // 
+            // btnThoat
+            // 
             this.btnThoat.BackColor = System.Drawing.Color.White;
             this.btnThoat.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(207)))), ((int)(((byte)(220)))));
             this.btnThoat.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnThoat.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold);
             this.btnThoat.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(85)))), ((int)(((byte)(130)))));
-            this.btnThoat.Location = new System.Drawing.Point(848, 8);
+            this.btnThoat.Location = new System.Drawing.Point(912, 8);
             this.btnThoat.Margin = new System.Windows.Forms.Padding(0, 8, 12, 5);
             this.btnThoat.Name = "btnThoat";
-            this.btnThoat.Size = new System.Drawing.Size(200, 45);
+            this.btnThoat.Size = new System.Drawing.Size(140, 45);
             this.btnThoat.TabIndex = 4;
             this.btnThoat.Text = "Đóng danh sách";
             this.btnThoat.UseVisualStyleBackColor = false;
             this.btnThoat.Click += new System.EventHandler(this.btnThoat_Bam);
+            // 
+            // frmPhieuNhap
+            // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(120F, 120F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(244)))), ((int)(((byte)(247)))), ((int)(((byte)(251)))));
@@ -286,6 +373,8 @@ namespace btl
         private System.Windows.Forms.DataGridView dgvChiTietPhieuNhap;
         private System.Windows.Forms.Button btnThemPhieuNhap;
         private System.Windows.Forms.Button btnSuaPhieuNhap;
+        private System.Windows.Forms.Button btnXoaPhieuNhap;
+        private System.Windows.Forms.Button btnTaiLaiPhieu;
         private System.Windows.Forms.Button btnInPhieuNhap;
         private System.Windows.Forms.Button btnXuatChiTiet;
         private System.Windows.Forms.Button btnThoat;
