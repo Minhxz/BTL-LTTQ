@@ -107,12 +107,7 @@ namespace QLyCuaHangSuaXe.DanhMuc.TiepNhan
             var ketQua = bangPhieuGoc.Clone();
             foreach (DataRow dong in bangPhieuGoc.Rows)
             {
-                bool dungKhachHang = tuKhoa.Length == 0 || dong["TenKhachHang"].ToString().IndexOf(tuKhoa, StringComparison.CurrentCultureIgnoreCase) >= 0
-                    || dong["SoDienThoai"].ToString().IndexOf(tuKhoa, StringComparison.Ordinal) >= 0;
-                string trangThai = dong["TrangThai"].ToString();
-                bool dungTrangThai = cboLocTrangThai.Text == "Tất cả" || cboLocTrangThai.Text == "Chờ sửa" && (trangThai == "Chờ sửa" || trangThai == "Đang sửa")
-                    || trangThai == cboLocTrangThai.Text;
-                if (dungKhachHang && dungTrangThai)
+                if (DungKhachHang(dong, tuKhoa) && DungTrangThai(dong, cboLocTrangThai.Text))
                     ketQua.ImportRow(dong);
             }
             dangTai = true;
@@ -131,6 +126,26 @@ namespace QLyCuaHangSuaXe.DanhMuc.TiepNhan
             }
             finally { dangTai = false; }
             HienThiPhieu();
+        }
+
+        static bool DungKhachHang(DataRow phieu, string tuKhoa)
+        {
+            if (tuKhoa.Length == 0)
+                return true;
+            string ten = phieu["TenKhachHang"].ToString();
+            string dienThoai = phieu["SoDienThoai"].ToString();
+            return ten.IndexOf(tuKhoa, StringComparison.CurrentCultureIgnoreCase) >= 0
+                || dienThoai.IndexOf(tuKhoa, StringComparison.Ordinal) >= 0;
+        }
+
+        static bool DungTrangThai(DataRow phieu, string boLoc)
+        {
+            string trangThai = phieu["TrangThai"].ToString();
+            if (boLoc == "Tất cả")
+                return true;
+            if (boLoc == "Chờ sửa")
+                return trangThai == "Chờ sửa" || trangThai == "Đang sửa";
+            return trangThai == boLoc;
         }
 
         void SapXepCot()

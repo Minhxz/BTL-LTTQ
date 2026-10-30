@@ -1,5 +1,6 @@
 using System;
 using System.Data;
+using System.Data.SqlClient;
 
 namespace QLyCuaHangSuaXe.LopDungChung
 {
@@ -24,7 +25,18 @@ namespace QLyCuaHangSuaXe.LopDungChung
         public static ChiTietTinhCong TinhChiTiet(TimeSpan batDau, TimeSpan ketThuc, TimeSpan gioVao, TimeSpan gioRa, bool vang, int dieuChinh, decimal luongGio)
         {
             int phut = PhutCong(batDau, ketThuc, gioVao, gioRa, vang, dieuChinh);
-            return new ChiTietTinhCong { PhutCa = (int)(ketThuc - batDau).TotalMinutes, PhutThucLam = PhutCong(batDau, ketThuc, gioVao, gioRa, vang, 0), PhutTinhCong = phut, DieuChinhPhut = dieuChinh, LuongGio = luongGio, TienCong = Math.Round(phut * luongGio / 60m, 2, MidpointRounding.AwayFromZero), Vang = vang, PhutMuon = vang ? 0 : Math.Max(0, (int)(gioVao - batDau).TotalMinutes), PhutVeSom = vang ? 0 : Math.Max(0, (int)(ketThuc - gioRa).TotalMinutes) };
+            return new ChiTietTinhCong
+            {
+                PhutCa = (int)(ketThuc - batDau).TotalMinutes,
+                PhutThucLam = PhutCong(batDau, ketThuc, gioVao, gioRa, vang, 0),
+                PhutTinhCong = phut,
+                DieuChinhPhut = dieuChinh,
+                LuongGio = luongGio,
+                TienCong = Math.Round(phut * luongGio / 60m, 2, MidpointRounding.AwayFromZero),
+                Vang = vang,
+                PhutMuon = vang ? 0 : Math.Max(0, (int)(gioVao - batDau).TotalMinutes),
+                PhutVeSom = vang ? 0 : Math.Max(0, (int)(ketThuc - gioRa).TotalMinutes)
+            };
         }
         public static int PhutCong(TimeSpan batDau, TimeSpan ketThuc, TimeSpan gioVao, TimeSpan gioRa, bool vang, int dieuChinhPhut)
         {
@@ -53,21 +65,44 @@ namespace QLyCuaHangSuaXe.LopDungChung
                     throw new InvalidOperationException("Chọn ca làm.");
                 if (sua && XuLyDuLieu.DocDuLieu(ketNoi, giaoDich, "SELECT 1 FROM dbo.ChiTietCaLam WITH(UPDLOCK,HOLDLOCK) WHERE MaNhanVien=@nv AND NgayLam=@ngay AND MaCaLam=@ca", XuLyDuLieu.ThamSo("@nv", maNhanVienCu), XuLyDuLieu.ThamSo("@ngay", ngayLamCu.Value.Date), XuLyDuLieu.ThamSo("@ca", maCaLamCu)).Rows.Count != 1)
                     throw new InvalidOperationException("Dòng công không còn tồn tại. Hãy tải lại.");
-                var cungNgay = XuLyDuLieu.DocDuLieu(ketNoi, giaoDich, "SELECT MaNhanVien,MaCaLam,NgayLam,TongThoiGianLamThucTe FROM dbo.ChiTietCaLam WITH(UPDLOCK,HOLDLOCK) WHERE MaNhanVien=@nv AND NgayLam=@ngay", XuLyDuLieu.ThamSo("@nv", maNhanVien), XuLyDuLieu.ThamSo("@ngay", ngayLam.Date));
-                decimal tong = gioThucTe;
-                foreach (DataRow dong in cungNgay.Rows)
-                {
-                    bool dongCu = sua && dong["MaNhanVien"].ToString() == maNhanVienCu && (DateTime)dong["NgayLam"] == ngayLamCu.Value.Date && dong["MaCaLam"].ToString() == maCaLamCu;
-                    if (dongCu)
-                        continue;
-                    if (dong["MaCaLam"].ToString() == maCaLam)
-                        throw new InvalidOperationException("Nhân viên đã được chấm ca này trong ngày. Chọn dòng để sửa.");
-                    tong += Convert.ToDecimal(dong["TongThoiGianLamThucTe"]);
-                }
-                if (tong > 24)
-                    throw new InvalidOperationException("Tổng giờ làm trong ngày không vượt 24 giờ.");
-                return XuLyDuLieu.ThucThi(ketNoi, giaoDich, sua ? "UPDATE dbo.ChiTietCaLam SET MaNhanVien=@nv,MaCaLam=@ca,NgayLam=@ngay,TongThoiGianLamThucTe=@gio WHERE MaNhanVien=@nvcu AND NgayLam=@ngaycu AND MaCaLam=@cacu" : "INSERT dbo.ChiTietCaLam(MaNhanVien,MaCaLam,NgayLam,TongThoiGianLamThucTe) VALUES(@nv,@ca,@ngay,@gio)", XuLyDuLieu.ThamSo("@nv", maNhanVien), XuLyDuLieu.ThamSo("@ca", maCaLam), XuLyDuLieu.ThamSo("@ngay", ngayLam.Date), XuLyDuLieu.ThamSo("@gio", gioThucTe), XuLyDuLieu.ThamSo("@nvcu", maNhanVienCu ?? ""), XuLyDuLieu.ThamSo("@ngaycu", ngayLamCu ?? ngayLam.Date), XuLyDuLieu.ThamSo("@cacu", maCaLamCu ?? ""));
+                KiemTraCongTrongNgay(ketNoi, giaoDich, maNhanVien, ngayLam, maCaLam, gioThucTe,
+                    sua, maNhanVienCu, ngayLamCu, maCaLamCu);
+
+                string cauLenh = sua
+                    ? "UPDATE dbo.ChiTietCaLam SET MaNhanVien=@nv,MaCaLam=@ca,NgayLam=@ngay,TongThoiGianLamThucTe=@gio WHERE MaNhanVien=@nvcu AND NgayLam=@ngaycu AND MaCaLam=@cacu"
+                    : "INSERT dbo.ChiTietCaLam(MaNhanVien,MaCaLam,NgayLam,TongThoiGianLamThucTe) VALUES(@nv,@ca,@ngay,@gio)";
+                return XuLyDuLieu.ThucThi(ketNoi, giaoDich, cauLenh,
+                    XuLyDuLieu.ThamSo("@nv", maNhanVien),
+                    XuLyDuLieu.ThamSo("@ca", maCaLam),
+                    XuLyDuLieu.ThamSo("@ngay", ngayLam.Date),
+                    XuLyDuLieu.ThamSo("@gio", gioThucTe),
+                    XuLyDuLieu.ThamSo("@nvcu", maNhanVienCu ?? ""),
+                    XuLyDuLieu.ThamSo("@ngaycu", ngayLamCu ?? ngayLam.Date),
+                    XuLyDuLieu.ThamSo("@cacu", maCaLamCu ?? ""));
             });
+        }
+
+        static void KiemTraCongTrongNgay(SqlConnection ketNoi, SqlTransaction giaoDich,
+            string maNhanVien, DateTime ngayLam, string maCaLam, decimal gioThucTe,
+            bool sua, string maNhanVienCu, DateTime? ngayLamCu, string maCaLamCu)
+        {
+            string cauLenh = "SELECT MaNhanVien,MaCaLam,NgayLam,TongThoiGianLamThucTe FROM dbo.ChiTietCaLam WITH(UPDLOCK,HOLDLOCK) WHERE MaNhanVien=@nv AND NgayLam=@ngay";
+            DataTable cacCa = XuLyDuLieu.DocDuLieu(ketNoi, giaoDich, cauLenh,
+                XuLyDuLieu.ThamSo("@nv", maNhanVien), XuLyDuLieu.ThamSo("@ngay", ngayLam.Date));
+            decimal tongGio = gioThucTe;
+            foreach (DataRow dong in cacCa.Rows)
+            {
+                bool laDongDangSua = sua && dong["MaNhanVien"].ToString() == maNhanVienCu
+                    && (DateTime)dong["NgayLam"] == ngayLamCu.Value.Date
+                    && dong["MaCaLam"].ToString() == maCaLamCu;
+                if (laDongDangSua)
+                    continue;
+                if (dong["MaCaLam"].ToString() == maCaLam)
+                    throw new InvalidOperationException("Nhân viên đã được chấm ca này trong ngày. Chọn dòng để sửa.");
+                tongGio += Convert.ToDecimal(dong["TongThoiGianLamThucTe"]);
+            }
+            if (tongGio > 24)
+                throw new InvalidOperationException("Tổng giờ làm trong ngày không vượt 24 giờ.");
         }
     }
 }
