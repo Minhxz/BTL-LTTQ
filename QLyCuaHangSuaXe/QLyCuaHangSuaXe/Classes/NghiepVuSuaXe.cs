@@ -89,7 +89,13 @@ namespace QLyCuaHangSuaXe.LopDungChung
         public DataTable KiemTraKho(List<DichVuChon> cacDichVu)
         {
             PhienDangNhap.YeuCau("TIEP_NHAN");
-            return duLieu.TrongGiaoDich((kn, gd) => { DichVu(kn, gd, cacDichVu); var pt = PhuTung(kn, gd, cacDichVu); DuKho(pt); return pt; });
+            return duLieu.TrongGiaoDich((kn, gd) =>
+            {
+                DichVu(kn, gd, cacDichVu);
+                DataTable phuTung = PhuTung(kn, gd, cacDichVu);
+                DuKho(phuTung);
+                return phuTung;
+            });
         }
 
         public DataTable ThoRanh()
@@ -115,8 +121,7 @@ namespace QLyCuaHangSuaXe.LopDungChung
         public string TiepNhan(List<DichVuChon> cacDichVu, ThongTinNhanXe thongTin)
         {
             PhienDangNhap.YeuCau("TIEP_NHAN");
-            if (thongTin == null || string.IsNullOrWhiteSpace(thongTin.TenKhach) || thongTin.TenKhach.Length > 100 || string.IsNullOrWhiteSpace(thongTin.BienSo) || thongTin.BienSo.Length > 20 || !Regex.IsMatch(thongTin.DienThoai ?? "", @"^\d{8,15}$") || string.IsNullOrWhiteSpace(thongTin.DongXe) || thongTin.DongXe.Length > 50 || string.IsNullOrWhiteSpace(thongTin.MauSac) || thongTin.MauSac.Length > 30 || (string.IsNullOrWhiteSpace(thongTin.LoaiXe) || thongTin.LoaiXe.Length > 50) || thongTin.HenTra.Date < DateTime.Today)
-                throw new InvalidOperationException("Kiểm tra khách hàng, điện thoại, biển số, hãng xe, màu sắc và ngày hẹn trả.");
+            KiemTraThongTinNhanXe(thongTin);
             return duLieu.TrongGiaoDich((kn, gd) =>
             {
                 var dv = DichVu(kn, gd, cacDichVu);
@@ -125,35 +130,94 @@ namespace QLyCuaHangSuaXe.LopDungChung
                 KiemTraTho(kn, gd, thongTin.MaTho);
                 if (XuLyDuLieu.DocDuLieu(kn, gd, "SELECT 1 FROM dbo.Xe x WITH(UPDLOCK,HOLDLOCK) JOIN dbo.PhieuTiepNhan p ON p.MaXe=x.MaXe WHERE x.BienXe=@b AND p.TrangThai IN(N'Chờ sửa',N'Đang sửa')", ThamSo("@b", thongTin.BienSo.Trim())).Rows.Count > 0)
                     throw new InvalidOperationException("Xe đang có phiếu sửa chưa hoàn thành.");
-                var khach = XuLyDuLieu.DocDuLieu(kn, gd, "SELECT MaKhachHang,TenKhachHang FROM dbo.KhachHang WITH(UPDLOCK,HOLDLOCK) WHERE SoDienThoai=@dt", ThamSo("@dt", thongTin.DienThoai));
-                string kh;
-                if (khach.Rows.Count == 0)
-                {
-                    kh = XuLyDuLieu.TaoMaMoi(kn, gd, "KH");
-                    XuLyDuLieu.ThucThi(kn, gd, "INSERT dbo.KhachHang(MaKhachHang,TenKhachHang,SoDienThoai) VALUES(@id,@ten,@dt)", ThamSo("@id", kh), ThamSo("@ten", thongTin.TenKhach.Trim()), ThamSo("@dt", thongTin.DienThoai));
-                }
-                else
-                {
-                    kh = khach.Rows[0][0].ToString();
-                    if (!string.Equals(khach.Rows[0][1].ToString().Trim(), thongTin.TenKhach.Trim(), StringComparison.CurrentCultureIgnoreCase))
-                        throw new InvalidOperationException("Số điện thoại đã thuộc khách " + khach.Rows[0][1] + ". Hãy nhập đúng tên khách.");
-                }
+                string kh = TimHoacThemKhachHang(kn, gd, thongTin);
                 string xe = XuLyDuLieu.TaoMaMoi(kn, gd, "XE");
                 XuLyDuLieu.ThucThi(kn, gd, "INSERT dbo.Xe(MaXe,MaKhachHang,BienXe,LoaiXe,HangSanXuat,MauSac) VALUES(@id,@kh,@b,@l,@h,@m)", ThamSo("@id", xe), ThamSo("@kh", kh), ThamSo("@b", thongTin.BienSo.Trim().ToUpperInvariant()), ThamSo("@l", thongTin.LoaiXe), ThamSo("@h", thongTin.DongXe.Trim()), ThamSo("@m", thongTin.MauSac.Trim()));
                 string ma = string.IsNullOrEmpty(thongTin.MaPhieu) ? XuLyDuLieu.TaoMaMoi(kn, gd, "PTN") : XuLyDuLieu.KiemTraMa(thongTin.MaPhieu, "PTN");
                 XuLyDuLieu.ThucThi(kn, gd, "INSERT dbo.PhieuTiepNhan(MaPhieuTiepNhan,MaXe,MaNhanVien,NgayLap,NgayHen,TrangThai) VALUES(@id,@xe,@nv,@ngay,@hen,N'Chờ sửa')", ThamSo("@id", ma), ThamSo("@xe", xe), ThamSo("@nv", PhienDangNhap.MaNhanVien), ThamSo("@ngay", DateTime.Today), ThamSo("@hen", thongTin.HenTra.Date));
-                foreach (DataRow dong in dv.Rows)
-                    XuLyDuLieu.ThucThi(kn, gd, "INSERT dbo.ChiTietPhieuTiepNhan(MaPhieuTiepNhan,MaDichVu,SoLuong,ThanhTien) VALUES(@id,@dv,@sl,@tt)", ThamSo("@id", ma), ThamSo("@dv", dong["MaDichVu"]), ThamSo("@sl", dong["SoLuong"]), ThamSo("@tt", Convert.ToDecimal(dong["DonGia"]) * Convert.ToInt32(dong["SoLuong"])));
-                foreach (DataRow dong in pt.Rows)
-                    if (XuLyDuLieu.ThucThi(kn, gd, "UPDATE dbo.PhuTung SET SoLuongTon=SoLuongTon-@sl WHERE MaPhuTung=@id AND SoLuongTon>=@sl AND TrangThai=N'Đang kinh doanh' AND HanSuDung>=@ngay", ThamSo("@id", dong["MaPhuTung"]), ThamSo("@sl", dong["Can"]), ThamSo("@ngay", DateTime.Today)) != 1)
-                        throw new InvalidOperationException("Tồn kho đã thay đổi. Hãy kiểm tra lại.");
-                DateTime batDau = DateTime.Now;
-                DateTime ketThuc = thongTin.HenTra.Date.AddDays(1);
-                if (ketThuc <= batDau)
-                    ketThuc = batDau.AddHours(1);
-                XuLyDuLieu.ThucThi(kn, gd, "INSERT dbo.ChiTietPhanCong(MaNhanVien,MaXe,ThoiGianBatDau,ThoiGianHoanThanh) VALUES(@nv,@xe,@bd,@kt)", ThamSo("@nv", thongTin.MaTho), ThamSo("@xe", xe), ThamSo("@bd", batDau), ThamSo("@kt", ketThuc));
+                LuuChiTietDichVu(kn, gd, ma, dv);
+                TruPhuTungTrongKho(kn, gd, pt);
+                PhanCongTho(kn, gd, xe, thongTin);
                 return ma;
             });
+        }
+
+        static string TimHoacThemKhachHang(SqlConnection ketNoi, SqlTransaction giaoDich, ThongTinNhanXe thongTin)
+        {
+            DataTable khachHang = XuLyDuLieu.DocDuLieu(ketNoi, giaoDich,
+                "SELECT MaKhachHang,TenKhachHang FROM dbo.KhachHang WITH(UPDLOCK,HOLDLOCK) WHERE SoDienThoai=@dt",
+                ThamSo("@dt", thongTin.DienThoai));
+            if (khachHang.Rows.Count == 0)
+            {
+                string maKhach = XuLyDuLieu.TaoMaMoi(ketNoi, giaoDich, "KH");
+                XuLyDuLieu.ThucThi(ketNoi, giaoDich,
+                    "INSERT dbo.KhachHang(MaKhachHang,TenKhachHang,SoDienThoai) VALUES(@id,@ten,@dt)",
+                    ThamSo("@id", maKhach), ThamSo("@ten", thongTin.TenKhach.Trim()), ThamSo("@dt", thongTin.DienThoai));
+                return maKhach;
+            }
+
+            DataRow khach = khachHang.Rows[0];
+            if (!string.Equals(khach[1].ToString().Trim(), thongTin.TenKhach.Trim(), StringComparison.CurrentCultureIgnoreCase))
+                throw new InvalidOperationException("Số điện thoại đã thuộc khách " + khach[1] + ". Hãy nhập đúng tên khách.");
+            return khach[0].ToString();
+        }
+
+        static void LuuChiTietDichVu(SqlConnection ketNoi, SqlTransaction giaoDich, string maPhieu, DataTable dichVu)
+        {
+            foreach (DataRow dong in dichVu.Rows)
+            {
+                decimal thanhTien = Convert.ToDecimal(dong["DonGia"]) * Convert.ToInt32(dong["SoLuong"]);
+                XuLyDuLieu.ThucThi(ketNoi, giaoDich,
+                    "INSERT dbo.ChiTietPhieuTiepNhan(MaPhieuTiepNhan,MaDichVu,SoLuong,ThanhTien) VALUES(@id,@dv,@sl,@tt)",
+                    ThamSo("@id", maPhieu), ThamSo("@dv", dong["MaDichVu"]),
+                    ThamSo("@sl", dong["SoLuong"]), ThamSo("@tt", thanhTien));
+            }
+        }
+
+        static void TruPhuTungTrongKho(SqlConnection ketNoi, SqlTransaction giaoDich, DataTable phuTung)
+        {
+            foreach (DataRow dong in phuTung.Rows)
+            {
+                int soDong = XuLyDuLieu.ThucThi(ketNoi, giaoDich,
+                    "UPDATE dbo.PhuTung SET SoLuongTon=SoLuongTon-@sl WHERE MaPhuTung=@id AND SoLuongTon>=@sl AND TrangThai=N'Đang kinh doanh' AND HanSuDung>=@ngay",
+                    ThamSo("@id", dong["MaPhuTung"]), ThamSo("@sl", dong["Can"]), ThamSo("@ngay", DateTime.Today));
+                if (soDong != 1)
+                    throw new InvalidOperationException("Tồn kho đã thay đổi. Hãy kiểm tra lại.");
+            }
+        }
+
+        static void PhanCongTho(SqlConnection ketNoi, SqlTransaction giaoDich, string maXe, ThongTinNhanXe thongTin)
+        {
+            DateTime batDau = DateTime.Now;
+            DateTime ketThuc = thongTin.HenTra.Date.AddDays(1);
+            if (ketThuc <= batDau)
+                ketThuc = batDau.AddHours(1);
+            XuLyDuLieu.ThucThi(ketNoi, giaoDich,
+                "INSERT dbo.ChiTietPhanCong(MaNhanVien,MaXe,ThoiGianBatDau,ThoiGianHoanThanh) VALUES(@nv,@xe,@bd,@kt)",
+                ThamSo("@nv", thongTin.MaTho), ThamSo("@xe", maXe),
+                ThamSo("@bd", batDau), ThamSo("@kt", ketThuc));
+        }
+
+        static void KiemTraThongTinNhanXe(ThongTinNhanXe thongTin)
+        {
+            if (thongTin == null)
+                throw new InvalidOperationException("Kiểm tra khách hàng, điện thoại, biển số, hãng xe, màu sắc và ngày hẹn trả.");
+
+            bool tenKhachHopLe = CoNoiDung(thongTin.TenKhach, 100);
+            bool bienSoHopLe = CoNoiDung(thongTin.BienSo, 20);
+            bool dienThoaiHopLe = Regex.IsMatch(thongTin.DienThoai ?? "", @"^\d{8,15}$");
+            bool hangXeHopLe = CoNoiDung(thongTin.DongXe, 50);
+            bool mauXeHopLe = CoNoiDung(thongTin.MauSac, 30);
+            bool loaiXeHopLe = CoNoiDung(thongTin.LoaiXe, 50);
+            bool ngayHenHopLe = thongTin.HenTra.Date >= DateTime.Today;
+
+            if (!tenKhachHopLe || !bienSoHopLe || !dienThoaiHopLe || !hangXeHopLe || !mauXeHopLe || !loaiXeHopLe || !ngayHenHopLe)
+                throw new InvalidOperationException("Kiểm tra khách hàng, điện thoại, biển số, hãng xe, màu sắc và ngày hẹn trả.");
+        }
+
+        static bool CoNoiDung(string noiDung, int doDaiToiDa)
+        {
+            return !string.IsNullOrWhiteSpace(noiDung) && noiDung.Length <= doDaiToiDa;
         }
 
         public void ChotPhieuCu(string ma)

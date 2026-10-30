@@ -33,9 +33,23 @@ namespace QLyCuaHangSuaXe.LopDungChung
         }
         static void KiemTraCongViec(SqlConnection ketNoi, SqlTransaction giaoDich, string ma, string chucVu, string trangThai)
         {
-            int soXe = Convert.ToInt32(XuLyDuLieu.DocDuLieu(ketNoi, giaoDich, @"SELECT COUNT(DISTINCT c.MaXe) FROM dbo.ChiTietPhanCong c WITH(UPDLOCK,HOLDLOCK) JOIN dbo.PhieuTiepNhan p ON p.MaXe=c.MaXe WHERE c.MaNhanVien=@id AND p.TrangThai IN(N'Chờ sửa',N'Đang sửa')", XuLyDuLieu.ThamSo("@id", ma)).Rows[0][0]);
-            if (soXe > PhanQuyenNguoiDung.GioiHanXe(chucVu) || soXe > 0 && trangThai != "Đang làm")
+            string cauLenh = @"SELECT COUNT(DISTINCT c.MaXe) FROM dbo.ChiTietPhanCong c WITH(UPDLOCK,HOLDLOCK) JOIN dbo.PhieuTiepNhan p ON p.MaXe=c.MaXe WHERE c.MaNhanVien=@id AND p.TrangThai IN(N'Chờ sửa',N'Đang sửa')";
+            DataTable ketQua = XuLyDuLieu.DocDuLieu(ketNoi, giaoDich, cauLenh, XuLyDuLieu.ThamSo("@id", ma));
+            int soXe = Convert.ToInt32(ketQua.Rows[0][0]);
+            bool vuotGioiHan = soXe > PhanQuyenNguoiDung.GioiHanXe(chucVu);
+            bool nghiViecKhiConXe = soXe > 0 && trangThai != "Đang làm";
+            if (vuotGioiHan || nghiViecKhiConXe)
                 throw new InvalidOperationException("Nhân viên còn xe đang sửa. Hoàn tất hoặc chuyển phân công trước khi đổi chức vụ hay nghỉ việc.");
+        }
+        static void KiemTraHoTen(string hoTen)
+        {
+            if (string.IsNullOrWhiteSpace(hoTen) || hoTen.Trim().Length > 100)
+                throw new InvalidOperationException("Nhập họ tên nhân viên, tối đa 100 ký tự.");
+        }
+        static void KiemTraLuong(decimal luong)
+        {
+            if (luong <= 0 || luong > 1000000000)
+                throw new InvalidOperationException("Lương tháng phải lớn hơn 0 và không vượt 1 tỷ đồng.");
         }
         static void KiemTraDienThoai(string dienThoai)
         {
@@ -55,31 +69,44 @@ namespace QLyCuaHangSuaXe.LopDungChung
         public static string LuuNhanVien(ThongTinNhanVien nhanVien)
         {
             PhienDangNhap.YeuCau("NHAN_VIEN");
-            if (nhanVien == null || string.IsNullOrWhiteSpace(nhanVien.HoTen) || nhanVien.HoTen.Trim().Length > 100)
+            if (nhanVien == null)
                 throw new InvalidOperationException("Nhập họ tên nhân viên, tối đa 100 ký tự.");
+            KiemTraHoTen(nhanVien.HoTen);
             KiemTraDienThoai(nhanVien.DienThoai);
-
-            if (nhanVien.LuongGio <= 0 || nhanVien.LuongGio > 1000000000)
-                throw new InvalidOperationException("Lương tháng phải lớn hơn 0 và không vượt 1 tỷ đồng.");
+            KiemTraLuong(nhanVien.LuongGio);
             string chucVu = PhanQuyenNguoiDung.ChuanHoa(nhanVien.ChucVu);
             bool them = nhanVien.TaoMoi || string.IsNullOrEmpty(nhanVien.Ma);
             if (nhanVien.Ma == PhienDangNhap.MaNhanVien && chucVu != PhienDangNhap.VaiTro)
                 throw new InvalidOperationException("Không được tự đổi chức vụ tài khoản đang đăng nhập.");
             return new XuLyDuLieu().TrongGiaoDich<string>((ketNoi, giaoDich) =>
-            {
-                string ma = them ? (string.IsNullOrEmpty(nhanVien.Ma) ? XuLyDuLieu.TaoMaMoi(ketNoi, giaoDich, "NV") : XuLyDuLieu.KiemTraMa(nhanVien.Ma, "NV")) : nhanVien.Ma;
-                DataRow cu = them ? null : KhoaNhanVien(ketNoi, giaoDich, ma);
-                string trangThai = them ? "Đang làm" : cu["TrangThai"].ToString();
-                string tenDangNhap = them ? ma.ToLowerInvariant() : cu["TenDangNhap"].ToString();
-                KiemTraTrung(ketNoi, giaoDich, ma, tenDangNhap, nhanVien.DienThoai);
-                if (!them)
-                    KiemTraCongViec(ketNoi, giaoDich, ma, chucVu, trangThai);
-                XuLyDuLieu.ThucThi(ketNoi, giaoDich, them
-                    ? "INSERT dbo.NhanVien(MaNhanVien,MaChucVu,HoTen,SoDienThoai,Luong,TenDangNhap,MatKhau,TrangThai) VALUES(@id,@r,@n,@p,@l,@u,@h,@s)"
-                    : "UPDATE dbo.NhanVien SET MaChucVu=@r,HoTen=@n,SoDienThoai=@p,Luong=@l,TrangThai=@s WHERE MaNhanVien=@id",
-                    XuLyDuLieu.ThamSo("@id", ma), XuLyDuLieu.ThamSo("@r", MaChucVu(ketNoi, giaoDich, chucVu)), XuLyDuLieu.ThamSo("@n", nhanVien.HoTen.Trim()), XuLyDuLieu.ThamSo("@p", nhanVien.DienThoai), XuLyDuLieu.ThamSo("@l", nhanVien.LuongGio), XuLyDuLieu.ThamSo("@u", tenDangNhap), XuLyDuLieu.ThamSo("@h", BaoMat.BamMatKhau("123")), XuLyDuLieu.ThamSo("@s", trangThai));
-                return ma;
-            });
+                LuuThongTinNhanVien(ketNoi, giaoDich, nhanVien, chucVu, them));
+        }
+        static string LuuThongTinNhanVien(SqlConnection ketNoi, SqlTransaction giaoDich, ThongTinNhanVien nhanVien, string chucVu, bool them)
+        {
+            string ma = nhanVien.Ma;
+            if (them)
+                ma = string.IsNullOrEmpty(ma) ? XuLyDuLieu.TaoMaMoi(ketNoi, giaoDich, "NV") : XuLyDuLieu.KiemTraMa(ma, "NV");
+
+            DataRow nhanVienCu = them ? null : KhoaNhanVien(ketNoi, giaoDich, ma);
+            string trangThai = them ? "Đang làm" : nhanVienCu["TrangThai"].ToString();
+            string tenDangNhap = them ? ma.ToLowerInvariant() : nhanVienCu["TenDangNhap"].ToString();
+            KiemTraTrung(ketNoi, giaoDich, ma, tenDangNhap, nhanVien.DienThoai);
+            if (!them)
+                KiemTraCongViec(ketNoi, giaoDich, ma, chucVu, trangThai);
+
+            string cauLenh = them
+                ? "INSERT dbo.NhanVien(MaNhanVien,MaChucVu,HoTen,SoDienThoai,Luong,TenDangNhap,MatKhau,TrangThai) VALUES(@id,@r,@n,@p,@l,@u,@h,@s)"
+                : "UPDATE dbo.NhanVien SET MaChucVu=@r,HoTen=@n,SoDienThoai=@p,Luong=@l,TrangThai=@s WHERE MaNhanVien=@id";
+            XuLyDuLieu.ThucThi(ketNoi, giaoDich, cauLenh,
+                XuLyDuLieu.ThamSo("@id", ma),
+                XuLyDuLieu.ThamSo("@r", MaChucVu(ketNoi, giaoDich, chucVu)),
+                XuLyDuLieu.ThamSo("@n", nhanVien.HoTen.Trim()),
+                XuLyDuLieu.ThamSo("@p", nhanVien.DienThoai),
+                XuLyDuLieu.ThamSo("@l", nhanVien.LuongGio),
+                XuLyDuLieu.ThamSo("@u", tenDangNhap),
+                XuLyDuLieu.ThamSo("@h", BaoMat.BamMatKhau("123")),
+                XuLyDuLieu.ThamSo("@s", trangThai));
+            return ma;
         }
         public static string TaoTaiKhoanMoi(string maNhanVien, string hoTen, string tenDangNhap, string matKhau, string chucVu, bool hoatDong, string maDuKien = null, string dienThoai = null, decimal luong = 6000000)
         {
@@ -88,15 +115,22 @@ namespace QLyCuaHangSuaXe.LopDungChung
             KiemTraDienThoai(dienThoai);
             if (!string.IsNullOrEmpty(maNhanVien))
                 throw new InvalidOperationException("Nhân viên đã có tài khoản; chọn dòng để chỉnh sửa.");
-            if (string.IsNullOrWhiteSpace(hoTen) || hoTen.Trim().Length > 100)
-                throw new InvalidOperationException("Nhập họ tên nhân viên, tối đa 100 ký tự.");
-            if (luong <= 0 || luong > 1000000000)
-                throw new InvalidOperationException("Lương tháng phải lớn hơn 0 và không vượt 1 tỷ đồng.");
+            KiemTraHoTen(hoTen);
+            KiemTraLuong(luong);
             return new XuLyDuLieu().TrongGiaoDich<string>((ketNoi, giaoDich) =>
             {
                 string ma = string.IsNullOrEmpty(maDuKien) ? XuLyDuLieu.TaoMaMoi(ketNoi, giaoDich, "NV") : XuLyDuLieu.KiemTraMa(maDuKien, "NV");
                 KiemTraTrung(ketNoi, giaoDich, ma, tenDangNhap, dienThoai);
-                XuLyDuLieu.ThucThi(ketNoi, giaoDich, "INSERT dbo.NhanVien(MaNhanVien,MaChucVu,HoTen,SoDienThoai,Luong,TenDangNhap,MatKhau,TrangThai) VALUES(@id,@r,@n,@p,@l,@u,@h,@s)", XuLyDuLieu.ThamSo("@id", ma), XuLyDuLieu.ThamSo("@r", MaChucVu(ketNoi, giaoDich, chucVu)), XuLyDuLieu.ThamSo("@n", hoTen.Trim()), XuLyDuLieu.ThamSo("@p", dienThoai), XuLyDuLieu.ThamSo("@l", luong), XuLyDuLieu.ThamSo("@u", tenDangNhap), XuLyDuLieu.ThamSo("@h", BaoMat.BamMatKhau(matKhau)), XuLyDuLieu.ThamSo("@s", hoatDong ? "Đang làm" : "Nghỉ việc"));
+                string cauLenh = "INSERT dbo.NhanVien(MaNhanVien,MaChucVu,HoTen,SoDienThoai,Luong,TenDangNhap,MatKhau,TrangThai) VALUES(@id,@r,@n,@p,@l,@u,@h,@s)";
+                XuLyDuLieu.ThucThi(ketNoi, giaoDich, cauLenh,
+                    XuLyDuLieu.ThamSo("@id", ma),
+                    XuLyDuLieu.ThamSo("@r", MaChucVu(ketNoi, giaoDich, chucVu)),
+                    XuLyDuLieu.ThamSo("@n", hoTen.Trim()),
+                    XuLyDuLieu.ThamSo("@p", dienThoai),
+                    XuLyDuLieu.ThamSo("@l", luong),
+                    XuLyDuLieu.ThamSo("@u", tenDangNhap),
+                    XuLyDuLieu.ThamSo("@h", BaoMat.BamMatKhau(matKhau)),
+                    XuLyDuLieu.ThamSo("@s", hoatDong ? "Đang làm" : "Nghỉ việc"));
                 return ma;
             });
         }
