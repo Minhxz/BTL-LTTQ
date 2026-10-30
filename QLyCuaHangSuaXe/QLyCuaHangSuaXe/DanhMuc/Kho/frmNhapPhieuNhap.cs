@@ -186,10 +186,7 @@ namespace btl
             decimal giaNhap, giaBan;
             if (nhaCungCap.Length == 0 || !int.TryParse(txtSoLuongNhap.Text, out soLuong) || soLuong < 1 || soLuong > 100000 || !decimal.TryParse(txtDonGiaNhap.Text, out giaNhap) || !decimal.TryParse(txtDonGiaBan.Text, out giaBan) || giaNhap <= 0 || giaBan <= 0 || giaNhap != decimal.Truncate(giaNhap) || giaBan != decimal.Truncate(giaBan))
                 throw new InvalidOperationException("Chọn nhà cung cấp; nhập số lượng từ 1 đến 100.000, giá nhập và giá bán là số nguyên dương theo đồng Việt Nam.");
-            if (sua && (dongDangSua < 0 || dongDangSua >= bangChiTiet.Rows.Count))
-                throw new InvalidOperationException("Chọn dòng cần cập nhật.");
-            if (bangChiTiet.AsEnumerable().Where((d, i) => !sua || i != dongDangSua).Any(d => string.Equals(d["MaPhuTung"].ToString(), ma, StringComparison.OrdinalIgnoreCase)))
-                throw new InvalidOperationException("Phụ tùng đã có trong danh sách. Chọn dòng và bấm Cập nhật dòng để sửa số lượng.");
+            KiemTraDongPhuTung(ma, sua);
             DateTime han = dtpHanSuDung.Checked ? dtpHanSuDung.Value.Date : DateTime.MaxValue.Date;
             if (han < dtpNgayNhap.Value.Date)
                 throw new InvalidOperationException("Hạn sử dụng không được trước ngày nhập.");
@@ -213,6 +210,17 @@ namespace btl
             if (!sua)
                 bangChiTiet.Rows.Add(dong);
             dongDangSua = -1;
+        }
+        void KiemTraDongPhuTung(string maPhuTung, bool dangSua)
+        {
+            if (dangSua && (dongDangSua < 0 || dongDangSua >= bangChiTiet.Rows.Count))
+                throw new InvalidOperationException("Chọn dòng cần cập nhật.");
+
+            bool daCoTrongDanhSach = bangChiTiet.AsEnumerable()
+                .Where((dong, viTri) => !dangSua || viTri != dongDangSua)
+                .Any(dong => string.Equals(dong["MaPhuTung"].ToString(), maPhuTung, StringComparison.OrdinalIgnoreCase));
+            if (daCoTrongDanhSach)
+                throw new InvalidOperationException("Phụ tùng đã có trong danh sách. Chọn dòng và bấm Cập nhật dòng để sửa số lượng.");
         }
         void Luu()
         {
