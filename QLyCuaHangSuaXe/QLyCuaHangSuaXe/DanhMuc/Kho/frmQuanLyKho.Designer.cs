@@ -319,7 +319,7 @@ namespace btl
 			colMaPhuTung.HeaderText = "Mã phụ tùng";
 			colMaPhuTung.MinimumWidth = 6;
 			colMaPhuTung.Name = "colMaPhuTung";
-			colMaPhuTung.Width = 62;
+			colMaPhuTung.Width = 82;
 			//
 			// colTenPhuTung
 			//
@@ -347,7 +347,7 @@ namespace btl
 			colSoLuongTon.HeaderText = "Số lượng tồn";
 			colSoLuongTon.MinimumWidth = 6;
 			colSoLuongTon.Name = "colSoLuongTon";
-			colSoLuongTon.Width = 58;
+			colSoLuongTon.Width = 64;
 			//
 			// colDonGiaBan
 			//
@@ -355,7 +355,7 @@ namespace btl
 			colDonGiaBan.HeaderText = "Đơn giá bán";
 			colDonGiaBan.MinimumWidth = 6;
 			colDonGiaBan.Name = "colDonGiaBan";
-			colDonGiaBan.Width = 78;
+			colDonGiaBan.Width = 100;
 			//
 			// colDonGiaNhap
 			//
@@ -363,7 +363,7 @@ namespace btl
 			colDonGiaNhap.HeaderText = "Đơn giá nhập";
 			colDonGiaNhap.MinimumWidth = 6;
 			colDonGiaNhap.Name = "colDonGiaNhap";
-			colDonGiaNhap.Width = 78;
+			colDonGiaNhap.Width = 100;
 			//
 			// colHanSuDung
 			//
@@ -371,7 +371,7 @@ namespace btl
 			colHanSuDung.HeaderText = "Hạn sử dụng";
 			colHanSuDung.MinimumWidth = 6;
 			colHanSuDung.Name = "colHanSuDung";
-			colHanSuDung.Width = 90;
+			colHanSuDung.Width = 112;
 			//
 			// pnlTimPhieuNhap
 			//
