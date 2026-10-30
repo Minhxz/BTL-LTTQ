@@ -74,9 +74,6 @@
             this.tlpBangDuLieu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvThongKe)).BeginInit();
             this.SuspendLayout();
-            // 
-            // tlpTrang
-            // 
             this.tlpTrang.ColumnCount = 1;
             this.tlpTrang.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpTrang.Controls.Add(this.tlpTieuDe, 0, 0);
@@ -97,9 +94,6 @@
             this.tlpTrang.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 44F));
             this.tlpTrang.Size = new System.Drawing.Size(1475, 1050);
             this.tlpTrang.TabIndex = 0;
-            // 
-            // tlpTieuDe
-            // 
             this.tlpTieuDe.ColumnCount = 2;
             this.tlpTieuDe.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 64F));
             this.tlpTieuDe.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 36F));
@@ -113,9 +107,6 @@
             this.tlpTieuDe.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpTieuDe.Size = new System.Drawing.Size(1431, 64);
             this.tlpTieuDe.TabIndex = 0;
-            // 
-            // lblTieuDe
-            // 
             this.lblTieuDe.AutoEllipsis = true;
             this.lblTieuDe.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblTieuDe.Font = new System.Drawing.Font("Segoe UI", 19F, System.Drawing.FontStyle.Bold);
@@ -127,9 +118,6 @@
             this.lblTieuDe.TabIndex = 0;
             this.lblTieuDe.Text = "BÁO CÁO VÀ THỐNG KÊ";
             this.lblTieuDe.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // lblTrangThaiBaoCao
-            // 
             this.lblTrangThaiBaoCao.AutoEllipsis = true;
             this.lblTrangThaiBaoCao.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblTrangThaiBaoCao.Font = new System.Drawing.Font("Segoe UI", 9F);
@@ -141,9 +129,6 @@
             this.lblTrangThaiBaoCao.TabIndex = 1;
             this.lblTrangThaiBaoCao.Text = "Tổng quan hoạt động cửa hàng";
             this.lblTrangThaiBaoCao.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // grpBoLoc
-            // 
             this.grpBoLoc.BackColor = System.Drawing.Color.White;
             this.grpBoLoc.Controls.Add(this.tlpBoLoc);
             this.grpBoLoc.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -156,9 +141,6 @@
             this.grpBoLoc.TabIndex = 1;
             this.grpBoLoc.TabStop = false;
             this.grpBoLoc.Text = "Bộ lọc báo cáo";
-            // 
-            // tlpBoLoc
-            // 
             this.tlpBoLoc.ColumnCount = 4;
             this.tlpBoLoc.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpBoLoc.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 188F));
@@ -180,9 +162,6 @@
             this.tlpBoLoc.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpBoLoc.Size = new System.Drawing.Size(1395, 76);
             this.tlpBoLoc.TabIndex = 0;
-            // 
-            // lblBaoCao
-            // 
             this.lblBaoCao.AutoEllipsis = true;
             this.lblBaoCao.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblBaoCao.Font = new System.Drawing.Font("Segoe UI", 9F);
@@ -193,9 +172,6 @@
             this.lblBaoCao.Size = new System.Drawing.Size(714, 28);
             this.lblBaoCao.TabIndex = 0;
             this.lblBaoCao.Text = "Loại báo cáo";
-            // 
-            // lblTuNgay
-            // 
             this.lblTuNgay.AutoEllipsis = true;
             this.lblTuNgay.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblTuNgay.Font = new System.Drawing.Font("Segoe UI", 9F);
@@ -206,9 +182,6 @@
             this.lblTuNgay.Size = new System.Drawing.Size(188, 28);
             this.lblTuNgay.TabIndex = 1;
             this.lblTuNgay.Text = "Từ ngày";
-            // 
-            // lblDenNgay
-            // 
             this.lblDenNgay.AutoEllipsis = true;
             this.lblDenNgay.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblDenNgay.Font = new System.Drawing.Font("Segoe UI", 9F);
@@ -219,9 +192,6 @@
             this.lblDenNgay.Size = new System.Drawing.Size(188, 28);
             this.lblDenNgay.TabIndex = 2;
             this.lblDenNgay.Text = "Đến ngày";
-            // 
-            // cboBaoCao
-            // 
             this.cboBaoCao.Dock = System.Windows.Forms.DockStyle.Fill;
             this.cboBaoCao.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cboBaoCao.Font = new System.Drawing.Font("Segoe UI", 10F);
@@ -238,9 +208,6 @@
             this.cboBaoCao.Name = "cboBaoCao";
             this.cboBaoCao.Size = new System.Drawing.Size(694, 31);
             this.cboBaoCao.TabIndex = 0;
-            // 
-            // dtpTuNgay
-            // 
             this.dtpTuNgay.CustomFormat = "dd/MM/yyyy";
             this.dtpTuNgay.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dtpTuNgay.Font = new System.Drawing.Font("Segoe UI", 10F);
@@ -250,9 +217,6 @@
             this.dtpTuNgay.Name = "dtpTuNgay";
             this.dtpTuNgay.Size = new System.Drawing.Size(170, 30);
             this.dtpTuNgay.TabIndex = 1;
-            // 
-            // dtpDenNgay
-            // 
             this.dtpDenNgay.CustomFormat = "dd/MM/yyyy";
             this.dtpDenNgay.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dtpDenNgay.Font = new System.Drawing.Font("Segoe UI", 10F);
@@ -262,9 +226,6 @@
             this.dtpDenNgay.Name = "dtpDenNgay";
             this.dtpDenNgay.Size = new System.Drawing.Size(170, 30);
             this.dtpDenNgay.TabIndex = 2;
-            // 
-            // flpThaoTac
-            // 
             this.flpThaoTac.Controls.Add(this.btnThongKe);
             this.flpThaoTac.Controls.Add(this.btnXuatExcel);
             this.flpThaoTac.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -274,9 +235,6 @@
             this.flpThaoTac.Size = new System.Drawing.Size(305, 48);
             this.flpThaoTac.TabIndex = 3;
             this.flpThaoTac.WrapContents = false;
-            // 
-            // btnThongKe
-            // 
             this.btnThongKe.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(108)))), ((int)(((byte)(176)))));
             this.btnThongKe.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnThongKe.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(194)))), ((int)(((byte)(213)))), ((int)(((byte)(228)))));
@@ -291,9 +249,6 @@
             this.btnThongKe.TabIndex = 0;
             this.btnThongKe.Text = "Xem báo cáo";
             this.btnThongKe.UseVisualStyleBackColor = false;
-            // 
-            // btnXuatExcel
-            // 
             this.btnXuatExcel.BackColor = System.Drawing.Color.White;
             this.btnXuatExcel.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnXuatExcel.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(194)))), ((int)(((byte)(213)))), ((int)(((byte)(228)))));
@@ -307,9 +262,6 @@
             this.btnXuatExcel.TabIndex = 1;
             this.btnXuatExcel.Text = "Xuất Excel";
             this.btnXuatExcel.UseVisualStyleBackColor = false;
-            // 
-            // tlpChiSo
-            // 
             this.tlpChiSo.ColumnCount = 3;
             this.tlpChiSo.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
             this.tlpChiSo.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
@@ -325,9 +277,6 @@
             this.tlpChiSo.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpChiSo.Size = new System.Drawing.Size(1431, 140);
             this.tlpChiSo.TabIndex = 2;
-            // 
-            // pnlChiSoMot
-            // 
             this.pnlChiSoMot.BackColor = System.Drawing.Color.White;
             this.pnlChiSoMot.Controls.Add(this.tlpChiSoMot);
             this.pnlChiSoMot.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -337,9 +286,6 @@
             this.pnlChiSoMot.Padding = new System.Windows.Forms.Padding(18, 12, 18, 12);
             this.pnlChiSoMot.Size = new System.Drawing.Size(466, 125);
             this.pnlChiSoMot.TabIndex = 0;
-            // 
-            // tlpChiSoMot
-            // 
             this.tlpChiSoMot.ColumnCount = 1;
             this.tlpChiSoMot.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpChiSoMot.Controls.Add(this.lblChiSoMot, 0, 0);
@@ -355,9 +301,6 @@
             this.tlpChiSoMot.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 22F));
             this.tlpChiSoMot.Size = new System.Drawing.Size(430, 101);
             this.tlpChiSoMot.TabIndex = 0;
-            // 
-            // lblChiSoMot
-            // 
             this.lblChiSoMot.AutoEllipsis = true;
             this.lblChiSoMot.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblChiSoMot.Font = new System.Drawing.Font("Segoe UI", 9F);
@@ -368,9 +311,6 @@
             this.lblChiSoMot.Size = new System.Drawing.Size(430, 25);
             this.lblChiSoMot.TabIndex = 0;
             this.lblChiSoMot.Text = "TỔNG DOANH THU";
-            // 
-            // lblGiaTriMot
-            // 
             this.lblGiaTriMot.AutoEllipsis = true;
             this.lblGiaTriMot.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblGiaTriMot.Font = new System.Drawing.Font("Segoe UI", 21F, System.Drawing.FontStyle.Bold);
@@ -382,9 +322,6 @@
             this.lblGiaTriMot.TabIndex = 1;
             this.lblGiaTriMot.Text = "—";
             this.lblGiaTriMot.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // lblMoTaMot
-            // 
             this.lblMoTaMot.AutoEllipsis = true;
             this.lblMoTaMot.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblMoTaMot.Font = new System.Drawing.Font("Segoe UI", 8.5F);
@@ -395,9 +332,6 @@
             this.lblMoTaMot.Size = new System.Drawing.Size(430, 22);
             this.lblMoTaMot.TabIndex = 2;
             this.lblMoTaMot.Text = "Trong khoảng ngày đã chọn";
-            // 
-            // pnlChiSoHai
-            // 
             this.pnlChiSoHai.BackColor = System.Drawing.Color.White;
             this.pnlChiSoHai.Controls.Add(this.tlpChiSoHai);
             this.pnlChiSoHai.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -407,9 +341,6 @@
             this.pnlChiSoHai.Padding = new System.Windows.Forms.Padding(18, 12, 18, 12);
             this.pnlChiSoHai.Size = new System.Drawing.Size(466, 125);
             this.pnlChiSoHai.TabIndex = 1;
-            // 
-            // tlpChiSoHai
-            // 
             this.tlpChiSoHai.ColumnCount = 1;
             this.tlpChiSoHai.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpChiSoHai.Controls.Add(this.lblChiSoHai, 0, 0);
@@ -425,9 +356,6 @@
             this.tlpChiSoHai.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 22F));
             this.tlpChiSoHai.Size = new System.Drawing.Size(430, 101);
             this.tlpChiSoHai.TabIndex = 0;
-            // 
-            // lblChiSoHai
-            // 
             this.lblChiSoHai.AutoEllipsis = true;
             this.lblChiSoHai.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblChiSoHai.Font = new System.Drawing.Font("Segoe UI", 9F);
@@ -438,9 +366,6 @@
             this.lblChiSoHai.Size = new System.Drawing.Size(430, 25);
             this.lblChiSoHai.TabIndex = 0;
             this.lblChiSoHai.Text = "SỐ HÓA ĐƠN";
-            // 
-            // lblGiaTriHai
-            // 
             this.lblGiaTriHai.AutoEllipsis = true;
             this.lblGiaTriHai.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblGiaTriHai.Font = new System.Drawing.Font("Segoe UI", 21F, System.Drawing.FontStyle.Bold);
@@ -452,9 +377,6 @@
             this.lblGiaTriHai.TabIndex = 1;
             this.lblGiaTriHai.Text = "—";
             this.lblGiaTriHai.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // lblMoTaHai
-            // 
             this.lblMoTaHai.AutoEllipsis = true;
             this.lblMoTaHai.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblMoTaHai.Font = new System.Drawing.Font("Segoe UI", 8.5F);
@@ -465,9 +387,6 @@
             this.lblMoTaHai.Size = new System.Drawing.Size(430, 22);
             this.lblMoTaHai.TabIndex = 2;
             this.lblMoTaHai.Text = "Đã thanh toán";
-            // 
-            // pnlChiSoBa
-            // 
             this.pnlChiSoBa.BackColor = System.Drawing.Color.White;
             this.pnlChiSoBa.Controls.Add(this.tlpChiSoBa);
             this.pnlChiSoBa.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -477,9 +396,6 @@
             this.pnlChiSoBa.Padding = new System.Windows.Forms.Padding(18, 12, 18, 12);
             this.pnlChiSoBa.Size = new System.Drawing.Size(469, 125);
             this.pnlChiSoBa.TabIndex = 2;
-            // 
-            // tlpChiSoBa
-            // 
             this.tlpChiSoBa.ColumnCount = 1;
             this.tlpChiSoBa.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpChiSoBa.Controls.Add(this.lblChiSoBa, 0, 0);
@@ -495,9 +411,6 @@
             this.tlpChiSoBa.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 22F));
             this.tlpChiSoBa.Size = new System.Drawing.Size(433, 101);
             this.tlpChiSoBa.TabIndex = 0;
-            // 
-            // lblChiSoBa
-            // 
             this.lblChiSoBa.AutoEllipsis = true;
             this.lblChiSoBa.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblChiSoBa.Font = new System.Drawing.Font("Segoe UI", 9F);
@@ -508,9 +421,6 @@
             this.lblChiSoBa.Size = new System.Drawing.Size(433, 25);
             this.lblChiSoBa.TabIndex = 0;
             this.lblChiSoBa.Text = "BÌNH QUÂN / HÓA ĐƠN";
-            // 
-            // lblGiaTriBa
-            // 
             this.lblGiaTriBa.AutoEllipsis = true;
             this.lblGiaTriBa.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblGiaTriBa.Font = new System.Drawing.Font("Segoe UI", 21F, System.Drawing.FontStyle.Bold);
@@ -522,9 +432,6 @@
             this.lblGiaTriBa.TabIndex = 1;
             this.lblGiaTriBa.Text = "—";
             this.lblGiaTriBa.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // lblMoTaBa
-            // 
             this.lblMoTaBa.AutoEllipsis = true;
             this.lblMoTaBa.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblMoTaBa.Font = new System.Drawing.Font("Segoe UI", 8.5F);
@@ -535,9 +442,6 @@
             this.lblMoTaBa.Size = new System.Drawing.Size(433, 22);
             this.lblMoTaBa.TabIndex = 2;
             this.lblMoTaBa.Text = "Theo số tiền thực thu";
-            // 
-            // pnlBieuDo
-            // 
             this.pnlBieuDo.BackColor = System.Drawing.Color.White;
             this.pnlBieuDo.Controls.Add(this.tlpBieuDo);
             this.pnlBieuDo.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -547,9 +451,6 @@
             this.pnlBieuDo.Padding = new System.Windows.Forms.Padding(18, 12, 18, 10);
             this.pnlBieuDo.Size = new System.Drawing.Size(1431, 360);
             this.pnlBieuDo.TabIndex = 3;
-            // 
-            // tlpBieuDo
-            // 
             this.tlpBieuDo.ColumnCount = 1;
             this.tlpBieuDo.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpBieuDo.Controls.Add(this.lblTenBieuDo, 0, 0);
@@ -567,9 +468,6 @@
             this.tlpBieuDo.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
             this.tlpBieuDo.Size = new System.Drawing.Size(1395, 338);
             this.tlpBieuDo.TabIndex = 0;
-            // 
-            // lblTenBieuDo
-            // 
             this.lblTenBieuDo.AutoEllipsis = true;
             this.lblTenBieuDo.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblTenBieuDo.Font = new System.Drawing.Font("Segoe UI", 11.5F, System.Drawing.FontStyle.Bold);
@@ -580,9 +478,6 @@
             this.lblTenBieuDo.Size = new System.Drawing.Size(1395, 32);
             this.lblTenBieuDo.TabIndex = 0;
             this.lblTenBieuDo.Text = "Doanh thu theo ngày";
-            // 
-            // lblMoTaBieuDo
-            // 
             this.lblMoTaBieuDo.AutoEllipsis = true;
             this.lblMoTaBieuDo.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblMoTaBieuDo.Font = new System.Drawing.Font("Segoe UI", 8.5F);
@@ -593,9 +488,6 @@
             this.lblMoTaBieuDo.Size = new System.Drawing.Size(1395, 25);
             this.lblMoTaBieuDo.TabIndex = 1;
             this.lblMoTaBieuDo.Text = "Số tiền đã thanh toán trong kỳ";
-            // 
-            // pnlNoiDungBieuDo
-            // 
             this.pnlNoiDungBieuDo.BackColor = System.Drawing.Color.White;
             this.pnlNoiDungBieuDo.Controls.Add(this.bieuDoThongKe);
             this.pnlNoiDungBieuDo.Controls.Add(this.lblKhongDuLieu);
@@ -605,9 +497,6 @@
             this.pnlNoiDungBieuDo.Name = "pnlNoiDungBieuDo";
             this.pnlNoiDungBieuDo.Size = new System.Drawing.Size(1395, 256);
             this.pnlNoiDungBieuDo.TabIndex = 2;
-            // 
-            // bieuDoThongKe
-            // 
             chartArea1.BackColor = System.Drawing.Color.White;
             chartArea1.Name = "VungBieuDo";
             this.bieuDoThongKe.ChartAreas.Add(chartArea1);
@@ -618,9 +507,6 @@
             this.bieuDoThongKe.Size = new System.Drawing.Size(1395, 256);
             this.bieuDoThongKe.TabIndex = 0;
             this.bieuDoThongKe.Text = "Biểu đồ thống kê";
-            // 
-            // lblKhongDuLieu
-            // 
             this.lblKhongDuLieu.AutoEllipsis = true;
             this.lblKhongDuLieu.BackColor = System.Drawing.Color.White;
             this.lblKhongDuLieu.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -634,9 +520,6 @@
             this.lblKhongDuLieu.Text = "Không có dữ liệu trong khoảng thời gian đã chọn";
             this.lblKhongDuLieu.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lblKhongDuLieu.Visible = false;
-            // 
-            // lblChuThichBieuDo
-            // 
             this.lblChuThichBieuDo.AutoEllipsis = true;
             this.lblChuThichBieuDo.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblChuThichBieuDo.Font = new System.Drawing.Font("Segoe UI", 8.5F);
@@ -646,9 +529,6 @@
             this.lblChuThichBieuDo.Name = "lblChuThichBieuDo";
             this.lblChuThichBieuDo.Size = new System.Drawing.Size(1395, 25);
             this.lblChuThichBieuDo.TabIndex = 3;
-            // 
-            // pnlBangDuLieu
-            // 
             this.pnlBangDuLieu.BackColor = System.Drawing.Color.White;
             this.pnlBangDuLieu.Controls.Add(this.tlpBangDuLieu);
             this.pnlBangDuLieu.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -658,9 +538,6 @@
             this.pnlBangDuLieu.Padding = new System.Windows.Forms.Padding(18, 10, 18, 12);
             this.pnlBangDuLieu.Size = new System.Drawing.Size(1431, 296);
             this.pnlBangDuLieu.TabIndex = 4;
-            // 
-            // tlpBangDuLieu
-            // 
             this.tlpBangDuLieu.ColumnCount = 1;
             this.tlpBangDuLieu.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpBangDuLieu.Controls.Add(this.lblKetQua, 0, 0);
@@ -674,9 +551,6 @@
             this.tlpBangDuLieu.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpBangDuLieu.Size = new System.Drawing.Size(1395, 274);
             this.tlpBangDuLieu.TabIndex = 0;
-            // 
-            // lblKetQua
-            // 
             this.lblKetQua.AutoEllipsis = true;
             this.lblKetQua.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblKetQua.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
@@ -688,9 +562,6 @@
             this.lblKetQua.TabIndex = 0;
             this.lblKetQua.Text = "DỮ LIỆU CHI TIẾT";
             this.lblKetQua.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // dgvThongKe
-            // 
             this.dgvThongKe.AllowUserToAddRows = false;
             this.dgvThongKe.AllowUserToDeleteRows = false;
             this.dgvThongKe.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
@@ -710,9 +581,6 @@
             this.dgvThongKe.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvThongKe.Size = new System.Drawing.Size(1395, 234);
             this.dgvThongKe.TabIndex = 0;
-            // 
-            // frmThongKe
-            // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(120F, 120F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.AutoScroll = true;

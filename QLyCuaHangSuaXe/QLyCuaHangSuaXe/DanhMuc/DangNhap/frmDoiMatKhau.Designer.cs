@@ -29,9 +29,6 @@ namespace QLyCuaHangSuaXe.DanhMuc.DangNhap
             this.tlptxtXacNhanMatKhauMoi.SuspendLayout();
             this.flpThaoTac.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // tlpTrang
-            // 
             this.tlpTrang.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(252)))), ((int)(((byte)(254)))));
             this.tlpTrang.ColumnCount = 1;
             this.tlpTrang.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
@@ -58,9 +55,6 @@ namespace QLyCuaHangSuaXe.DanhMuc.DangNhap
             this.tlpTrang.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
             this.tlpTrang.Size = new System.Drawing.Size(500, 485);
             this.tlpTrang.TabIndex = 0;
-            // 
-            // lblTieuDe
-            // 
             this.lblTieuDe.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblTieuDe.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Bold);
             this.lblTieuDe.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(108)))), ((int)(((byte)(176)))));
@@ -71,9 +65,6 @@ namespace QLyCuaHangSuaXe.DanhMuc.DangNhap
             this.lblTieuDe.TabIndex = 0;
             this.lblTieuDe.Text = "ĐỔI MẬT KHẨU";
             this.lblTieuDe.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // lblTaiKhoan
-            // 
             this.lblTaiKhoan.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblTaiKhoan.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(82)))), ((int)(((byte)(99)))));
             this.lblTaiKhoan.Location = new System.Drawing.Point(28, 72);
@@ -83,9 +74,6 @@ namespace QLyCuaHangSuaXe.DanhMuc.DangNhap
             this.lblTaiKhoan.TabIndex = 1;
             this.lblTaiKhoan.Text = "Tài khoản đang đăng nhập";
             this.lblTaiKhoan.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // tlptxtMatKhauHienTai
-            // 
             this.tlptxtMatKhauHienTai.ColumnCount = 1;
             this.tlptxtMatKhauHienTai.Controls.Add(this.lbltxtMatKhauHienTai, 0, 0);
             this.tlptxtMatKhauHienTai.Controls.Add(this.txtMatKhauHienTai, 0, 1);
@@ -96,9 +84,6 @@ namespace QLyCuaHangSuaXe.DanhMuc.DangNhap
             this.tlptxtMatKhauHienTai.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 27F));
             this.tlptxtMatKhauHienTai.Size = new System.Drawing.Size(446, 64);
             this.tlptxtMatKhauHienTai.TabIndex = 2;
-            // 
-            // lbltxtMatKhauHienTai
-            // 
             this.lbltxtMatKhauHienTai.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lbltxtMatKhauHienTai.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(82)))), ((int)(((byte)(99)))));
             this.lbltxtMatKhauHienTai.Location = new System.Drawing.Point(4, 4);
@@ -108,9 +93,6 @@ namespace QLyCuaHangSuaXe.DanhMuc.DangNhap
             this.lbltxtMatKhauHienTai.TabIndex = 0;
             this.lbltxtMatKhauHienTai.Text = "Mật khẩu hiện tại";
             this.lbltxtMatKhauHienTai.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // txtMatKhauHienTai
-            // 
             this.txtMatKhauHienTai.Dock = System.Windows.Forms.DockStyle.Fill;
             this.txtMatKhauHienTai.Location = new System.Drawing.Point(3, 30);
             this.txtMatKhauHienTai.MaxLength = 128;
@@ -118,9 +100,6 @@ namespace QLyCuaHangSuaXe.DanhMuc.DangNhap
             this.txtMatKhauHienTai.Size = new System.Drawing.Size(440, 30);
             this.txtMatKhauHienTai.TabIndex = 0;
             this.txtMatKhauHienTai.UseSystemPasswordChar = true;
-            // 
-            // tlptxtMatKhauMoi
-            // 
             this.tlptxtMatKhauMoi.ColumnCount = 1;
             this.tlptxtMatKhauMoi.Controls.Add(this.lbltxtMatKhauMoi, 0, 0);
             this.tlptxtMatKhauMoi.Controls.Add(this.txtMatKhauMoi, 0, 1);
@@ -131,9 +110,6 @@ namespace QLyCuaHangSuaXe.DanhMuc.DangNhap
             this.tlptxtMatKhauMoi.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 27F));
             this.tlptxtMatKhauMoi.Size = new System.Drawing.Size(446, 64);
             this.tlptxtMatKhauMoi.TabIndex = 3;
-            // 
-            // lbltxtMatKhauMoi
-            // 
             this.lbltxtMatKhauMoi.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lbltxtMatKhauMoi.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(82)))), ((int)(((byte)(99)))));
             this.lbltxtMatKhauMoi.Location = new System.Drawing.Point(4, 4);
@@ -143,9 +119,6 @@ namespace QLyCuaHangSuaXe.DanhMuc.DangNhap
             this.lbltxtMatKhauMoi.TabIndex = 0;
             this.lbltxtMatKhauMoi.Text = "Mật khẩu mới";
             this.lbltxtMatKhauMoi.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // txtMatKhauMoi
-            // 
             this.txtMatKhauMoi.Dock = System.Windows.Forms.DockStyle.Fill;
             this.txtMatKhauMoi.Location = new System.Drawing.Point(3, 30);
             this.txtMatKhauMoi.MaxLength = 128;
@@ -153,9 +126,6 @@ namespace QLyCuaHangSuaXe.DanhMuc.DangNhap
             this.txtMatKhauMoi.Size = new System.Drawing.Size(440, 30);
             this.txtMatKhauMoi.TabIndex = 1;
             this.txtMatKhauMoi.UseSystemPasswordChar = true;
-            // 
-            // tlptxtXacNhanMatKhauMoi
-            // 
             this.tlptxtXacNhanMatKhauMoi.ColumnCount = 1;
             this.tlptxtXacNhanMatKhauMoi.Controls.Add(this.lbltxtXacNhanMatKhauMoi, 0, 0);
             this.tlptxtXacNhanMatKhauMoi.Controls.Add(this.txtXacNhanMatKhauMoi, 0, 1);
@@ -166,9 +136,6 @@ namespace QLyCuaHangSuaXe.DanhMuc.DangNhap
             this.tlptxtXacNhanMatKhauMoi.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 27F));
             this.tlptxtXacNhanMatKhauMoi.Size = new System.Drawing.Size(446, 64);
             this.tlptxtXacNhanMatKhauMoi.TabIndex = 4;
-            // 
-            // lbltxtXacNhanMatKhauMoi
-            // 
             this.lbltxtXacNhanMatKhauMoi.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lbltxtXacNhanMatKhauMoi.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(82)))), ((int)(((byte)(99)))));
             this.lbltxtXacNhanMatKhauMoi.Location = new System.Drawing.Point(4, 4);
@@ -178,9 +145,6 @@ namespace QLyCuaHangSuaXe.DanhMuc.DangNhap
             this.lbltxtXacNhanMatKhauMoi.TabIndex = 0;
             this.lbltxtXacNhanMatKhauMoi.Text = "Nhập lại mật khẩu mới";
             this.lbltxtXacNhanMatKhauMoi.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // txtXacNhanMatKhauMoi
-            // 
             this.txtXacNhanMatKhauMoi.Dock = System.Windows.Forms.DockStyle.Fill;
             this.txtXacNhanMatKhauMoi.Location = new System.Drawing.Point(3, 30);
             this.txtXacNhanMatKhauMoi.MaxLength = 128;
@@ -188,18 +152,12 @@ namespace QLyCuaHangSuaXe.DanhMuc.DangNhap
             this.txtXacNhanMatKhauMoi.Size = new System.Drawing.Size(440, 30);
             this.txtXacNhanMatKhauMoi.TabIndex = 2;
             this.txtXacNhanMatKhauMoi.UseSystemPasswordChar = true;
-            // 
-            // chkHienMatKhau
-            // 
             this.chkHienMatKhau.Dock = System.Windows.Forms.DockStyle.Fill;
             this.chkHienMatKhau.Location = new System.Drawing.Point(27, 313);
             this.chkHienMatKhau.Name = "chkHienMatKhau";
             this.chkHienMatKhau.Size = new System.Drawing.Size(446, 30);
             this.chkHienMatKhau.TabIndex = 5;
             this.chkHienMatKhau.Text = "Hiện mật khẩu";
-            // 
-            // lblGhiChuMatKhau
-            // 
             this.lblGhiChuMatKhau.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblGhiChuMatKhau.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(82)))), ((int)(((byte)(99)))));
             this.lblGhiChuMatKhau.Location = new System.Drawing.Point(28, 350);
@@ -209,9 +167,6 @@ namespace QLyCuaHangSuaXe.DanhMuc.DangNhap
             this.lblGhiChuMatKhau.TabIndex = 6;
             this.lblGhiChuMatKhau.Text = "Mật khẩu không được để trống.";
             this.lblGhiChuMatKhau.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // flpThaoTac
-            // 
             this.flpThaoTac.Controls.Add(this.btnDoiMatKhau);
             this.flpThaoTac.Controls.Add(this.btnDong);
             this.flpThaoTac.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -220,9 +175,6 @@ namespace QLyCuaHangSuaXe.DanhMuc.DangNhap
             this.flpThaoTac.Size = new System.Drawing.Size(446, 49);
             this.flpThaoTac.TabIndex = 7;
             this.flpThaoTac.WrapContents = false;
-            // 
-            // btnDoiMatKhau
-            // 
             this.btnDoiMatKhau.AutoSize = true;
             this.btnDoiMatKhau.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(108)))), ((int)(((byte)(176)))));
             this.btnDoiMatKhau.Cursor = System.Windows.Forms.Cursors.Hand;
@@ -239,9 +191,6 @@ namespace QLyCuaHangSuaXe.DanhMuc.DangNhap
             this.btnDoiMatKhau.TabIndex = 0;
             this.btnDoiMatKhau.Text = "Lưu mật khẩu";
             this.btnDoiMatKhau.UseVisualStyleBackColor = false;
-            // 
-            // btnDong
-            // 
             this.btnDong.AutoSize = true;
             this.btnDong.BackColor = System.Drawing.Color.White;
             this.btnDong.Cursor = System.Windows.Forms.Cursors.Hand;
@@ -259,9 +208,6 @@ namespace QLyCuaHangSuaXe.DanhMuc.DangNhap
             this.btnDong.TabIndex = 1;
             this.btnDong.Text = "Đóng";
             this.btnDong.UseVisualStyleBackColor = false;
-            // 
-            // frmDoiMatKhau
-            // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(120F, 120F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(252)))), ((int)(((byte)(254)))));

@@ -34,9 +34,6 @@ namespace QLyCuaHangSuaXe.DanhMuc
             this.tlpGiaoXe.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvPhanCong)).BeginInit();
             this.SuspendLayout();
-            // 
-            // tlpTrang
-            // 
             this.tlpTrang.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(244)))), ((int)(((byte)(247)))), ((int)(((byte)(251)))));
             this.tlpTrang.ColumnCount = 1;
             this.tlpTrang.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
@@ -56,9 +53,6 @@ namespace QLyCuaHangSuaXe.DanhMuc
             this.tlpTrang.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpTrang.Size = new System.Drawing.Size(1180, 780);
             this.tlpTrang.TabIndex = 0;
-            // 
-            // lblTieuDe
-            // 
             this.lblTieuDe.AutoEllipsis = true;
             this.lblTieuDe.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblTieuDe.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Bold);
@@ -70,9 +64,6 @@ namespace QLyCuaHangSuaXe.DanhMuc
             this.lblTieuDe.TabIndex = 0;
             this.lblTieuDe.Text = "PHÂN CÔNG VÀ TIẾN ĐỘ SỬA CHỮA";
             this.lblTieuDe.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // flpTienDo
-            // 
             this.flpTienDo.Controls.Add(this.btnBatDauSua);
             this.flpTienDo.Controls.Add(this.btnHoanThanh);
             this.flpTienDo.Controls.Add(this.btnLamMoi);
@@ -84,9 +75,6 @@ namespace QLyCuaHangSuaXe.DanhMuc
             this.flpTienDo.Size = new System.Drawing.Size(1148, 56);
             this.flpTienDo.TabIndex = 1;
             this.flpTienDo.WrapContents = false;
-            // 
-            // btnBatDauSua
-            // 
             this.btnBatDauSua.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(85)))), ((int)(((byte)(130)))));
             this.btnBatDauSua.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnBatDauSua.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(207)))), ((int)(((byte)(220)))));
@@ -100,9 +88,6 @@ namespace QLyCuaHangSuaXe.DanhMuc
             this.btnBatDauSua.TabIndex = 0;
             this.btnBatDauSua.Text = "Bắt đầu sửa";
             this.btnBatDauSua.UseVisualStyleBackColor = false;
-            // 
-            // btnHoanThanh
-            // 
             this.btnHoanThanh.BackColor = System.Drawing.Color.White;
             this.btnHoanThanh.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnHoanThanh.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(207)))), ((int)(((byte)(220)))));
@@ -116,9 +101,6 @@ namespace QLyCuaHangSuaXe.DanhMuc
             this.btnHoanThanh.TabIndex = 1;
             this.btnHoanThanh.Text = "Hoàn thành";
             this.btnHoanThanh.UseVisualStyleBackColor = false;
-            // 
-            // btnLamMoi
-            // 
             this.btnLamMoi.BackColor = System.Drawing.Color.White;
             this.btnLamMoi.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnLamMoi.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(207)))), ((int)(((byte)(220)))));
@@ -132,9 +114,6 @@ namespace QLyCuaHangSuaXe.DanhMuc
             this.btnLamMoi.TabIndex = 2;
             this.btnLamMoi.Text = "Làm mới";
             this.btnLamMoi.UseVisualStyleBackColor = false;
-            // 
-            // btnHuyPhieu
-            // 
             this.btnHuyPhieu.BackColor = System.Drawing.Color.White;
             this.btnHuyPhieu.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnHuyPhieu.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(207)))), ((int)(((byte)(220)))));
@@ -148,9 +127,6 @@ namespace QLyCuaHangSuaXe.DanhMuc
             this.btnHuyPhieu.TabIndex = 3;
             this.btnHuyPhieu.Text = "Hủy xe chưa sửa";
             this.btnHuyPhieu.UseVisualStyleBackColor = false;
-            // 
-            // grbGiaoXe
-            // 
             this.grbGiaoXe.BackColor = System.Drawing.Color.White;
             this.grbGiaoXe.Controls.Add(this.tlpGiaoXe);
             this.grbGiaoXe.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -164,9 +140,6 @@ namespace QLyCuaHangSuaXe.DanhMuc
             this.grbGiaoXe.TabIndex = 2;
             this.grbGiaoXe.TabStop = false;
             this.grbGiaoXe.Text = "Giao xe cho thợ";
-            // 
-            // tlpGiaoXe
-            // 
             this.tlpGiaoXe.ColumnCount = 5;
             this.tlpGiaoXe.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 80F));
             this.tlpGiaoXe.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 150F));
@@ -187,9 +160,6 @@ namespace QLyCuaHangSuaXe.DanhMuc
             this.tlpGiaoXe.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpGiaoXe.Size = new System.Drawing.Size(1124, 39);
             this.tlpGiaoXe.TabIndex = 0;
-            // 
-            // lblMaPhieu
-            // 
             this.lblMaPhieu.AutoEllipsis = true;
             this.lblMaPhieu.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblMaPhieu.Location = new System.Drawing.Point(3, 0);
@@ -198,9 +168,6 @@ namespace QLyCuaHangSuaXe.DanhMuc
             this.lblMaPhieu.TabIndex = 0;
             this.lblMaPhieu.Text = "Mã phiếu";
             this.lblMaPhieu.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // txtMaPhieu
-            // 
             this.txtMaPhieu.Dock = System.Windows.Forms.DockStyle.Fill;
             this.txtMaPhieu.Location = new System.Drawing.Point(80, 8);
             this.txtMaPhieu.Margin = new System.Windows.Forms.Padding(0, 8, 18, 4);
@@ -208,9 +175,6 @@ namespace QLyCuaHangSuaXe.DanhMuc
             this.txtMaPhieu.Name = "txtMaPhieu";
             this.txtMaPhieu.Size = new System.Drawing.Size(132, 30);
             this.txtMaPhieu.TabIndex = 1;
-            // 
-            // lblTho
-            // 
             this.lblTho.AutoEllipsis = true;
             this.lblTho.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblTho.Location = new System.Drawing.Point(233, 0);
@@ -219,9 +183,6 @@ namespace QLyCuaHangSuaXe.DanhMuc
             this.lblTho.TabIndex = 2;
             this.lblTho.Text = "Thợ nhận xe";
             this.lblTho.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // cboTho
-            // 
             this.cboTho.Dock = System.Windows.Forms.DockStyle.Fill;
             this.cboTho.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cboTho.Location = new System.Drawing.Point(330, 8);
@@ -229,9 +190,6 @@ namespace QLyCuaHangSuaXe.DanhMuc
             this.cboTho.Name = "cboTho";
             this.cboTho.Size = new System.Drawing.Size(648, 31);
             this.cboTho.TabIndex = 3;
-            // 
-            // btnGiaoXe
-            // 
             this.btnGiaoXe.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(85)))), ((int)(((byte)(130)))));
             this.btnGiaoXe.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnGiaoXe.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -246,9 +204,35 @@ namespace QLyCuaHangSuaXe.DanhMuc
             this.btnGiaoXe.TabIndex = 4;
             this.btnGiaoXe.Text = "Giao xe";
             this.btnGiaoXe.UseVisualStyleBackColor = false;
-            // 
-            // dgvPhanCong
-            // 
+            this.MaPhieuTiepNhan = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.MaPhieuTiepNhan.Name = "MaPhieuTiepNhan";
+            this.MaPhieuTiepNhan.DataPropertyName = "MaPhieuTiepNhan";
+            this.BienSo = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.BienSo.Name = "BienSo";
+            this.BienSo.DataPropertyName = "BienSo";
+            this.TenKhachHang = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.TenKhachHang.Name = "TenKhachHang";
+            this.TenKhachHang.DataPropertyName = "TenKhachHang";
+            this.MaNhanVien = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.MaNhanVien.Name = "MaNhanVien";
+            this.MaNhanVien.DataPropertyName = "MaNhanVien";
+            this.TenNhanVien = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.TenNhanVien.Name = "TenNhanVien";
+            this.TenNhanVien.DataPropertyName = "TenNhanVien";
+            this.TrangThai = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.TrangThai.Name = "TrangThai";
+            this.TrangThai.DataPropertyName = "TrangThai";
+            this.ThoiGianBatDau = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ThoiGianBatDau.Name = "ThoiGianBatDau";
+            this.ThoiGianBatDau.DataPropertyName = "ThoiGianBatDau";
+            this.ThoiGianHoanThanh = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ThoiGianHoanThanh.Name = "ThoiGianHoanThanh";
+            this.ThoiGianHoanThanh.DataPropertyName = "ThoiGianHoanThanh";
+            this.NgayHen = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.NgayHen.Name = "NgayHen";
+            this.NgayHen.DataPropertyName = "NgayHen";
+            this.dgvPhanCong.AutoGenerateColumns = false;
+            this.dgvPhanCong.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] { this.MaPhieuTiepNhan, this.BienSo, this.TenKhachHang, this.MaNhanVien, this.TenNhanVien, this.TrangThai, this.ThoiGianBatDau, this.ThoiGianHoanThanh, this.NgayHen });
             this.dgvPhanCong.AllowUserToAddRows = false;
             this.dgvPhanCong.AllowUserToDeleteRows = false;
             this.dgvPhanCong.AllowUserToResizeRows = false;
@@ -289,9 +273,6 @@ namespace QLyCuaHangSuaXe.DanhMuc
             this.dgvPhanCong.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvPhanCong.Size = new System.Drawing.Size(1148, 536);
             this.dgvPhanCong.TabIndex = 3;
-            // 
-            // frmPhanCong
-            // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 23F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1180, 780);

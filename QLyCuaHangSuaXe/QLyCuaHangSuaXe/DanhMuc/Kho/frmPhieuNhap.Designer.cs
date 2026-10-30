@@ -33,9 +33,6 @@ namespace btl
             ((System.ComponentModel.ISupportInitialize)(this.dgvChiTietPhieuNhap)).BeginInit();
             this.flpThaoTac.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // tlpTrang
-            // 
             this.tlpTrang.ColumnCount = 1;
             this.tlpTrang.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpTrang.Controls.Add(this.lblTieuDe, 0, 0);
@@ -54,9 +51,6 @@ namespace btl
             this.tlpTrang.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 65F));
             this.tlpTrang.Size = new System.Drawing.Size(1475, 975);
             this.tlpTrang.TabIndex = 0;
-            // 
-            // lblTieuDe
-            // 
             this.lblTieuDe.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblTieuDe.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Bold);
             this.lblTieuDe.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(85)))), ((int)(((byte)(130)))));
@@ -67,9 +61,6 @@ namespace btl
             this.lblTieuDe.TabIndex = 0;
             this.lblTieuDe.Text = "PHIẾU NHẬP KHO";
             this.lblTieuDe.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // tlpTimKiem
-            // 
             this.tlpTimKiem.ColumnCount = 2;
             this.tlpTimKiem.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 188F));
             this.tlpTimKiem.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
@@ -83,9 +74,6 @@ namespace btl
             this.tlpTimKiem.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpTimKiem.Size = new System.Drawing.Size(1435, 60);
             this.tlpTimKiem.TabIndex = 1;
-            // 
-            // lblTimPhieu
-            // 
             this.lblTimPhieu.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblTimPhieu.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(85)))), ((int)(((byte)(130)))));
             this.lblTimPhieu.Location = new System.Drawing.Point(4, 0);
@@ -95,9 +83,6 @@ namespace btl
             this.lblTimPhieu.TabIndex = 0;
             this.lblTimPhieu.Text = "Tìm phiếu nhập";
             this.lblTimPhieu.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // txtTimPhieuNhap
-            // 
             this.txtTimPhieuNhap.Dock = System.Windows.Forms.DockStyle.Fill;
             this.txtTimPhieuNhap.Location = new System.Drawing.Point(193, 10);
             this.txtTimPhieuNhap.Margin = new System.Windows.Forms.Padding(5, 10, 15, 8);
@@ -105,9 +90,6 @@ namespace btl
             this.txtTimPhieuNhap.Size = new System.Drawing.Size(1227, 30);
             this.txtTimPhieuNhap.TabIndex = 1;
             this.txtTimPhieuNhap.TextChanged += new System.EventHandler(this.txtTim_TextChanged);
-            // 
-            // tlpHaiBang
-            // 
             this.tlpHaiBang.ColumnCount = 1;
             this.tlpHaiBang.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpHaiBang.Controls.Add(this.lblDanhSach, 0, 0);
@@ -125,9 +107,6 @@ namespace btl
             this.tlpHaiBang.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tlpHaiBang.Size = new System.Drawing.Size(1435, 738);
             this.tlpHaiBang.TabIndex = 2;
-            // 
-            // lblDanhSach
-            // 
             this.lblDanhSach.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblDanhSach.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(85)))), ((int)(((byte)(130)))));
             this.lblDanhSach.Location = new System.Drawing.Point(4, 0);
@@ -137,9 +116,6 @@ namespace btl
             this.lblDanhSach.TabIndex = 0;
             this.lblDanhSach.Text = "DANH SÁCH PHIẾU NHẬP";
             this.lblDanhSach.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // dgvPhieuNhap
-            // 
             this.dgvPhieuNhap.AllowUserToAddRows = false;
             this.dgvPhieuNhap.AllowUserToDeleteRows = false;
             this.dgvPhieuNhap.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
@@ -167,9 +143,6 @@ namespace btl
             this.dgvPhieuNhap.Size = new System.Drawing.Size(1435, 321);
             this.dgvPhieuNhap.TabIndex = 1;
             this.dgvPhieuNhap.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvPhieuNhap_CellClick);
-            // 
-            // lblChiTiet
-            // 
             this.lblChiTiet.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblChiTiet.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(85)))), ((int)(((byte)(130)))));
             this.lblChiTiet.Location = new System.Drawing.Point(4, 369);
@@ -179,9 +152,6 @@ namespace btl
             this.lblChiTiet.TabIndex = 2;
             this.lblChiTiet.Text = "CHI TIẾT PHIẾU ĐANG CHỌN";
             this.lblChiTiet.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // dgvChiTietPhieuNhap
-            // 
             this.dgvChiTietPhieuNhap.AllowUserToAddRows = false;
             this.dgvChiTietPhieuNhap.AllowUserToDeleteRows = false;
             this.dgvChiTietPhieuNhap.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
@@ -208,9 +178,6 @@ namespace btl
             this.dgvChiTietPhieuNhap.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvChiTietPhieuNhap.Size = new System.Drawing.Size(1435, 321);
             this.dgvChiTietPhieuNhap.TabIndex = 3;
-            // 
-            // flpThaoTac
-            // 
             this.flpThaoTac.AutoScroll = true;
             this.flpThaoTac.Controls.Add(this.btnThemPhieuNhap);
             this.flpThaoTac.Controls.Add(this.btnSuaPhieuNhap);
@@ -226,9 +193,6 @@ namespace btl
             this.flpThaoTac.Size = new System.Drawing.Size(1435, 65);
             this.flpThaoTac.TabIndex = 3;
             this.flpThaoTac.WrapContents = false;
-            // 
-            // btnThemPhieuNhap
-            // 
             this.btnThemPhieuNhap.BackColor = System.Drawing.Color.White;
             this.btnThemPhieuNhap.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(207)))), ((int)(((byte)(220)))));
             this.btnThemPhieuNhap.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -242,9 +206,6 @@ namespace btl
             this.btnThemPhieuNhap.Text = "Lập phiếu nhập";
             this.btnThemPhieuNhap.UseVisualStyleBackColor = false;
             this.btnThemPhieuNhap.Click += new System.EventHandler(this.btnThemPhieuNhap_Bam);
-            // 
-            // btnSuaPhieuNhap
-            // 
             this.btnSuaPhieuNhap.BackColor = System.Drawing.Color.White;
             this.btnSuaPhieuNhap.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(207)))), ((int)(((byte)(220)))));
             this.btnSuaPhieuNhap.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -258,9 +219,6 @@ namespace btl
             this.btnSuaPhieuNhap.Text = "Sửa phiếu nhập";
             this.btnSuaPhieuNhap.UseVisualStyleBackColor = false;
             this.btnSuaPhieuNhap.Click += new System.EventHandler(this.btnSuaPhieuNhap_Bam);
-            // 
-            // btnXoaPhieuNhap
-            // 
             this.btnXoaPhieuNhap.BackColor = System.Drawing.Color.White;
             this.btnXoaPhieuNhap.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(207)))), ((int)(((byte)(220)))));
             this.btnXoaPhieuNhap.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -274,9 +232,6 @@ namespace btl
             this.btnXoaPhieuNhap.Text = "Xóa phiếu nhập";
             this.btnXoaPhieuNhap.UseVisualStyleBackColor = false;
             this.btnXoaPhieuNhap.Click += new System.EventHandler(this.btnXoaPhieuNhap_Bam);
-            // 
-            // btnInPhieuNhap
-            // 
             this.btnInPhieuNhap.BackColor = System.Drawing.Color.White;
             this.btnInPhieuNhap.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(207)))), ((int)(((byte)(220)))));
             this.btnInPhieuNhap.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -290,9 +245,6 @@ namespace btl
             this.btnInPhieuNhap.Text = "In phiếu nhập";
             this.btnInPhieuNhap.UseVisualStyleBackColor = false;
             this.btnInPhieuNhap.Click += new System.EventHandler(this.btnInPhieuNhap_Bam);
-            // 
-            // btnXuatChiTiet
-            // 
             this.btnXuatChiTiet.BackColor = System.Drawing.Color.White;
             this.btnXuatChiTiet.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(207)))), ((int)(((byte)(220)))));
             this.btnXuatChiTiet.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -306,9 +258,6 @@ namespace btl
             this.btnXuatChiTiet.Text = "Xuất Excel";
             this.btnXuatChiTiet.UseVisualStyleBackColor = false;
             this.btnXuatChiTiet.Click += new System.EventHandler(this.btnXuatChiTiet_Bam);
-            // 
-            // btnTaiLaiPhieu
-            // 
             this.btnTaiLaiPhieu.BackColor = System.Drawing.Color.White;
             this.btnTaiLaiPhieu.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(207)))), ((int)(((byte)(220)))));
             this.btnTaiLaiPhieu.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -322,9 +271,6 @@ namespace btl
             this.btnTaiLaiPhieu.Text = "Tải lại danh sách";
             this.btnTaiLaiPhieu.UseVisualStyleBackColor = false;
             this.btnTaiLaiPhieu.Click += new System.EventHandler(this.btnTaiLaiPhieu_Bam);
-            // 
-            // btnThoat
-            // 
             this.btnThoat.BackColor = System.Drawing.Color.White;
             this.btnThoat.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(207)))), ((int)(((byte)(220)))));
             this.btnThoat.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -338,9 +284,6 @@ namespace btl
             this.btnThoat.Text = "Đóng danh sách";
             this.btnThoat.UseVisualStyleBackColor = false;
             this.btnThoat.Click += new System.EventHandler(this.btnThoat_Bam);
-            // 
-            // frmPhieuNhap
-            // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(120F, 120F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(244)))), ((int)(((byte)(247)))), ((int)(((byte)(251)))));

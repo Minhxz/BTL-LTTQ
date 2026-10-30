@@ -24,9 +24,6 @@ namespace btl
             this.tlpThongTin.SuspendLayout();
             this.flpThaoTac.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // tlpTrang
-            // 
             this.tlpTrang.ColumnCount = 1;
             this.tlpTrang.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpTrang.Controls.Add(this.lblTieuDe, 0, 0);
@@ -43,9 +40,6 @@ namespace btl
             this.tlpTrang.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 68F));
             this.tlpTrang.Size = new System.Drawing.Size(800, 550);
             this.tlpTrang.TabIndex = 0;
-            // 
-            // lblTieuDe
-            // 
             this.lblTieuDe.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblTieuDe.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Bold);
             this.lblTieuDe.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(85)))), ((int)(((byte)(130)))));
@@ -56,9 +50,6 @@ namespace btl
             this.lblTieuDe.TabIndex = 0;
             this.lblTieuDe.Text = "THÊM NHÀ CUNG CẤP";
             this.lblTieuDe.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // tlpThongTin
-            // 
             this.tlpThongTin.ColumnCount = 2;
             this.tlpThongTin.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 188F));
             this.tlpThongTin.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
@@ -81,9 +72,6 @@ namespace btl
             this.tlpThongTin.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpThongTin.Size = new System.Drawing.Size(760, 362);
             this.tlpThongTin.TabIndex = 1;
-            // 
-            // lbltxtMaNCC
-            // 
             this.lbltxtMaNCC.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lbltxtMaNCC.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(85)))), ((int)(((byte)(130)))));
             this.lbltxtMaNCC.Location = new System.Drawing.Point(4, 0);
@@ -93,9 +81,6 @@ namespace btl
             this.lbltxtMaNCC.TabIndex = 0;
             this.lbltxtMaNCC.Text = "Mã nhà cung cấp";
             this.lbltxtMaNCC.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // txtMaNCC
-            // 
             this.txtMaNCC.Dock = System.Windows.Forms.DockStyle.Fill;
             this.txtMaNCC.Location = new System.Drawing.Point(193, 10);
             this.txtMaNCC.Margin = new System.Windows.Forms.Padding(5, 10, 15, 8);
@@ -103,9 +88,6 @@ namespace btl
             this.txtMaNCC.ReadOnly = true;
             this.txtMaNCC.Size = new System.Drawing.Size(552, 30);
             this.txtMaNCC.TabIndex = 1;
-            // 
-            // lbltxtTenNCC
-            // 
             this.lbltxtTenNCC.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lbltxtTenNCC.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(85)))), ((int)(((byte)(130)))));
             this.lbltxtTenNCC.Location = new System.Drawing.Point(4, 60);
@@ -115,9 +97,6 @@ namespace btl
             this.lbltxtTenNCC.TabIndex = 2;
             this.lbltxtTenNCC.Text = "Tên nhà cung cấp";
             this.lbltxtTenNCC.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // txtTenNCC
-            // 
             this.txtTenNCC.Dock = System.Windows.Forms.DockStyle.Fill;
             this.txtTenNCC.Location = new System.Drawing.Point(193, 70);
             this.txtTenNCC.Margin = new System.Windows.Forms.Padding(5, 10, 15, 8);
@@ -125,9 +104,6 @@ namespace btl
             this.txtTenNCC.Name = "txtTenNCC";
             this.txtTenNCC.Size = new System.Drawing.Size(552, 30);
             this.txtTenNCC.TabIndex = 3;
-            // 
-            // lbltxtSDT
-            // 
             this.lbltxtSDT.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lbltxtSDT.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(85)))), ((int)(((byte)(130)))));
             this.lbltxtSDT.Location = new System.Drawing.Point(4, 120);
@@ -137,9 +113,6 @@ namespace btl
             this.lbltxtSDT.TabIndex = 4;
             this.lbltxtSDT.Text = "Điện thoại";
             this.lbltxtSDT.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // txtSDT
-            // 
             this.txtSDT.Dock = System.Windows.Forms.DockStyle.Fill;
             this.txtSDT.Location = new System.Drawing.Point(193, 130);
             this.txtSDT.Margin = new System.Windows.Forms.Padding(5, 10, 15, 8);
@@ -147,9 +120,6 @@ namespace btl
             this.txtSDT.Name = "txtSDT";
             this.txtSDT.Size = new System.Drawing.Size(552, 30);
             this.txtSDT.TabIndex = 5;
-            // 
-            // lbltxtDiaChi
-            // 
             this.lbltxtDiaChi.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lbltxtDiaChi.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(85)))), ((int)(((byte)(130)))));
             this.lbltxtDiaChi.Location = new System.Drawing.Point(4, 180);
@@ -159,9 +129,6 @@ namespace btl
             this.lbltxtDiaChi.TabIndex = 6;
             this.lbltxtDiaChi.Text = "Địa chỉ";
             this.lbltxtDiaChi.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // txtDiaChi
-            // 
             this.txtDiaChi.Dock = System.Windows.Forms.DockStyle.Fill;
             this.txtDiaChi.Location = new System.Drawing.Point(193, 190);
             this.txtDiaChi.Margin = new System.Windows.Forms.Padding(5, 10, 15, 8);
@@ -170,9 +137,6 @@ namespace btl
             this.txtDiaChi.Size = new System.Drawing.Size(552, 164);
             this.txtDiaChi.TabIndex = 7;
             this.txtDiaChi.Text = "";
-            // 
-            // flpThaoTac
-            // 
             this.flpThaoTac.AutoScroll = true;
             this.flpThaoTac.Controls.Add(this.btnXacNhan);
             this.flpThaoTac.Controls.Add(this.btnHuy);
@@ -183,9 +147,6 @@ namespace btl
             this.flpThaoTac.Size = new System.Drawing.Size(760, 68);
             this.flpThaoTac.TabIndex = 2;
             this.flpThaoTac.WrapContents = false;
-            // 
-            // btnXacNhan
-            // 
             this.btnXacNhan.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(108)))), ((int)(((byte)(176)))));
             this.btnXacNhan.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(207)))), ((int)(((byte)(220)))));
             this.btnXacNhan.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -199,9 +160,6 @@ namespace btl
             this.btnXacNhan.Text = "Lưu nhà cung cấp";
             this.btnXacNhan.UseVisualStyleBackColor = false;
             this.btnXacNhan.Click += new System.EventHandler(this.btnXacNhan_Bam);
-            // 
-            // btnHuy
-            // 
             this.btnHuy.BackColor = System.Drawing.Color.White;
             this.btnHuy.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(207)))), ((int)(((byte)(220)))));
             this.btnHuy.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -215,9 +173,6 @@ namespace btl
             this.btnHuy.Text = "Đóng";
             this.btnHuy.UseVisualStyleBackColor = false;
             this.btnHuy.Click += new System.EventHandler(this.btnHuy_Bam);
-            // 
-            // frmThemNCC
-            // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(120F, 120F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(244)))), ((int)(((byte)(247)))), ((int)(((byte)(251)))));

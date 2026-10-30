@@ -57,9 +57,6 @@ namespace QLyCuaHangSuaXe.DanhMuc.TiepNhan
             this.grbKetQua.SuspendLayout();
             this.tlpCuoi.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // tlpTrang
-            // 
             this.tlpTrang.ColumnCount = 1;
             this.tlpTrang.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpTrang.Controls.Add(this.lblTieuDe, 0, 0);
@@ -75,9 +72,6 @@ namespace QLyCuaHangSuaXe.DanhMuc.TiepNhan
             this.tlpTrang.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 58F));
             this.tlpTrang.Size = new System.Drawing.Size(1180, 780);
             this.tlpTrang.TabIndex = 0;
-            // 
-            // lblTieuDe
-            // 
             this.lblTieuDe.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblTieuDe.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Bold);
             this.lblTieuDe.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(108)))), ((int)(((byte)(176)))));
@@ -88,9 +82,6 @@ namespace QLyCuaHangSuaXe.DanhMuc.TiepNhan
             this.lblTieuDe.TabIndex = 0;
             this.lblTieuDe.Text = "KIỂM TRA TRƯỚC TIẾP NHẬN";
             this.lblTieuDe.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // tlpChinh
-            // 
             this.tlpChinh.ColumnCount = 2;
             this.tlpChinh.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 310F));
             this.tlpChinh.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
@@ -103,9 +94,6 @@ namespace QLyCuaHangSuaXe.DanhMuc.TiepNhan
             this.tlpChinh.RowCount = 1;
             this.tlpChinh.Size = new System.Drawing.Size(1140, 644);
             this.tlpChinh.TabIndex = 2;
-            // 
-            // tlpTrai
-            // 
             this.tlpTrai.ColumnCount = 1;
             this.tlpTrai.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpTrai.Controls.Add(this.grbChon, 0, 0);
@@ -117,9 +105,6 @@ namespace QLyCuaHangSuaXe.DanhMuc.TiepNhan
             this.tlpTrai.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpTrai.Size = new System.Drawing.Size(304, 638);
             this.tlpTrai.TabIndex = 0;
-            // 
-            // grbChon
-            // 
             this.grbChon.Controls.Add(this.tlpChon);
             this.grbChon.Dock = System.Windows.Forms.DockStyle.Fill;
             this.grbChon.Location = new System.Drawing.Point(3, 3);
@@ -130,9 +115,6 @@ namespace QLyCuaHangSuaXe.DanhMuc.TiepNhan
             this.grbChon.TabIndex = 0;
             this.grbChon.TabStop = false;
             this.grbChon.Text = "Dịch vụ";
-            // 
-            // tlpChon
-            // 
             this.tlpChon.ColumnCount = 2;
             this.tlpChon.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tlpChon.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
@@ -164,9 +146,6 @@ namespace QLyCuaHangSuaXe.DanhMuc.TiepNhan
             this.tlpChon.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 46F));
             this.tlpChon.Size = new System.Drawing.Size(278, 589);
             this.tlpChon.TabIndex = 0;
-            // 
-            // lblDichVu
-            // 
             this.tlpChon.SetColumnSpan(this.lblDichVu, 2);
             this.lblDichVu.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblDichVu.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(82)))), ((int)(((byte)(99)))));
@@ -177,9 +156,6 @@ namespace QLyCuaHangSuaXe.DanhMuc.TiepNhan
             this.lblDichVu.TabIndex = 0;
             this.lblDichVu.Text = "Dịch vụ";
             this.lblDichVu.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // cboDichVu
-            // 
             this.tlpChon.SetColumnSpan(this.cboDichVu, 2);
             this.cboDichVu.Dock = System.Windows.Forms.DockStyle.Fill;
             this.cboDichVu.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
@@ -188,9 +164,6 @@ namespace QLyCuaHangSuaXe.DanhMuc.TiepNhan
             this.cboDichVu.Name = "cboDichVu";
             this.cboDichVu.Size = new System.Drawing.Size(270, 31);
             this.cboDichVu.TabIndex = 1;
-            // 
-            // lblHoatDong
-            // 
             this.tlpChon.SetColumnSpan(this.lblHoatDong, 2);
             this.lblHoatDong.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblHoatDong.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(82)))), ((int)(((byte)(99)))));
@@ -201,9 +174,6 @@ namespace QLyCuaHangSuaXe.DanhMuc.TiepNhan
             this.lblHoatDong.TabIndex = 2;
             this.lblHoatDong.Text = "Đang hoạt động";
             this.lblHoatDong.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // lblPhuTung
-            // 
             this.tlpChon.SetColumnSpan(this.lblPhuTung, 2);
             this.lblPhuTung.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblPhuTung.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(82)))), ((int)(((byte)(99)))));
@@ -214,9 +184,6 @@ namespace QLyCuaHangSuaXe.DanhMuc.TiepNhan
             this.lblPhuTung.TabIndex = 3;
             this.lblPhuTung.Text = "Phụ tùng liên kết";
             this.lblPhuTung.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // cboPhuTung
-            // 
             this.tlpChon.SetColumnSpan(this.cboPhuTung, 2);
             this.cboPhuTung.Dock = System.Windows.Forms.DockStyle.Fill;
             this.cboPhuTung.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
@@ -225,9 +192,6 @@ namespace QLyCuaHangSuaXe.DanhMuc.TiepNhan
             this.cboPhuTung.Name = "cboPhuTung";
             this.cboPhuTung.Size = new System.Drawing.Size(270, 31);
             this.cboPhuTung.TabIndex = 4;
-            // 
-            // lblSoLuong
-            // 
             this.lblSoLuong.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblSoLuong.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(82)))), ((int)(((byte)(99)))));
             this.lblSoLuong.Location = new System.Drawing.Point(4, 150);
@@ -237,9 +201,6 @@ namespace QLyCuaHangSuaXe.DanhMuc.TiepNhan
             this.lblSoLuong.TabIndex = 5;
             this.lblSoLuong.Text = "Số lượng (1–1000)";
             this.lblSoLuong.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // lblTonKho
-            // 
             this.lblTonKho.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblTonKho.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(82)))), ((int)(((byte)(99)))));
             this.lblTonKho.Location = new System.Drawing.Point(143, 150);
@@ -249,9 +210,6 @@ namespace QLyCuaHangSuaXe.DanhMuc.TiepNhan
             this.lblTonKho.TabIndex = 6;
             this.lblTonKho.Text = "Tồn kho / đơn vị DV";
             this.lblTonKho.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // numSoLuong
-            // 
             this.numSoLuong.Dock = System.Windows.Forms.DockStyle.Fill;
             this.numSoLuong.Location = new System.Drawing.Point(4, 176);
             this.numSoLuong.Margin = new System.Windows.Forms.Padding(4);
@@ -273,9 +231,6 @@ namespace QLyCuaHangSuaXe.DanhMuc.TiepNhan
             0,
             0,
             0});
-            // 
-            // txtTonKho
-            // 
             this.txtTonKho.Dock = System.Windows.Forms.DockStyle.Fill;
             this.txtTonKho.Location = new System.Drawing.Point(143, 176);
             this.txtTonKho.Margin = new System.Windows.Forms.Padding(4);
@@ -283,9 +238,6 @@ namespace QLyCuaHangSuaXe.DanhMuc.TiepNhan
             this.txtTonKho.ReadOnly = true;
             this.txtTonKho.Size = new System.Drawing.Size(131, 30);
             this.txtTonKho.TabIndex = 8;
-            // 
-            // lblGiaDichVu
-            // 
             this.tlpChon.SetColumnSpan(this.lblGiaDichVu, 2);
             this.lblGiaDichVu.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblGiaDichVu.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(82)))), ((int)(((byte)(99)))));
@@ -296,9 +248,6 @@ namespace QLyCuaHangSuaXe.DanhMuc.TiepNhan
             this.lblGiaDichVu.TabIndex = 9;
             this.lblGiaDichVu.Text = "Giá dịch vụ (đ)";
             this.lblGiaDichVu.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // txtGiaDichVu
-            // 
             this.tlpChon.SetColumnSpan(this.txtGiaDichVu, 2);
             this.txtGiaDichVu.Dock = System.Windows.Forms.DockStyle.Fill;
             this.txtGiaDichVu.Location = new System.Drawing.Point(4, 240);
@@ -307,9 +256,6 @@ namespace QLyCuaHangSuaXe.DanhMuc.TiepNhan
             this.txtGiaDichVu.ReadOnly = true;
             this.txtGiaDichVu.Size = new System.Drawing.Size(270, 30);
             this.txtGiaDichVu.TabIndex = 11;
-            // 
-            // btnThem
-            // 
             this.btnThem.AutoSize = true;
             this.btnThem.BackColor = System.Drawing.Color.White;
             this.tlpChon.SetColumnSpan(this.btnThem, 2);
@@ -328,9 +274,6 @@ namespace QLyCuaHangSuaXe.DanhMuc.TiepNhan
             this.btnThem.TabIndex = 13;
             this.btnThem.Text = "+ Thêm vào danh sách";
             this.btnThem.UseVisualStyleBackColor = false;
-            // 
-            // tlpPhai
-            // 
             this.tlpPhai.ColumnCount = 1;
             this.tlpPhai.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpPhai.Controls.Add(this.grbDanhSach, 0, 0);
@@ -346,9 +289,6 @@ namespace QLyCuaHangSuaXe.DanhMuc.TiepNhan
             this.tlpPhai.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 126F));
             this.tlpPhai.Size = new System.Drawing.Size(824, 638);
             this.tlpPhai.TabIndex = 1;
-            // 
-            // grbDanhSach
-            // 
             this.grbDanhSach.Controls.Add(this.dgvHangMuc);
             this.grbDanhSach.Dock = System.Windows.Forms.DockStyle.Fill;
             this.grbDanhSach.Location = new System.Drawing.Point(13, 3);
@@ -358,9 +298,6 @@ namespace QLyCuaHangSuaXe.DanhMuc.TiepNhan
             this.grbDanhSach.TabIndex = 0;
             this.grbDanhSach.TabStop = false;
             this.grbDanhSach.Text = "Hạng mục đã chọn";
-            // 
-            // dgvHangMuc
-            // 
             this.dgvHangMuc.AllowUserToAddRows = false;
             this.dgvHangMuc.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvHangMuc.BackgroundColor = System.Drawing.Color.White;
@@ -372,9 +309,6 @@ namespace QLyCuaHangSuaXe.DanhMuc.TiepNhan
             this.dgvHangMuc.RowHeadersWidth = 51;
             this.dgvHangMuc.Size = new System.Drawing.Size(788, 393);
             this.dgvHangMuc.TabIndex = 0;
-            // 
-            // tlpTong
-            // 
             this.tlpTong.ColumnCount = 2;
             this.tlpTong.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tlpTong.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
@@ -387,9 +321,6 @@ namespace QLyCuaHangSuaXe.DanhMuc.TiepNhan
             this.tlpTong.RowCount = 2;
             this.tlpTong.Size = new System.Drawing.Size(808, 64);
             this.tlpTong.TabIndex = 1;
-            // 
-            // lblSoHangMuc
-            // 
             this.lblSoHangMuc.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblSoHangMuc.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(82)))), ((int)(((byte)(99)))));
             this.lblSoHangMuc.Location = new System.Drawing.Point(12, 12);
@@ -399,9 +330,6 @@ namespace QLyCuaHangSuaXe.DanhMuc.TiepNhan
             this.lblSoHangMuc.TabIndex = 0;
             this.lblSoHangMuc.Text = "0 hạng mục";
             this.lblSoHangMuc.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // lblTongTien
-            // 
             this.lblTongTien.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblTongTien.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.lblTongTien.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(82)))), ((int)(((byte)(99)))));
@@ -412,9 +340,6 @@ namespace QLyCuaHangSuaXe.DanhMuc.TiepNhan
             this.lblTongTien.TabIndex = 1;
             this.lblTongTien.Text = "Dự kiến: 0 đ";
             this.lblTongTien.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // grbKetQua
-            // 
             this.grbKetQua.Controls.Add(this.lblGiaiThich);
             this.grbKetQua.Controls.Add(this.lblKetQua);
             this.grbKetQua.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -425,9 +350,6 @@ namespace QLyCuaHangSuaXe.DanhMuc.TiepNhan
             this.grbKetQua.TabIndex = 2;
             this.grbKetQua.TabStop = false;
             this.grbKetQua.Text = "Kết quả kiểm tra";
-            // 
-            // lblGiaiThich
-            // 
             this.lblGiaiThich.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblGiaiThich.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(82)))), ((int)(((byte)(99)))));
             this.lblGiaiThich.Location = new System.Drawing.Point(12, 65);
@@ -436,9 +358,6 @@ namespace QLyCuaHangSuaXe.DanhMuc.TiepNhan
             this.lblGiaiThich.Size = new System.Drawing.Size(784, 43);
             this.lblGiaiThich.TabIndex = 0;
             this.lblGiaiThich.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // lblKetQua
-            // 
             this.lblKetQua.Dock = System.Windows.Forms.DockStyle.Top;
             this.lblKetQua.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.lblKetQua.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(82)))), ((int)(((byte)(99)))));
@@ -449,9 +368,6 @@ namespace QLyCuaHangSuaXe.DanhMuc.TiepNhan
             this.lblKetQua.TabIndex = 1;
             this.lblKetQua.Text = "CHƯA KIỂM TRA";
             this.lblKetQua.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // tlpCuoi
-            // 
             this.tlpCuoi.ColumnCount = 5;
             this.tlpCuoi.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 120F));
             this.tlpCuoi.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 120F));
@@ -469,9 +385,6 @@ namespace QLyCuaHangSuaXe.DanhMuc.TiepNhan
             this.tlpCuoi.RowCount = 1;
             this.tlpCuoi.Size = new System.Drawing.Size(1134, 52);
             this.tlpCuoi.TabIndex = 3;
-            // 
-            // btnLamMoi
-            // 
             this.btnLamMoi.BackColor = System.Drawing.Color.White;
             this.btnLamMoi.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnLamMoi.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -488,9 +401,6 @@ namespace QLyCuaHangSuaXe.DanhMuc.TiepNhan
             this.btnLamMoi.TabIndex = 0;
             this.btnLamMoi.Text = "Làm mới";
             this.btnLamMoi.UseVisualStyleBackColor = false;
-            // 
-            // btnXoaDong
-            // 
             this.btnXoaDong.BackColor = System.Drawing.Color.White;
             this.btnXoaDong.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnXoaDong.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -507,9 +417,6 @@ namespace QLyCuaHangSuaXe.DanhMuc.TiepNhan
             this.btnXoaDong.TabIndex = 1;
             this.btnXoaDong.Text = "Xóa dòng";
             this.btnXoaDong.UseVisualStyleBackColor = false;
-            // 
-            // btnKiemTra
-            // 
             this.btnKiemTra.BackColor = System.Drawing.Color.White;
             this.btnKiemTra.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnKiemTra.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -526,9 +433,6 @@ namespace QLyCuaHangSuaXe.DanhMuc.TiepNhan
             this.btnKiemTra.TabIndex = 2;
             this.btnKiemTra.Text = "Kiểm tra điều kiện";
             this.btnKiemTra.UseVisualStyleBackColor = false;
-            // 
-            // btnChuyen
-            // 
             this.btnChuyen.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(108)))), ((int)(((byte)(176)))));
             this.btnChuyen.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnChuyen.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -545,9 +449,6 @@ namespace QLyCuaHangSuaXe.DanhMuc.TiepNhan
             this.btnChuyen.TabIndex = 3;
             this.btnChuyen.Text = "Chuyển sang tiếp nhận →";
             this.btnChuyen.UseVisualStyleBackColor = false;
-            // 
-            // frmKiemTraTiepNhan
-            // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(120F, 120F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(252)))), ((int)(((byte)(254)))));

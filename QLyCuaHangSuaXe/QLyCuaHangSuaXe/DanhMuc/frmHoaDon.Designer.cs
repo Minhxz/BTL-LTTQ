@@ -26,9 +26,6 @@ namespace QLyCuaHangSuaXe.DanhMuc
             this.tlpBoLoc.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvHoaDon)).BeginInit();
             this.SuspendLayout();
-            // 
-            // tlpTrang
-            // 
             this.tlpTrang.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(244)))), ((int)(((byte)(247)))), ((int)(((byte)(251)))));
             this.tlpTrang.ColumnCount = 1;
             this.tlpTrang.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
@@ -46,9 +43,6 @@ namespace QLyCuaHangSuaXe.DanhMuc
             this.tlpTrang.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpTrang.Size = new System.Drawing.Size(1180, 780);
             this.tlpTrang.TabIndex = 0;
-            // 
-            // lblTieuDe
-            // 
             this.lblTieuDe.AutoEllipsis = true;
             this.lblTieuDe.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblTieuDe.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Bold);
@@ -61,9 +55,6 @@ namespace QLyCuaHangSuaXe.DanhMuc
             this.lblTieuDe.Text = "HÓA ĐƠN VÀ THANH TOÁN";
             this.lblTieuDe.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.lblTieuDe.Click += new System.EventHandler(this.lblTieuDe_Click);
-            // 
-            // tlpBoLoc
-            // 
             this.tlpBoLoc.BackColor = System.Drawing.Color.White;
             this.tlpBoLoc.ColumnCount = 6;
             this.tlpBoLoc.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
@@ -86,9 +77,6 @@ namespace QLyCuaHangSuaXe.DanhMuc
             this.tlpBoLoc.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpBoLoc.Size = new System.Drawing.Size(1148, 52);
             this.tlpBoLoc.TabIndex = 1;
-            // 
-            // lblTrangThaiThanhToan
-            // 
             this.lblTrangThaiThanhToan.AutoEllipsis = true;
             this.lblTrangThaiThanhToan.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblTrangThaiThanhToan.Location = new System.Drawing.Point(15, 4);
@@ -97,9 +85,6 @@ namespace QLyCuaHangSuaXe.DanhMuc
             this.lblTrangThaiThanhToan.TabIndex = 0;
             this.lblTrangThaiThanhToan.Text = "Trạng thái";
             this.lblTrangThaiThanhToan.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // cboTrangThaiThanhToan
-            // 
             this.cboTrangThaiThanhToan.Dock = System.Windows.Forms.DockStyle.Fill;
             this.cboTrangThaiThanhToan.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cboTrangThaiThanhToan.Items.AddRange(new object[] {
@@ -111,9 +96,6 @@ namespace QLyCuaHangSuaXe.DanhMuc
             this.cboTrangThaiThanhToan.Name = "cboTrangThaiThanhToan";
             this.cboTrangThaiThanhToan.Size = new System.Drawing.Size(198, 31);
             this.cboTrangThaiThanhToan.TabIndex = 1;
-            // 
-            // btnXemChiTiet
-            // 
             this.btnXemChiTiet.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(85)))), ((int)(((byte)(130)))));
             this.btnXemChiTiet.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnXemChiTiet.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -128,9 +110,6 @@ namespace QLyCuaHangSuaXe.DanhMuc
             this.btnXemChiTiet.TabIndex = 2;
             this.btnXemChiTiet.Text = "Thanh toán / Chi tiết";
             this.btnXemChiTiet.UseVisualStyleBackColor = false;
-            // 
-            // btnLamMoi
-            // 
             this.btnLamMoi.BackColor = System.Drawing.Color.White;
             this.btnLamMoi.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnLamMoi.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -145,9 +124,6 @@ namespace QLyCuaHangSuaXe.DanhMuc
             this.btnLamMoi.TabIndex = 3;
             this.btnLamMoi.Text = "Làm mới";
             this.btnLamMoi.UseVisualStyleBackColor = false;
-            // 
-            // btnDong
-            // 
             this.btnDong.BackColor = System.Drawing.Color.White;
             this.btnDong.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnDong.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -162,9 +138,32 @@ namespace QLyCuaHangSuaXe.DanhMuc
             this.btnDong.TabIndex = 4;
             this.btnDong.Text = "Đóng";
             this.btnDong.UseVisualStyleBackColor = false;
-            // 
-            // dgvHoaDon
-            // 
+            this.MaPhieuTiepNhan = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.MaPhieuTiepNhan.Name = "MaPhieuTiepNhan";
+            this.MaPhieuTiepNhan.DataPropertyName = "MaPhieuTiepNhan";
+            this.MaHoaDon = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.MaHoaDon.Name = "MaHoaDon";
+            this.MaHoaDon.DataPropertyName = "MaHoaDon";
+            this.BienSo = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.BienSo.Name = "BienSo";
+            this.BienSo.DataPropertyName = "BienSo";
+            this.TenKhachHang = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.TenKhachHang.Name = "TenKhachHang";
+            this.TenKhachHang.DataPropertyName = "TenKhachHang";
+            this.NgayLap = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.NgayLap.Name = "NgayLap";
+            this.NgayLap.DataPropertyName = "NgayLap";
+            this.TongTien = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.TongTien.Name = "TongTien";
+            this.TongTien.DataPropertyName = "TongTien";
+            this.TrangThaiThanhToan = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.TrangThaiThanhToan.Name = "TrangThaiThanhToan";
+            this.TrangThaiThanhToan.DataPropertyName = "TrangThaiThanhToan";
+            this.NgayThanhToan = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.NgayThanhToan.Name = "NgayThanhToan";
+            this.NgayThanhToan.DataPropertyName = "NgayThanhToan";
+            this.dgvHoaDon.AutoGenerateColumns = false;
+            this.dgvHoaDon.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] { this.MaPhieuTiepNhan, this.MaHoaDon, this.BienSo, this.TenKhachHang, this.NgayLap, this.TongTien, this.TrangThaiThanhToan, this.NgayThanhToan });
             this.dgvHoaDon.AllowUserToAddRows = false;
             this.dgvHoaDon.AllowUserToDeleteRows = false;
             this.dgvHoaDon.AllowUserToResizeRows = false;
@@ -205,9 +204,6 @@ namespace QLyCuaHangSuaXe.DanhMuc
             this.dgvHoaDon.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvHoaDon.Size = new System.Drawing.Size(1148, 622);
             this.dgvHoaDon.TabIndex = 2;
-            // 
-            // frmHoaDon
-            // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 23F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1180, 780);
