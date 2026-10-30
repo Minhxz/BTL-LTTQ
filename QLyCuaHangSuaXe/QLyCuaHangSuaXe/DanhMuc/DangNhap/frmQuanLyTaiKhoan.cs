@@ -92,7 +92,7 @@ namespace QLyCuaHangSuaXe.DanhMuc.DangNhap
             }
             PhienDangNhap.YeuCau("QUAN_LY_TAI_KHOAN");
             CheDoThem(false);
-            bangTaiKhoan = duLieu.DocBang(@"SELECT n.MaNhanVien,n.HoTen AS TenNhanVien,n.TenDangNhap,c.TenChucVu,n.SoDienThoai,n.Luong,CASE WHEN n.TrangThai=N'Đang làm' THEN N'Đang hoạt động' ELSE N'Đã khóa' END AS TinhTrangTaiKhoan,n.TrangThai FROM dbo.NhanVien n JOIN dbo.ChucVu c ON c.MaChucVu=n.MaChucVu ORDER BY n.HoTen");
+            bangTaiKhoan = duLieu.DocBang(@"SELECT n.MaNhanVien,n.HoTen AS TenNhanVien,n.TenDangNhap,c.TenChucVu,n.SoDienThoai,n.Luong,CASE WHEN n.TrangThai=1 THEN N'Đang hoạt động' ELSE N'Đã khóa' END AS TinhTrangTaiKhoan,CASE WHEN n.TrangThai=1 THEN N'Đang làm' ELSE N'Nghỉ việc' END AS TrangThai FROM dbo.NhanVien n JOIN dbo.ChucVu c ON c.MaChucVu=n.MaChucVu ORDER BY n.HoTen");
             Loc();
             if (tabTaiKhoan.SelectedTab == tabMatKhau)
                 HienDoiMatKhau();

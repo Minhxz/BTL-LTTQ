@@ -1,42 +1,60 @@
-using System;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Text;
 using System.Windows.Forms;
-using QLyCuaHangSuaXe.LopDungChung;
+
 namespace btl
 {
-    public partial class frmThemNCC : TrangThietKe
-    {
-        public string MaNhaCungCapMoi
-        {
-            get
-            {
-                return txtMaNCC.Text;
-            }
-        }
-        public frmThemNCC()
-        {
-            InitializeComponent();
-            GanThietKe(null);
-        }
-        public override void TaiDuLieu()
-        {
-            PhienDangNhap.YeuCau("NHAP_KHO");
-            txtMaNCC.Text = XuLyDuLieu.TaoMaMoi("NCC");
-        }
-        void Luu()
-        {
-            PhienDangNhap.YeuCau("NHAP_KHO");
-            string ten = GiaoDien.BatBuocNhap(txtTenNCC, "Tên nhà cung cấp", 150), sdt = GiaoDien.KiemTraDienThoai(txtSDT), diaChi = txtDiaChi.Text.Trim();
-            if (diaChi.Length == 0 || diaChi.Length > 255)
-                throw new InvalidOperationException("Nhập địa chỉ, tối đa 255 ký tự.");
-            duLieu.CapNhatDuLieu("INSERT dbo.NhaCungCap(MaNhaCungCap,TenNhaCungCap,SoDienThoai,DiaChi) VALUES(@id,@n,@p,@a)", XuLyDuLieu.ThamSo("@id", XuLyDuLieu.KiemTraMa(txtMaNCC.Text, "NCC")), XuLyDuLieu.ThamSo("@n", ten), XuLyDuLieu.ThamSo("@p", sdt), XuLyDuLieu.ThamSo("@a", diaChi));
-        }
-        void btnXacNhan_Bam(object s, EventArgs e)
-        {
-            GiaoDien.ThucHien(() => { Luu(); DialogResult = DialogResult.OK; Close(); });
-        }
-        void btnHuy_Bam(object s, EventArgs e)
-        {
-            Close();
-        }
-    }
+	public partial class frmThemNCC : Form
+	{
+		Classes.DatabaseProcessor dtbase = new Classes.DatabaseProcessor();
+		Classes.Function function = new Classes.Function();
+		public frmThemNCC()
+		{
+			InitializeComponent();
+
+			Classes.GiaoDien.ApDung(this, btnXacNhan);
+			Classes.GiaoDien.TieuDe(label1, lblMoTa);
+		}
+
+		private void frmThemNCC_Load(object sender, EventArgs e)
+		{
+			function.NumberOnly(txtSDT);
+		}
+
+		private void btnXacNhan_Click(object sender, EventArgs e)
+		{
+			if (txtMaNCC.Text.Trim() == "" || txtTenNCC.Text.Trim() == "" || txtSDT.Text.Trim() == "" || txtDiaChi.Text.Trim() == "")
+			{
+				MessageBox.Show("Không được để trống!", "Thông báo");
+				return;
+			}
+
+			if (dtbase.KiemTraTonTai("NhaCungCap", "MaNhaCungCap", txtMaNCC.Text))
+			{
+				MessageBox.Show("Mã nhà cung cấp bị trùng!", "Thông báo");
+				return;
+			}
+
+			// Escape dấu ' để tên/địa chỉ có dấu nháy (VD: O'Brien) không làm hỏng câu SQL
+			string sql = "Insert Into NhaCungCap Values ('" + function.EscapeSql(txtMaNCC.Text) + "', N'" + function.EscapeSql(txtTenNCC.Text) + "', '" + function.EscapeSql(txtSDT.Text) + "', N'" + function.EscapeSql(txtDiaChi.Text) + "')";
+			dtbase.ChangeData(sql);
+
+			MessageBox.Show("Thêm thành công!", "Thông báo");
+			this.DialogResult = DialogResult.OK;
+
+			this.Close();
+		}
+
+		private void btnHuy_Click(object sender, EventArgs e)
+		{
+			if(MessageBox.Show("Xác nhận hủy?", "Thông báo", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+			{
+				this.Close();
+			}
+		}
+	}
 }

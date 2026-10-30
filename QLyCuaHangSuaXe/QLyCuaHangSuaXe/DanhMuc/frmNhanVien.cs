@@ -57,7 +57,7 @@ namespace QLyCuaHangSuaXe.DanhMuc
                 tabNhanSu.TabPages.Insert(0, tabNhanVien);
             tabBangCong.Text = "Bảng công và lương";
             dangThem = false;
-            bangNhanVien = duLieu.DocBang(@"SELECT n.MaNhanVien,n.HoTen AS TenNhanVien,n.SoDienThoai,v.TenChucVu,n.TrangThai,
+            bangNhanVien = duLieu.DocBang(@"SELECT n.MaNhanVien,n.HoTen AS TenNhanVien,n.SoDienThoai,v.TenChucVu,CASE WHEN n.TrangThai=1 THEN N'Đang làm' ELSE N'Nghỉ việc' END AS TrangThai,
                 CASE WHEN v.TenChucVu IN(N'Thợ chính',N'Kỹ thuật viên chính') THEN 3 WHEN v.TenChucVu IN(N'Thợ phụ',N'Kỹ thuật viên') THEN 2 ELSE 0 END AS SoXeDangSuaToiDa,n.Luong AS LuongGio,
                 (SELECT COUNT(DISTINCT p.MaXe) FROM dbo.ChiTietPhanCong p JOIN dbo.PhieuTiepNhan t ON t.MaXe=p.MaXe WHERE p.MaNhanVien=n.MaNhanVien AND t.TrangThai IN(N'Chờ sửa',N'Đang sửa')) AS SoXeDangNhan
                 FROM dbo.NhanVien n JOIN dbo.ChucVu v ON v.MaChucVu=n.MaChucVu ORDER BY n.HoTen");

@@ -38,7 +38,7 @@ namespace QLyCuaHangSuaXe.LopDungChung
             bang.Columns.Add("DonGia", typeof(decimal));
             foreach (var chon in cacDichVu.OrderBy(d => d.Ma))
             {
-                var dv = XuLyDuLieu.DocDuLieu(ketNoi, giaoDich, "SELECT TenDichVu,ThanhTienDichVu FROM dbo.DichVu WITH(UPDLOCK,HOLDLOCK) WHERE MaDichVu=@id AND TrangThai=N'Đang áp dụng'", ThamSo("@id", chon.Ma));
+                var dv = XuLyDuLieu.DocDuLieu(ketNoi, giaoDich, "SELECT TenDichVu,ThanhTienDichVu FROM dbo.DichVu WITH(UPDLOCK,HOLDLOCK) WHERE MaDichVu=@id AND TrangThai=1", ThamSo("@id", chon.Ma));
                 if (dv.Rows.Count != 1)
                     throw new InvalidOperationException("Dịch vụ đã ngừng áp dụng hoặc không tồn tại.");
                 bang.Rows.Add(chon.Ma, dv.Rows[0][0], chon.SoLuong, dv.Rows[0][1]);
@@ -70,7 +70,7 @@ namespace QLyCuaHangSuaXe.LopDungChung
             bang.Columns.Add("HanSuDung", typeof(DateTime));
             foreach (var cap in nhuCau)
             {
-                var pt = XuLyDuLieu.DocDuLieu(ketNoi, giaoDich, "SELECT TenPhuTung,SoLuongTon,DonGiaBan,TrangThai,HanSuDung FROM dbo.PhuTung WITH(UPDLOCK,HOLDLOCK) WHERE MaPhuTung=@id", ThamSo("@id", cap.Key));
+                var pt = XuLyDuLieu.DocDuLieu(ketNoi, giaoDich, "SELECT TenPhuTung,SoLuongTon,DonGiaBan,CASE WHEN TrangThai=1 THEN N'Đang kinh doanh' ELSE N'Ngừng kinh doanh' END AS TrangThai,HanSuDung FROM dbo.PhuTung WITH(UPDLOCK,HOLDLOCK) WHERE MaPhuTung=@id", ThamSo("@id", cap.Key));
                 if (pt.Rows.Count != 1)
                     throw new InvalidOperationException("Không tìm thấy phụ tùng " + cap.Key);
                 bang.Rows.Add(cap.Key, pt.Rows[0][0], cap.Value, pt.Rows[0][1], pt.Rows[0][2], pt.Rows[0][3], pt.Rows[0][4]);
@@ -101,16 +101,16 @@ namespace QLyCuaHangSuaXe.LopDungChung
         public DataTable ThoRanh()
         {
             PhienDangNhap.YeuCau(PhanQuyenNguoiDung.CoQuyen(PhienDangNhap.VaiTro, "NHAN_VIEN") ? "NHAN_VIEN" : "TIEP_NHAN");
-            return duLieu.DocBang(@"SELECT n.MaNhanVien,n.HoTen+N' — '+CAST((CASE WHEN n.MaChucVu='CV002' THEN 3 ELSE 2 END)-COUNT(DISTINCT p.MaXe) AS NVARCHAR(10))+N' chỗ trống' AS HienThi
+            return duLieu.DocBang(@"SELECT n.MaNhanVien,n.HoTen+N' — '+CAST((CASE WHEN n.MaChucVu='CV02' THEN 3 ELSE 2 END)-COUNT(DISTINCT p.MaXe) AS NVARCHAR(10))+N' chỗ trống' AS HienThi
                 FROM dbo.NhanVien n LEFT JOIN dbo.ChiTietPhanCong c ON c.MaNhanVien=n.MaNhanVien
                 LEFT JOIN dbo.PhieuTiepNhan p ON p.MaXe=c.MaXe AND p.TrangThai IN(N'Chờ sửa',N'Đang sửa')
-                WHERE n.TrangThai=N'Đang làm' AND n.MaChucVu IN('CV002','CV003','CV004')
-                GROUP BY n.MaNhanVien,n.HoTen,n.MaChucVu HAVING COUNT(DISTINCT p.MaXe)<CASE WHEN n.MaChucVu='CV002' THEN 3 ELSE 2 END ORDER BY n.HoTen");
+                WHERE n.TrangThai=1 AND n.MaChucVu IN('CV02','CV03','CV04')
+                GROUP BY n.MaNhanVien,n.HoTen,n.MaChucVu HAVING COUNT(DISTINCT p.MaXe)<CASE WHEN n.MaChucVu='CV02' THEN 3 ELSE 2 END ORDER BY n.HoTen");
         }
 
         static void KiemTraTho(SqlConnection kn, SqlTransaction gd, string ma)
         {
-            var nv = XuLyDuLieu.DocDuLieu(kn, gd, "SELECT CASE WHEN MaChucVu='CV002' THEN 3 ELSE 2 END FROM dbo.NhanVien WITH(UPDLOCK,HOLDLOCK) WHERE MaNhanVien=@id AND TrangThai=N'Đang làm' AND MaChucVu IN('CV002','CV003','CV004')", ThamSo("@id", ma));
+            var nv = XuLyDuLieu.DocDuLieu(kn, gd, "SELECT CASE WHEN MaChucVu='CV02' THEN 3 ELSE 2 END FROM dbo.NhanVien WITH(UPDLOCK,HOLDLOCK) WHERE MaNhanVien=@id AND TrangThai=1 AND MaChucVu IN('CV02','CV03','CV04')", ThamSo("@id", ma));
             if (nv.Rows.Count != 1)
                 throw new InvalidOperationException("Chọn thợ đang làm việc.");
             var dem = XuLyDuLieu.DocDuLieu(kn, gd, "SELECT COUNT(DISTINCT c.MaXe) FROM dbo.ChiTietPhanCong c WITH(UPDLOCK,HOLDLOCK) JOIN dbo.PhieuTiepNhan p ON p.MaXe=c.MaXe WHERE c.MaNhanVien=@id AND p.TrangThai IN(N'Chờ sửa',N'Đang sửa')", ThamSo("@id", ma));
@@ -179,7 +179,7 @@ namespace QLyCuaHangSuaXe.LopDungChung
             foreach (DataRow dong in phuTung.Rows)
             {
                 int soDong = XuLyDuLieu.ThucThi(ketNoi, giaoDich,
-                    "UPDATE dbo.PhuTung SET SoLuongTon=SoLuongTon-@sl WHERE MaPhuTung=@id AND SoLuongTon>=@sl AND TrangThai=N'Đang kinh doanh' AND HanSuDung>=@ngay",
+                    "UPDATE dbo.PhuTung SET SoLuongTon=SoLuongTon-@sl WHERE MaPhuTung=@id AND SoLuongTon>=@sl AND TrangThai=1 AND HanSuDung>=@ngay",
                     ThamSo("@id", dong["MaPhuTung"]), ThamSo("@sl", dong["Can"]), ThamSo("@ngay", DateTime.Today));
                 if (soDong != 1)
                     throw new InvalidOperationException("Tồn kho đã thay đổi. Hãy kiểm tra lại.");

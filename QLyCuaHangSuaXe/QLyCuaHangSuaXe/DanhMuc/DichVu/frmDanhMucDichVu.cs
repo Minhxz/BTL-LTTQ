@@ -18,7 +18,7 @@ namespace QLyCuaHangSuaXe.DanhMuc.DichVu
             cboTrangThai.SelectedIndex = 0;
             txtMaDV.ReadOnly = true;
             btnDinhMuc.Click += (nguoiGui, suKien) => GiaoDien.ThucHien(MoBoPhuTung);
-            btnKho.Click += (nguoiGui, suKien) => GiaoDien.ThucHien(() => { using (var trang = new btl.frmKho()) trang.ShowDialog(this); });
+            btnKho.Click += (nguoiGui, suKien) => GiaoDien.ThucHien(() => { using (var trang = new btl.frmQuanLyKho()) trang.ShowDialog(this); });
             btnThem.Click += (nguoiGui, suKien) => GiaoDien.ThucHien(LamMoi);
             btnSua.Text = "Lưu dịch vụ";
             btnSua.Click += (nguoiGui, suKien) => GiaoDien.ThucHien(Luu);
@@ -41,7 +41,7 @@ namespace QLyCuaHangSuaXe.DanhMuc.DichVu
         public override void TaiDuLieu()
         {
             PhienDangNhap.YeuCau("DICH_VU");
-            dgvDichVu.DataSource = duLieu.DocBang("SELECT MaDichVu,TenDichVu,ThanhTienDichVu,MoTa,TrangThai FROM dbo.DichVu WHERE TenDichVu LIKE @q OR MaDichVu LIKE @q ORDER BY MaDichVu", XuLyDuLieu.ThamSo("@q", "%" + txtTimKiem.Text.Trim() + "%"));
+            dgvDichVu.DataSource = duLieu.DocBang("SELECT MaDichVu,TenDichVu,ThanhTienDichVu,MoTa,CASE WHEN TrangThai=1 THEN N'Đang áp dụng' ELSE N'Ngừng áp dụng' END AS TrangThai FROM dbo.DichVu WHERE TenDichVu LIKE @q OR MaDichVu LIKE @q ORDER BY MaDichVu", XuLyDuLieu.ThamSo("@q", "%" + txtTimKiem.Text.Trim() + "%"));
             dgvDichVu.Columns["ThanhTienDichVu"].HeaderText = "Giá dịch vụ (đ)";
             dgvDichVu.Columns["ThanhTienDichVu"].DefaultCellStyle.Format = "N0";
             if (dgvDichVu.Rows.Count == 0)
@@ -67,7 +67,7 @@ namespace QLyCuaHangSuaXe.DanhMuc.DichVu
                 throw new InvalidOperationException("Mô tả tối đa 255 ký tự; giá dịch vụ phải lớn hơn 0.");
             bool themMoi = maDichVuDangChon.Length == 0;
             string khoa = themMoi ? XuLyDuLieu.KiemTraMa(txtMaDV.Text, "DV") : maDichVuDangChon;
-            int soDong = duLieu.CapNhatDuLieu(themMoi ? "INSERT dbo.DichVu(MaDichVu,TenDichVu,MoTa,ThanhTienDichVu,TrangThai) VALUES(@id,@ten,@mt,@gia,@tt)" : "UPDATE dbo.DichVu SET TenDichVu=@ten,MoTa=@mt,ThanhTienDichVu=@gia,TrangThai=@tt WHERE MaDichVu=@id", XuLyDuLieu.ThamSo("@id", khoa), XuLyDuLieu.ThamSo("@ten", ten), XuLyDuLieu.ThamSo("@mt", txtMoTa.Text.Trim()), XuLyDuLieu.ThamSo("@gia", numGiaDichVu.Value), XuLyDuLieu.ThamSo("@tt", cboTrangThai.Text));
+            int soDong = duLieu.CapNhatDuLieu(themMoi ? "INSERT dbo.DichVu(MaDichVu,TenDichVu,MoTa,ThanhTienDichVu,TrangThai) VALUES(@id,@ten,@mt,@gia,CASE WHEN @tt=N'Đang áp dụng' THEN 1 ELSE 0 END)" : "UPDATE dbo.DichVu SET TenDichVu=@ten,MoTa=@mt,ThanhTienDichVu=@gia,TrangThai=CASE WHEN @tt=N'Đang áp dụng' THEN 1 ELSE 0 END WHERE MaDichVu=@id", XuLyDuLieu.ThamSo("@id", khoa), XuLyDuLieu.ThamSo("@ten", ten), XuLyDuLieu.ThamSo("@mt", txtMoTa.Text.Trim()), XuLyDuLieu.ThamSo("@gia", numGiaDichVu.Value), XuLyDuLieu.ThamSo("@tt", cboTrangThai.Text));
             if (soDong != 1)
                 throw new InvalidOperationException("Không thể lưu dịch vụ. Hãy tải lại danh sách.");
             TaiDuLieu();
@@ -89,7 +89,7 @@ namespace QLyCuaHangSuaXe.DanhMuc.DichVu
             if (maDichVuDangChon.Length == 0)
                 throw new InvalidOperationException("Chọn dịch vụ cần ngừng áp dụng.");
             string khoa = maDichVuDangChon;
-            if (duLieu.CapNhatDuLieu("UPDATE dbo.DichVu SET TrangThai=N'Ngừng áp dụng' WHERE MaDichVu=@id", XuLyDuLieu.ThamSo("@id", khoa)) != 1)
+            if (duLieu.CapNhatDuLieu("UPDATE dbo.DichVu SET TrangThai=0 WHERE MaDichVu=@id", XuLyDuLieu.ThamSo("@id", khoa)) != 1)
                 throw new InvalidOperationException("Dịch vụ không còn tồn tại.");
             TaiDuLieu();
             ChonMa(khoa);

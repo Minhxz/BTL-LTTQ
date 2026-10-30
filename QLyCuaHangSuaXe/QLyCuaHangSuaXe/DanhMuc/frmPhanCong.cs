@@ -52,7 +52,7 @@ namespace QLyCuaHangSuaXe.DanhMuc
                 string maXe = phieu.Rows[0]["MaXe"].ToString();
                 if (XuLyDuLieu.DocDuLieu(ketNoi, giaoDich, "SELECT 1 FROM dbo.ChiTietPhanCong WITH(UPDLOCK,HOLDLOCK) WHERE MaXe=@xe", XuLyDuLieu.ThamSo("@xe", maXe)).Rows.Count > 0)
                     throw new InvalidOperationException("Xe đã có thợ phụ trách.");
-                var tho = XuLyDuLieu.DocDuLieu(ketNoi, giaoDich, "SELECT c.TenChucVu FROM dbo.NhanVien n WITH(UPDLOCK,HOLDLOCK) JOIN dbo.ChucVu c ON c.MaChucVu=n.MaChucVu WHERE n.MaNhanVien=@nv AND n.TrangThai=N'Đang làm'", XuLyDuLieu.ThamSo("@nv", maTho));
+                var tho = XuLyDuLieu.DocDuLieu(ketNoi, giaoDich, "SELECT c.TenChucVu FROM dbo.NhanVien n WITH(UPDLOCK,HOLDLOCK) JOIN dbo.ChucVu c ON c.MaChucVu=n.MaChucVu WHERE n.MaNhanVien=@nv AND n.TrangThai=1", XuLyDuLieu.ThamSo("@nv", maTho));
                 if (tho.Rows.Count != 1 || !PhanQuyenNguoiDung.LaTho(tho.Rows[0][0].ToString()))
                     throw new InvalidOperationException("Chọn thợ đang làm.");
                 int soXe = Convert.ToInt32(XuLyDuLieu.DocDuLieu(ketNoi, giaoDich, "SELECT COUNT(DISTINCT c.MaXe) FROM dbo.ChiTietPhanCong c WITH(UPDLOCK,HOLDLOCK) JOIN dbo.PhieuTiepNhan p ON p.MaXe=c.MaXe WHERE c.MaNhanVien=@nv AND p.TrangThai IN(N'Chờ sửa',N'Đang sửa')", XuLyDuLieu.ThamSo("@nv", maTho)).Rows[0][0]);

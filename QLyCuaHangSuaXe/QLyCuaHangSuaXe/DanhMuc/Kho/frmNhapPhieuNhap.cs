@@ -1,331 +1,703 @@
-using System;
+﻿using System;
+using System.Collections.Generic;
+using System.Windows.Forms;
+using System.Globalization;
 using System.Data;
 using System.Linq;
-using System.Windows.Forms;
-using QLyCuaHangSuaXe.LopDungChung;
 
 namespace btl
 {
-    public partial class frmNhapPhieuNhap : TrangThietKe
-    {
-        readonly DataTable bangChiTiet = new DataTable();
-        DataTable bangPhuTung;
-        int dongDangSua = -1;
-        bool daKhoiTao;
-        bool dangTaoPhuTungMoi;
-        bool dangGanDuLieu;
-        string maPhieuDangSua = "";
-        string dauVetPhieu = "";
+	public partial class frmNhapPhieuNhap : Form
+	{
+		Classes.DatabaseProcessor dtbase = new Classes.DatabaseProcessor();
+		Classes.Function function = new Classes.Function();
 
-        public frmNhapPhieuNhap()
-        {
-            InitializeComponent();
-            foreach (string cot in new[] { "MaPhuTung", "TenPhuTung", "MaNhaCungCap", "TenNhaCungCap" })
-                bangChiTiet.Columns.Add(cot);
-            bangChiTiet.Columns.Add("SoLuongNhap", typeof(int));
-            bangChiTiet.Columns.Add("DonGiaNhap", typeof(decimal));
-            bangChiTiet.Columns.Add("DonGiaBan", typeof(decimal));
-            bangChiTiet.Columns.Add("ThanhTien", typeof(decimal));
-            bangChiTiet.Columns.Add("HanSuDung", typeof(DateTime));
-            bangChiTiet.Columns.Add("LaPhuTungMoi", typeof(bool)).DefaultValue = false;
-            bangChiTiet.Columns.Add("GiaNhapGoc", typeof(decimal)).DefaultValue = 0m;
-            bangChiTiet.Columns.Add("GiaBanGoc", typeof(decimal)).DefaultValue = 0m;
-            dgvPhuTung.DataBindingComplete += (s, e) =>
-            {
-                if (dgvPhuTung.Columns.Contains("LaPhuTungMoi"))
-                    dgvPhuTung.Columns["LaPhuTungMoi"].Visible = false;
-                if (dgvPhuTung.Columns.Contains("MaNhaCungCap"))
-                    dgvPhuTung.Columns["MaNhaCungCap"].Visible = false;
-                if (dgvPhuTung.Columns.Contains("GiaNhapGoc"))
-                    dgvPhuTung.Columns["GiaNhapGoc"].Visible = false;
-                if (dgvPhuTung.Columns.Contains("GiaBanGoc"))
-                    dgvPhuTung.Columns["GiaBanGoc"].Visible = false;
-                if (dgvPhuTung.Columns.Contains("TenNhaCungCap"))
-                    dgvPhuTung.Columns["TenNhaCungCap"].HeaderText = "Nhà cung cấp";
-            };
-            dgvPhuTung.DataSource = bangChiTiet;
-            cbMaPhuTung.SelectedIndexChanged += (s, e) => ChonPhuTung();
-            GanThietKe(dgvPhuTung);
-            HienThiHan();
-        }
+		int selectedRowIndex = -1;
 
-        public frmNhapPhieuNhap(string maPhieu) : this()
-        {
-            maPhieuDangSua = XuLyDuLieu.KiemTraMa(maPhieu, "PN");
-            Text = "Sửa phiếu nhập kho";
-            lblTieuDe.Text = "SỬA PHIẾU NHẬP " + maPhieuDangSua;
-            btnLuuPhieu.Text = "Lưu sửa phiếu nhập";
-            lbltxtDonGiaBan.Text = "Giá bán hiện tại";
-            dtpNgayNhap.Enabled = true;
-            dtpNgayNhap.MaxDate = DateTime.Today;
-        }
+		#region Khởi tạo
 
-        void HienThiHan()
-        {
-            dtpHanSuDung.CustomFormat = dtpHanSuDung.Checked ? "dd/MM/yyyy" : "'Không hạn'";
-        }
-        void dtpHanSuDung_ValueChanged(object s, EventArgs e)
-        {
-            HienThiHan();
-        }
-        void dtpHanSuDung_MouseUp(object s, MouseEventArgs e)
-        {
-            HienThiHan();
-        }
-        void dtpHanSuDung_KeyUp(object s, KeyEventArgs e)
-        {
-            HienThiHan();
-        }
-        void TaiNhaCungCap()
-        {
-            GiaoDien.GanDuLieu(cbNhaCungCap, duLieu.DocBang("SELECT MaNhaCungCap,TenNhaCungCap FROM dbo.NhaCungCap ORDER BY MaNhaCungCap"), "TenNhaCungCap", "MaNhaCungCap");
-        }
-        public override void TaiDuLieu()
-        {
-            PhienDangNhap.YeuCau("NHAP_KHO");
-            TaiNhaCungCap();
-            bangPhuTung = duLieu.DocBang("SELECT MaPhuTung,TenPhuTung,MaNhaCungCap,DonGiaNhap,DonGiaBan,HanSuDung FROM dbo.PhuTung WHERE TrangThai=N'Đang kinh doanh' AND HanSuDung>=CONVERT(date,GETDATE()) ORDER BY MaPhuTung");
-            GiaoDien.GanDuLieu(cbMaPhuTung, bangPhuTung, "MaPhuTung", "MaPhuTung");
-            if (cbMaPhuTung.Items.Count > 0)
-                cbMaPhuTung.SelectedIndex = 0;
-            if (!daKhoiTao)
-            {
-                if (maPhieuDangSua.Length == 0)
-                {
-                    txtMaPhieuNhap.Text = XuLyDuLieu.TaoMaMoi("PN");
-                    txtMaNVNhap.Text = PhienDangNhap.MaNhanVien;
-                    dtpNgayNhap.Value = DateTime.Today;
-                }
-                else
-                {
-                    var phieu = QuanLyKho.DocPhieuNhap(maPhieuDangSua);
-                    var thongTin = phieu.Tables["ThongTin"].Rows[0];
-                    txtMaPhieuNhap.Text = maPhieuDangSua;
-                    txtMaNVNhap.Text = thongTin["MaNhanVienNhap"].ToString();
-                    dtpNgayNhap.Value = Convert.ToDateTime(thongTin["NgayNhap"]);
-                    txtGhiChu.Text = thongTin["GhiChu"].ToString();
-                    dauVetPhieu = phieu.ExtendedProperties["DauVet"].ToString();
-                    foreach (DataRow dong in phieu.Tables["ChiTiet"].Rows)
-                        bangChiTiet.ImportRow(dong);
-                }
-                daKhoiTao = true;
-            }
-            if (!dangTaoPhuTungMoi)
-                CheDoPhuTung(false);
-            ChonPhuTung();
-        }
-        void CheDoPhuTung(bool moi)
-        {
-            dangTaoPhuTungMoi = moi;
-            txtTenPhuTung.ReadOnly = !moi;
-            cbNhaCungCap.Enabled = moi;
-            dtpHanSuDung.Enabled = moi;
-            txtDonGiaBan.ReadOnly = maPhieuDangSua.Length > 0 && !moi;
-        }
-        void ChonPhuTung()
-        {
-            if (dangGanDuLieu)
-                return;
-            var dong = cbMaPhuTung.SelectedItem as DataRowView;
-            if (dong == null)
-            {
-                if (dangTaoPhuTungMoi)
-                    return;
-                cbNhaCungCap.SelectedIndex = -1;
-                txtTenPhuTung.Clear();
-                txtDonGiaNhap.Clear();
-                txtDonGiaBan.Clear();
-                txtThanhTien.Text = "0";
-                DatHanSuDung(DateTime.MaxValue.Date);
-                return;
-            }
-            CheDoPhuTung(false);
-            cbNhaCungCap.SelectedValue = dong["MaNhaCungCap"];
-            txtTenPhuTung.Text = dong["TenPhuTung"].ToString();
-            txtDonGiaNhap.Text = Convert.ToDecimal(dong["DonGiaNhap"]).ToString("0.##");
-            txtDonGiaBan.Text = Convert.ToDecimal(dong["DonGiaBan"]).ToString("0.##");
-            DatHanSuDung(Convert.ToDateTime(dong["HanSuDung"]));
-            TinhThanhTien();
-        }
-        void DatHanSuDung(DateTime han)
-        {
-            dtpHanSuDung.Checked = han.Year < 9999;
-            if (dtpHanSuDung.Checked)
-                dtpHanSuDung.Value = han < dtpHanSuDung.MinDate ? dtpHanSuDung.MinDate : han;
-            HienThiHan();
-        }
-        void TaoPhuTungMoi()
-        {
-            string ma = XuLyDuLieu.TaoMaMoi("PT");
-            int so = int.Parse(ma.Substring(2));
-            foreach (DataRow dong in bangChiTiet.Rows)
-                so = Math.Max(so, int.Parse(dong["MaPhuTung"].ToString().Substring(2)) + 1);
-            dangGanDuLieu = true;
-            cbMaPhuTung.DataSource = null;
-            cbMaPhuTung.Items.Clear();
-            cbMaPhuTung.Items.Add("PT" + so.ToString("D3"));
-            cbMaPhuTung.SelectedIndex = 0;
-            dangGanDuLieu = false;
-            CheDoPhuTung(true);
-            txtTenPhuTung.Clear();
-            txtSoLuongNhap.Text = "1";
-            txtDonGiaNhap.Clear();
-            txtDonGiaBan.Clear();
-            DatHanSuDung(DateTime.MaxValue.Date);
-            dongDangSua = -1;
-            txtTenPhuTung.Focus();
-        }
-        void ThemDong(bool sua)
-        {
-            if (string.IsNullOrWhiteSpace(cbMaPhuTung.Text))
-                throw new InvalidOperationException("Chọn phụ tùng có sẵn hoặc bấm Tạo phụ tùng mới trước khi thêm dòng nhập.");
-            string ma = XuLyDuLieu.KiemTraMa(cbMaPhuTung.Text, "PT");
-            string ten = GiaoDien.BatBuocNhap(txtTenPhuTung, "Tên phụ tùng", 150);
-            string nhaCungCap = GiaoDien.GiaTriDangChon(cbNhaCungCap);
-            int soLuong;
-            decimal giaNhap, giaBan;
-            if (nhaCungCap.Length == 0 || !int.TryParse(txtSoLuongNhap.Text, out soLuong) || soLuong < 1 || soLuong > 100000 || !decimal.TryParse(txtDonGiaNhap.Text, out giaNhap) || !decimal.TryParse(txtDonGiaBan.Text, out giaBan) || giaNhap <= 0 || giaBan <= 0 || giaNhap != decimal.Truncate(giaNhap) || giaBan != decimal.Truncate(giaBan))
-                throw new InvalidOperationException("Chọn nhà cung cấp; nhập số lượng từ 1 đến 100.000, giá nhập và giá bán là số nguyên dương theo đồng Việt Nam.");
-            if (sua && (dongDangSua < 0 || dongDangSua >= bangChiTiet.Rows.Count))
-                throw new InvalidOperationException("Chọn dòng cần cập nhật.");
-            if (bangChiTiet.AsEnumerable().Where((d, i) => !sua || i != dongDangSua).Any(d => string.Equals(d["MaPhuTung"].ToString(), ma, StringComparison.OrdinalIgnoreCase)))
-                throw new InvalidOperationException("Phụ tùng đã có trong danh sách. Chọn dòng và bấm Cập nhật dòng để sửa số lượng.");
-            DateTime han = dtpHanSuDung.Checked ? dtpHanSuDung.Value.Date : DateTime.MaxValue.Date;
-            if (han < dtpNgayNhap.Value.Date)
-                throw new InvalidOperationException("Hạn sử dụng không được trước ngày nhập.");
-            var dong = sua ? bangChiTiet.Rows[dongDangSua] : bangChiTiet.NewRow();
-            dong["MaPhuTung"] = ma;
-            dong["TenPhuTung"] = ten;
-            dong["MaNhaCungCap"] = nhaCungCap;
-            dong["TenNhaCungCap"] = cbNhaCungCap.Text;
-            dong["SoLuongNhap"] = soLuong;
-            dong["DonGiaNhap"] = giaNhap;
-            dong["DonGiaBan"] = giaBan;
-            dong["ThanhTien"] = soLuong * giaNhap;
-            dong["HanSuDung"] = han;
-            dong["LaPhuTungMoi"] = dangTaoPhuTungMoi;
-            var phuTungGoc = bangPhuTung == null ? null : bangPhuTung.AsEnumerable().FirstOrDefault(d => d["MaPhuTung"].ToString() == ma);
-            if (!sua && phuTungGoc != null)
-            {
-                dong["GiaNhapGoc"] = phuTungGoc["DonGiaNhap"];
-                dong["GiaBanGoc"] = phuTungGoc["DonGiaBan"];
-            }
-            if (!sua)
-                bangChiTiet.Rows.Add(dong);
-            dongDangSua = -1;
-        }
-        void Luu()
-        {
-            bool giaDuoiGiaNhap = bangChiTiet.AsEnumerable().Any(d => Convert.ToDecimal(d["DonGiaBan"]) < Convert.ToDecimal(d["DonGiaNhap"]));
-            if (giaDuoiGiaNhap && MessageBox.Show(this, "Có phụ tùng có giá bán thấp hơn giá nhập của phiếu. Bạn xác nhận vẫn ghi phiếu với các mức giá này?", "Xác nhận giá bán", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes)
-                return;
-            if (maPhieuDangSua.Length == 0)
-                QuanLyKho.GhiSo(txtMaPhieuNhap.Text, dtpNgayNhap.Value.Date, txtGhiChu.Text.Trim(), bangChiTiet, giaDuoiGiaNhap);
-            else
-            {
-                if (MessageBox.Show(this, "Lưu thay đổi phiếu nhập " + maPhieuDangSua + "? Tồn kho sẽ điều chỉnh theo chênh lệch số lượng và có lịch sử. Giá nhập trên phiếu được sửa; giá và thông tin phụ tùng hiện tại trong kho được giữ nguyên.", "Xác nhận sửa phiếu nhập", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
-                    return;
-                QuanLyKho.SuaPhieu(maPhieuDangSua, dtpNgayNhap.Value.Date, txtGhiChu.Text.Trim(), bangChiTiet, dauVetPhieu, giaDuoiGiaNhap);
-            }
-            DialogResult = DialogResult.OK;
-            Close();
-        }
-        void TinhThanhTien()
-        {
-            decimal soLuong, gia;
-            txtThanhTien.Text = decimal.TryParse(txtSoLuongNhap.Text, out soLuong) && decimal.TryParse(txtDonGiaNhap.Text, out gia) ? (soLuong * gia).ToString("N0") : "0";
-        }
-        void btnMoiPhuTung_Bam(object s, EventArgs e)
-        {
-            GiaoDien.ThucHien(TaoPhuTungMoi);
-        }
-        void btnThemPhuTung_Bam(object s, EventArgs e)
-        {
-            GiaoDien.ThucHien(() => ThemDong(false));
-        }
-        void btnSuaPhuTung_Bam(object s, EventArgs e)
-        {
-            GiaoDien.ThucHien(() => ThemDong(true));
-        }
-        void btnXoaPhuTung_Bam(object s, EventArgs e)
-        {
-            var dong = dgvPhuTung.CurrentRow == null ? null : dgvPhuTung.CurrentRow.DataBoundItem as DataRowView;
-            if (dong == null)
-                return;
-            bangChiTiet.Rows.Remove(dong.Row);
-            dongDangSua = -1;
-        }
-        void btnLamMoiPhuTung_Bam(object s, EventArgs e)
-        {
-            GiaoDien.ThucHien(() => { TaiDuLieu(); TaoPhuTungMoi(); });
-        }
-        void btnThoat_Bam(object s, EventArgs e)
-        {
-            Close();
-        }
-        void btnLuuPhieu_Bam(object s, EventArgs e)
-        {
-            GiaoDien.ThucHien(Luu);
-        }
-        void btnThemNCC_Bam(object s, EventArgs e)
-        {
-            GiaoDien.ThucHien(() =>
-            {
-                string nhaCungCapCu = GiaoDien.GiaTriDangChon(cbNhaCungCap);
-                using (var trang = new frmThemNCC())
-                    if (trang.ShowDialog(this) == DialogResult.OK)
-                    {
-                        TaiNhaCungCap();
-                        cbNhaCungCap.SelectedValue = dangTaoPhuTungMoi ? trang.MaNhaCungCapMoi : nhaCungCapCu;
-                    }
-            });
-        }
-        void btnXoaNCC_Bam(object s, EventArgs e)
-        {
-            GiaoDien.ThucHien(() =>
-            {
-                string ma = GiaoDien.GiaTriDangChon(cbNhaCungCap);
-                if (ma.Length == 0)
-                    throw new InvalidOperationException("Chọn nhà cung cấp cần xóa.");
-                if (bangChiTiet.AsEnumerable().Any(d => d["MaNhaCungCap"].ToString() == ma))
-                    throw new InvalidOperationException("Nhà cung cấp đang được dùng trong danh sách nhập. Bỏ các dòng liên quan trước khi xóa.");
-                if (MessageBox.Show(this, "Xóa nhà cung cấp " + cbNhaCungCap.Text + "? Chỉ xóa được khi chưa có phụ tùng sử dụng.", "Xác nhận xóa nhà cung cấp", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes)
-                    return;
-                QuanLyKho.XoaNhaCungCap(ma);
-                TaiNhaCungCap();
-            });
-        }
-        void txtDonGiaNhap_TextChanged(object s, EventArgs e)
-        {
-            TinhThanhTien();
-        }
-        void txtSoLuongNhap_TextChanged(object s, EventArgs e)
-        {
-            TinhThanhTien();
-        }
-        void dgvPhuTung_CellClick(object s, DataGridViewCellEventArgs e)
-        {
-            if (e.RowIndex < 0)
-                return;
-            var hienThi = dgvPhuTung.Rows[e.RowIndex].DataBoundItem as DataRowView;
-            if (hienThi == null)
-                return;
-            var dong = hienThi.Row;
-            dongDangSua = bangChiTiet.Rows.IndexOf(dong);
-            dangGanDuLieu = true;
-            cbMaPhuTung.DataSource = null;
-            cbMaPhuTung.Items.Clear();
-            cbMaPhuTung.Items.Add(dong["MaPhuTung"].ToString());
-            cbMaPhuTung.SelectedIndex = 0;
-            dangGanDuLieu = false;
-            CheDoPhuTung(Convert.ToBoolean(dong["LaPhuTungMoi"]));
-            cbNhaCungCap.SelectedValue = dong["MaNhaCungCap"];
-            txtTenPhuTung.Text = dong["TenPhuTung"].ToString();
-            txtSoLuongNhap.Text = dong["SoLuongNhap"].ToString();
-            txtDonGiaNhap.Text = dong["DonGiaNhap"].ToString();
-            txtDonGiaBan.Text = dong["DonGiaBan"].ToString();
-            DatHanSuDung(Convert.ToDateTime(dong["HanSuDung"]));
-            TinhThanhTien();
-        }
-    }
+		public frmNhapPhieuNhap()
+		{
+			InitializeComponent();
+
+			Classes.GiaoDien.ApDung(this, btnLuuPhieu);
+			Classes.GiaoDien.TieuDe(lblTieuDe, lblMoTa);
+		}
+		public frmNhapPhieuNhap(string maPhieuNhap) : this()
+		{
+			txtMaPhieuNhap.Text = maPhieuNhap;
+			txtMaPhieuNhap.Enabled = false;
+		}
+
+		private void frmKho_Load(object sender, EventArgs e)
+		{
+			function.NumberOnly(txtSoLuongNhap);
+			function.NumberOnly(txtDonGiaNhap);
+
+			txtThanhTien.Enabled = false;
+			dtpNgayNhap.Enabled = false;
+
+			LoadNhaCungCap();
+			function.AddComboBox(cbMaPhuTung, dtbase.ReadData("Select MaPhuTung From PhuTung"), "MaPhuTung", "MaPhuTung");
+			cbMaPhuTung.SelectedIndex = -1;
+
+			dgvPhuTung.AutoGenerateColumns = false;
+			dgvPhuTung.DataSource = null;
+			dgvPhuTung.Rows.Clear();
+			dgvPhuTung.ReadOnly = true;
+
+			btnXoaNCC.Enabled = false;
+			btnSuaPhuTung.Enabled = false;
+			btnXoaPhuTung.Enabled = false;
+			btnHuyPhuTung.Enabled = false;
+
+			CheckBtnSua();
+		}
+
+		// Sửa phiếu: phiếu đã có trong database thì đổ chi tiết lên lưới
+		private void CheckBtnSua()
+		{
+			string maPhieuNhap = txtMaPhieuNhap.Text;
+
+			if (dtbase.KiemTraTonTai("PhieuNhap", "MaPhieuNhap", maPhieuNhap))
+			{
+				string sqlDgvPhuTung = "Select pn.MaPhieuNhap, ncc.TenNhaCungCap As TenNCC, pn.NgayNhap, pt.MaPhuTung, pt.TenPhuTung, ct.SoLuongNhap, pt.DonGiaNhap, pt.DonGiaBan, ct.ThanhTien, pt.HanSuDung, pn.MaNhanVienNhap, pn.GhiChu " +
+					"From PhuTung pt Join ChiTietPhieuNhap ct On pt.MaPhuTung = ct.MaPhuTung " +
+					"Join PhieuNhap pn On pn.MaPhieuNhap = ct.MaPhieuNhap " +
+					"Join NhaCungCap ncc On pt.MaNhaCungCap = ncc.MaNhaCungCap " +
+					"Where pn.MaPhieuNhap = '" + maPhieuNhap + "' " +
+					"Order By ct.MaPhuTung";
+
+				foreach (DataRow data in dtbase.ReadData(sqlDgvPhuTung).Rows)
+				{
+					dgvPhuTung.Rows.Add(
+						data["MaPhieuNhap"],
+						data["TenNCC"],
+						data["NgayNhap"],
+						data["MaPhuTung"],
+						data["TenPhuTung"],
+						data["SoLuongNhap"],
+						Convert.ToDecimal(data["DonGiaNhap"]).ToString("0.##"),
+						Convert.ToDecimal(data["DonGiaBan"]).ToString("0.##"),
+						Convert.ToDecimal(data["ThanhTien"]).ToString("0.##"),
+						data["HanSuDung"],
+						data["MaNhanVienNhap"],
+						data["GhiChu"]
+						);
+				}
+			}
+		}
+
+		private void btnThoat_Click(object sender, EventArgs e)
+		{
+			if(MessageBox.Show("Chắc chắn muốn thoát?", "Thông báo", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+			{
+				this.Close();
+			}
+		}
+
+		#endregion
+
+		#region Nhà cung cấp
+
+		private void LoadNhaCungCap()
+		{
+			function.AddComboBox(cbNhaCungCap, dtbase.ReadData("Select TenNhaCungCap As TenNCC, MaNhaCungCap As MaNCC From NhaCungCap"), "TenNCC", "MaNCC");
+			cbNhaCungCap.SelectedIndex = -1;
+		}
+
+		private void btnThemNCC_Click(object sender, EventArgs e)
+		{
+			frmThemNCC form = new frmThemNCC();
+			form.ShowDialog();
+
+			if (form.DialogResult == DialogResult.OK)
+			{
+				LoadNhaCungCap();
+			}
+		}
+
+		private void btnXoaNCC_Click(object sender, EventArgs e)
+		{
+			if (cbNhaCungCap.SelectedValue == null || cbNhaCungCap.Text.Trim() == "")
+			{
+				MessageBox.Show("Chọn nhà cung cấp muốn xóa!", "Thông báo");
+				return;
+			}
+
+			// Nhà cung cấp đã có phụ tùng thì database không cho xóa (khóa ngoại PhuTung -> NhaCungCap)
+			if (dtbase.KiemTraTonTai("PhuTung", "MaNhaCungCap", cbNhaCungCap.SelectedValue.ToString()))
+			{
+				MessageBox.Show("Nhà cung cấp đang có phụ tùng, không thể xóa!", "Thông báo");
+				return;
+			}
+
+			if (MessageBox.Show("Chắc chắn muốn xóa?", "Thông báo", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+			{
+				string tenNCC = cbNhaCungCap.SelectedValue.ToString();
+				string sql = "Delete From NhaCungCap Where MaNhaCungCap = '" + tenNCC + "'";
+
+				dtbase.ChangeData(sql);
+
+				MessageBox.Show("Xóa thành công!", "Thông báo");
+
+				LoadNhaCungCap();
+			}
+		}
+
+		private void cbNhaCungCap_TextChanged(object sender, EventArgs e)
+		{
+			btnXoaNCC.Enabled = true;
+		}
+
+		#endregion
+
+		#region Thông tin phụ tùng
+
+		private string GenerateMaPhuTung()
+		{
+			int so = dtbase.LaySoLonNhat("PhuTung", "MaPhuTung", "PT");
+
+			// Mã mới trên lưới chưa được lưu vào database nên phải xét thêm
+			foreach (DataGridViewRow row in dgvPhuTung.Rows)
+			{
+				string maPhuTung = row.Cells["colMaPhuTung"].Value?.ToString() ?? "";
+				if (maPhuTung.StartsWith("PT") && int.TryParse(maPhuTung.Substring(2), out int soTrenLuoi) && soTrenLuoi > so)
+				{
+					so = soTrenLuoi;
+				}
+			}
+
+			return "PT" + (so + 1).ToString("D3");
+		}
+
+		private void btnMoiPhuTung_Click(object sender, EventArgs e)
+		{
+			cbMaPhuTung.SelectedIndex = -1;
+			cbMaPhuTung.Text = GenerateMaPhuTung();
+			txtTenPhuTung.Clear();
+			txtTenPhuTung.Focus();
+		}
+
+		// Chọn mã phụ tùng có sẵn trong danh sách thì tự điền thông tin đang lưu trong database
+		private void cbMaPhuTung_SelectionChangeCommitted(object sender, EventArgs e)
+		{
+			string maPhuTung = cbMaPhuTung.SelectedValue?.ToString() ?? "";
+
+			string sqlPhuTung = "Select TenPhuTung, MaNhaCungCap, HanSuDung, DonGiaNhap, DonGiaBan " +
+				"From PhuTung " +
+				"Where MaPhuTung = '" + function.EscapeSql(maPhuTung) + "'";
+
+			DataTable data = dtbase.ReadData(sqlPhuTung);
+
+			if (data.Rows.Count == 0)
+			{
+				return;
+			}
+
+			cbNhaCungCap.SelectedValue = data.Rows[0]["MaNhaCungCap"].ToString();
+			txtTenPhuTung.Text = data.Rows[0]["TenPhuTung"].ToString();
+			dtpHanSuDung.Value = Convert.ToDateTime(data.Rows[0]["HanSuDung"]);
+			txtDonGiaNhap.Text = Convert.ToDecimal(data.Rows[0]["DonGiaNhap"]).ToString("0.##");
+			txtDonGiaBan.Text = Convert.ToDecimal(data.Rows[0]["DonGiaBan"]).ToString("0.##");
+		}
+
+		private void CalThanhTien()
+		{
+			if (double.TryParse(txtSoLuongNhap.Text, out double soLuong) && double.TryParse(txtDonGiaNhap.Text, out double donGia))
+			{
+				txtThanhTien.Text = (soLuong * donGia).ToString();
+			}
+			else
+			{
+				txtThanhTien.Clear();
+			}
+		}
+
+		// Dùng chung cho ô số lượng nhập và ô đơn giá nhập
+		private void TinhThanhTien_TextChanged(object sender, EventArgs e)
+		{
+			CalThanhTien();
+		}
+
+		// Mã phụ tùng là duy nhất: mã đã có ở phiếu nhập khác thì NCC, tên, hạn sử dụng, giá nhập phải giống hệt, khác thì phải tạo mã mới
+		private bool KiemTraThongTinPhuTung()
+		{
+			string maPhuTung = cbMaPhuTung.Text.Trim();
+
+			string sqlPhuTung = "Select ncc.TenNhaCungCap, pt.TenPhuTung, pt.HanSuDung, pt.DonGiaNhap " +
+				"From PhuTung pt Join NhaCungCap ncc On pt.MaNhaCungCap = ncc.MaNhaCungCap " +
+				"Where pt.MaPhuTung = '" + function.EscapeSql(maPhuTung) + "' " +
+				"And Exists (Select 1 From ChiTietPhieuNhap ct Where ct.MaPhuTung = pt.MaPhuTung And ct.MaPhieuNhap <> '" + function.EscapeSql(txtMaPhieuNhap.Text.Trim()) + "')";
+
+			DataTable data = dtbase.ReadData(sqlPhuTung);
+
+			if (data.Rows.Count == 0)
+			{
+				return true;
+			}
+
+			DataRow phuTung = data.Rows[0];
+			decimal.TryParse(txtDonGiaNhap.Text, out decimal donGiaNhap);
+
+			if (phuTung["TenNhaCungCap"].ToString() != cbNhaCungCap.Text.Trim()
+				|| phuTung["TenPhuTung"].ToString() != txtTenPhuTung.Text.Trim()
+				|| Convert.ToDateTime(phuTung["HanSuDung"]).Date != dtpHanSuDung.Value.Date
+				|| Convert.ToDecimal(phuTung["DonGiaNhap"]) != donGiaNhap)
+			{
+				MessageBox.Show("Phụ tùng " + maPhuTung + " đã có với thông tin khác (nhà cung cấp, tên, hạn sử dụng hoặc giá nhập). Khác thông tin thì phải tạo mã phụ tùng mới!", "Thông báo");
+				return false;
+			}
+
+			return true;
+		}
+
+		// Xóa trắng các ô thông tin phụ tùng
+		private void XoaThongTinPhuTung()
+		{
+			cbMaPhuTung.SelectedIndex = -1;
+			cbMaPhuTung.Text = "";
+			txtTenPhuTung.Clear();
+			dtpHanSuDung.Value = DateTime.Now;
+			txtSoLuongNhap.Clear();
+			txtDonGiaNhap.Clear();
+			txtDonGiaBan.Clear();
+			txtThanhTien.Clear();
+		}
+
+		// Xóa trắng cả mã NV, nhà cung cấp và thông tin phụ tùng
+		private void ResetForm()
+		{
+			txtMaNVNhap.Clear();
+			cbNhaCungCap.SelectedIndex = -1;
+			cbNhaCungCap.Text = "";
+			XoaThongTinPhuTung();
+		}
+
+		private void btnLamMoiPhuTung_Click(object sender, EventArgs e)
+		{
+			XoaThongTinPhuTung();
+		}
+
+		#endregion
+
+		#region Phụ tùng trên lưới
+
+		// Kiểm tra các ô nhập trước khi đưa phụ tùng lên lưới, dùng chung cho Thêm và Sửa; hanhDong là "thêm" hoặc "sửa"
+		private bool KiemTraNhapPhuTung(string hanhDong)
+		{
+			// Khi sửa thì dòng đang sửa không tính là trùng mã với chính nó
+			int dongDangSua = hanhDong == "sửa" ? selectedRowIndex : -1;
+
+			if (cbMaPhuTung.Text.Trim() == "" || txtTenPhuTung.Text.Trim() == "" || txtSoLuongNhap.Text.Trim() == "" || txtDonGiaNhap.Text.Trim() == "" || txtDonGiaBan.Text.Trim() == "" || txtMaPhieuNhap.Text.Trim() == "" || txtMaNVNhap.Text.Trim() == "" || cbNhaCungCap.SelectedValue == null)
+			{
+				MessageBox.Show("Không được để trống!", "Thông báo");
+				return false;
+			}
+
+			// NumberOnly chỉ chặn lúc gõ phím, dán (Ctrl+V) vẫn đưa được chữ vào ô số; số quá lớn cũng không đọc được
+			if (!decimal.TryParse(txtDonGiaBan.Text, out decimal donGiaBan) || donGiaBan <= 0)
+			{
+				MessageBox.Show("Giá bán không hợp lệ!", "Thông báo");
+				return false;
+			}
+
+			// Phiếu cũ có thể có phụ tùng đã quá hạn: sửa dòng đó mà giữ nguyên hạn sử dụng thì không chặn
+			bool doiHanSuDung = dongDangSua == -1 || Convert.ToDateTime(dgvPhuTung.Rows[dongDangSua].Cells["colHanSuDung"].Value).Date != dtpHanSuDung.Value.Date;
+			if (doiHanSuDung && dtpHanSuDung.Value.Date < DateTime.Today)
+			{
+				MessageBox.Show("Giá trị hạn sử dụng không hợp lệ", "Thông báo");
+				dtpHanSuDung.Focus();
+				return false;
+			}
+
+			if (!int.TryParse(txtSoLuongNhap.Text, out int soLuongNhap) || !decimal.TryParse(txtDonGiaNhap.Text, out decimal donGiaNhap) || soLuongNhap <= 0 || donGiaNhap <= 0)
+			{
+				MessageBox.Show("Giá trị số lượng hoặc đơn giá nhập không hợp lệ!", "Thông báo");
+				return false;
+			}
+
+			// Mỗi mã phụ tùng chỉ được có 1 dòng trong phiếu (khóa chính MaPhieuNhap + MaPhuTung)
+			foreach (DataGridViewRow row in dgvPhuTung.Rows)
+			{
+				if (row.Index != dongDangSua && (row.Cells["colMaPhuTung"].Value?.ToString() ?? "").Trim() == cbMaPhuTung.Text.Trim())
+				{
+					MessageBox.Show("Phụ tùng đã có trong phiếu, hãy sửa số lượng!", "Thông báo");
+					return false;
+				}
+			}
+
+			if (!KiemTraThongTinPhuTung())
+			{
+				return false;
+			}
+
+			// Giá thị trường giảm thì được bán thấp hơn giá nhập, chỉ cảnh báo để tránh gõ nhầm
+			if (donGiaBan < donGiaNhap)
+			{
+				if (MessageBox.Show("Giá bán thấp hơn đơn giá nhập. Vẫn " + hanhDong + "?", "Thông báo", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+				{
+					return false;
+				}
+			}
+
+			return true;
+		}
+
+		private void btnThemPhuTung_Click(object sender, EventArgs e)
+		{
+			if (!KiemTraNhapPhuTung("thêm"))
+			{
+				return;
+			}
+
+			dgvPhuTung.Rows.Add(
+				txtMaPhieuNhap.Text,
+				cbNhaCungCap.Text,
+				dtpNgayNhap.Value.Date,
+				cbMaPhuTung.Text,
+				txtTenPhuTung.Text,
+				txtSoLuongNhap.Text,
+				txtDonGiaNhap.Text,
+				txtDonGiaBan.Text,
+				txtThanhTien.Text,
+				dtpHanSuDung.Value.Date,
+				txtMaNVNhap.Text,
+				txtGhiChu.Text
+				);
+
+			ResetForm();
+			txtMaPhieuNhap.Enabled = false;
+			btnXoaNCC.Enabled = false;
+		}
+
+		private void dgvPhuTung_CellClick(object sender, DataGridViewCellEventArgs e)
+		{
+			// Dòng trống cuối lưới (dòng để thêm mới) chưa có dữ liệu
+			if (e.RowIndex < 0 || dgvPhuTung.Rows[e.RowIndex].IsNewRow)
+			{
+				return;
+			}
+			selectedRowIndex = e.RowIndex;
+
+			btnSuaPhuTung.Enabled = true;
+			btnXoaPhuTung.Enabled = true;
+			btnHuyPhuTung.Enabled = true;
+			btnThemPhuTung.Enabled = false;
+			btnXoaNCC.Enabled = false;
+
+			txtMaPhieuNhap.Text = dgvPhuTung.CurrentRow.Cells["colMaPhieuNhap"].Value.ToString();
+			dtpNgayNhap.Value = Convert.ToDateTime(dgvPhuTung.CurrentRow.Cells["colNgayNhap"].Value);
+			txtMaNVNhap.Text = dgvPhuTung.CurrentRow.Cells["colMaNhanVienNhap"].Value.ToString();
+			cbNhaCungCap.Text = dgvPhuTung.CurrentRow.Cells["colTenNCC"].Value.ToString();
+			cbMaPhuTung.Text = dgvPhuTung.CurrentRow.Cells["colMaPhuTung"].Value.ToString();
+			txtTenPhuTung.Text = dgvPhuTung.CurrentRow.Cells["colTenPhuTung"].Value.ToString();
+			dtpHanSuDung.Value = Convert.ToDateTime(dgvPhuTung.CurrentRow.Cells["colHanSuDung"].Value);
+			txtSoLuongNhap.Text = dgvPhuTung.CurrentRow.Cells["colSoLuongNhap"].Value.ToString();
+			txtDonGiaNhap.Text = dgvPhuTung.CurrentRow.Cells["colDonGiaNhap"].Value.ToString();
+			txtDonGiaBan.Text = dgvPhuTung.CurrentRow.Cells["colDonGiaBan"].Value.ToString();
+			txtThanhTien.Text = dgvPhuTung.CurrentRow.Cells["colThanhTien"].Value.ToString();
+			txtGhiChu.Text = dgvPhuTung.CurrentRow.Cells["colGhiChu"].Value.ToString();
+		}
+
+		private void btnSuaPhuTung_Click(object sender, EventArgs e)
+		{
+			if (selectedRowIndex == -1)
+			{
+				return;
+			}
+
+			if (!KiemTraNhapPhuTung("sửa"))
+			{
+				return;
+			}
+
+			if (MessageBox.Show("Xác nhận sửa?", "Thông báo", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+			{
+				DataGridViewRow row = dgvPhuTung.Rows[selectedRowIndex];
+				row.Cells["colNgayNhap"].Value = dtpNgayNhap.Value;
+				row.Cells["colMaNhanVienNhap"].Value = txtMaNVNhap.Text;
+				row.Cells["colTenNCC"].Value = cbNhaCungCap.Text;
+				row.Cells["colMaPhuTung"].Value = cbMaPhuTung.Text;
+				row.Cells["colTenPhuTung"].Value = txtTenPhuTung.Text;
+				row.Cells["colHanSuDung"].Value = dtpHanSuDung.Value;
+				row.Cells["colSoLuongNhap"].Value = txtSoLuongNhap.Text;
+				row.Cells["colDonGiaNhap"].Value = txtDonGiaNhap.Text;
+				row.Cells["colDonGiaBan"].Value = txtDonGiaBan.Text;
+				row.Cells["colThanhTien"].Value = txtThanhTien.Text;
+				row.Cells["colGhiChu"].Value = txtGhiChu.Text;
+
+				ResetForm();
+				CheDoThemPhuTung();
+				btnXoaNCC.Enabled = false;
+			}
+		}
+
+		private void btnXoaPhuTung_Click(object sender, EventArgs e)
+		{
+			if (selectedRowIndex == -1)
+			{
+				return;
+			}
+
+			if (MessageBox.Show("Xác nhận xóa?", "Thông báo", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+			{
+				dgvPhuTung.Rows.RemoveAt(selectedRowIndex);
+
+				CheDoThemPhuTung();
+			}
+
+			if (dgvPhuTung.Rows.Count == 0)
+			{
+				txtMaPhieuNhap.Enabled = true;
+			}
+		}
+
+		private void btnHuyPhuTung_Click(object sender, EventArgs e)
+		{
+			CheDoThemPhuTung();
+
+			dgvPhuTung.ClearSelection();
+		}
+
+		// Bỏ chọn dòng trên lưới: tắt Sửa/Xóa/Hủy, bật lại Thêm phụ tùng
+		private void CheDoThemPhuTung()
+		{
+			selectedRowIndex = -1;
+
+			btnSuaPhuTung.Enabled = false;
+			btnXoaPhuTung.Enabled = false;
+			btnHuyPhuTung.Enabled = false;
+			btnThemPhuTung.Enabled = true;
+		}
+
+		#endregion
+
+		#region Lưu phiếu
+
+		private void btnLuuPhieu_Click(object sender, EventArgs e)
+		{
+			var rows = dgvPhuTung.Rows.Cast<DataGridViewRow>().Where(row => !row.IsNewRow).ToList();
+
+			if (rows.Count == 0)
+			{
+				MessageBox.Show("Thêm thông tin phiếu nhập trước!", "Thông báo");
+				return;
+			}
+
+			string maPhieuNhap = txtMaPhieuNhap.Text.Trim();
+			DateTime ngayNhap = Convert.ToDateTime(rows[0].Cells["colNgayNhap"].Value);
+			string ngayNhapSql = ngayNhap.ToString("yyyy-MM-ddTHH:mm:ss", CultureInfo.InvariantCulture);
+			string maNV = rows[0].Cells["colMaNhanVienNhap"].Value?.ToString()?.Trim() ?? "";
+			string ghiChu = rows[0].Cells["colGhiChu"].Value?.ToString() ?? "";
+
+			// Kiểm tra mã NV trên lưới, vì txtMaNVNhap bị xóa trắng sau mỗi lần thêm phụ tùng
+			if (!dtbase.KiemTraTonTai("NhanVien", "MaNhanVien", maNV))
+			{
+				MessageBox.Show("Mã nhân viên không tồn tại!");
+				txtMaNVNhap.Focus();
+				return;
+			}
+
+			List<string> phuTungMoi = new List<string>();
+			for (int i = 0; i < rows.Count; i++)
+			{
+				DataGridViewRow row = rows[i];
+				int soLuongNhap = Convert.ToInt32(row.Cells["colSoLuongNhap"].Value);
+				decimal donGiaNhap = Convert.ToDecimal(row.Cells["colDonGiaNhap"].Value);
+				decimal donGiaBan = Convert.ToDecimal(row.Cells["colDonGiaBan"].Value);
+				DateTime hanSuDung = Convert.ToDateTime(row.Cells["colHanSuDung"].Value);
+
+				phuTungMoi.Add("(" +
+					(i + 1) + ", " +
+					"'" + function.EscapeSql(row.Cells["colMaPhuTung"].Value) + "', " +
+					"N'" + function.EscapeSql(row.Cells["colTenPhuTung"].Value) + "', " +
+					"N'" + function.EscapeSql(row.Cells["colTenNCC"].Value) + "', " +
+					"'" + hanSuDung.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture) + "', " +
+					soLuongNhap + ", " +
+					donGiaNhap.ToString(CultureInfo.InvariantCulture) + ", " +
+					donGiaBan.ToString(CultureInfo.InvariantCulture) +
+					")");
+			}
+
+			// Dùng chung cho thêm mới và sửa phiếu: phiếu mới thì "số lượng cũ" = 0.
+			string sqlLuuPhieu = $@"
+				DECLARE @MaPhieuNhap VARCHAR(10) = '{function.EscapeSql(maPhieuNhap)}';
+				DECLARE @Loi NVARCHAR(400);
+
+				-- Các dòng phụ tùng trên lưới
+				DECLARE @Moi TABLE (
+				    STT INT NOT NULL,
+				    MaPhuTung VARCHAR(10) NOT NULL,
+				    TenPhuTung NVARCHAR(100) NOT NULL,
+				    TenNCC NVARCHAR(100) NOT NULL,
+				    HanSuDung DATE NOT NULL,
+				    SoLuong INT NOT NULL,
+				    DonGiaNhap DECIMAL(18,2) NOT NULL,
+				    DonGiaBan DECIMAL(18,2) NOT NULL
+				);
+
+				INSERT INTO @Moi (STT, MaPhuTung, TenPhuTung, TenNCC, HanSuDung, SoLuong, DonGiaNhap, DonGiaBan)
+				VALUES
+				    {string.Join(",\n        ", phuTungMoi)};
+
+				-- Số lượng cũ (đang lưu trong database) và mới (trên lưới) của từng phụ tùng
+				DECLARE @ChenhLech TABLE (
+				    MaPhuTung VARCHAR(10) NOT NULL PRIMARY KEY,
+				    SoLuongCu INT NOT NULL,
+				    SoLuongMoi INT NOT NULL
+				);
+
+				INSERT INTO @ChenhLech (MaPhuTung, SoLuongCu, SoLuongMoi)
+				SELECT X.MaPhuTung, SUM(X.SoLuongCu), SUM(X.SoLuongMoi)
+				FROM
+				(
+				    SELECT CT.MaPhuTung, CT.SoLuongNhap AS SoLuongCu, 0 AS SoLuongMoi
+				    FROM dbo.ChiTietPhieuNhap CT
+				    WHERE CT.MaPhieuNhap = @MaPhieuNhap
+
+				    UNION ALL
+
+				    SELECT M.MaPhuTung, 0, M.SoLuong
+				    FROM @Moi M
+				) X
+				GROUP BY X.MaPhuTung;
+
+				-- 1. Không cho sửa số lượng phụ tùng đã dùng trong dịch vụ (đã có trong phiếu tiếp nhận)
+				SELECT TOP 1 @Loi = N'Phụ tùng ' + CL.MaPhuTung + N' đã được dùng trong dịch vụ, không thể sửa số lượng!'
+				FROM @ChenhLech CL
+				WHERE CL.SoLuongCu > 0
+				  AND CL.SoLuongCu <> CL.SoLuongMoi
+				  AND EXISTS
+				  (
+				      SELECT 1
+				      FROM dbo.ChiTietPhieuTiepNhan CTTN
+				      JOIN dbo.ChiTietDichVu CTDV ON CTDV.MaDichVu = CTTN.MaDichVu
+				      WHERE CTDV.MaPhuTung = CL.MaPhuTung
+				  );
+
+				IF @Loi IS NOT NULL
+				    THROW 50001, @Loi, 1;
+
+				-- 2. Không cho số lượng tồn bị âm khi giảm số lượng nhập
+				SELECT TOP 1 @Loi = N'Số lượng tồn của phụ tùng ' + PT.MaPhuTung + N' không đủ để giảm!'
+				FROM dbo.PhuTung PT
+				JOIN @ChenhLech CL ON CL.MaPhuTung = PT.MaPhuTung
+				WHERE PT.SoLuongTon + CL.SoLuongMoi - CL.SoLuongCu < 0;
+
+				IF @Loi IS NOT NULL
+				    THROW 50002, @Loi, 1;
+
+				-- 3. Nhà cung cấp phải tồn tại
+				SELECT TOP 1 @Loi = N'Không tìm thấy nhà cung cấp ' + M.TenNCC + N'!'
+				FROM @Moi M
+				WHERE NOT EXISTS (SELECT 1 FROM dbo.NhaCungCap NCC WHERE NCC.TenNhaCungCap = M.TenNCC);
+
+				IF @Loi IS NOT NULL
+				    THROW 50003, @Loi, 1;
+
+				-- 4. Phiếu nhập: sửa nếu đã có, thêm nếu chưa có
+				IF EXISTS (SELECT 1 FROM dbo.PhieuNhap WHERE MaPhieuNhap = @MaPhieuNhap)
+				    UPDATE dbo.PhieuNhap
+				    SET NgayNhap = '{ngayNhapSql}',
+				        MaNhanVienNhap = '{function.EscapeSql(maNV)}',
+				        GhiChu = N'{function.EscapeSql(ghiChu)}'
+				    WHERE MaPhieuNhap = @MaPhieuNhap;
+				ELSE
+				    INSERT INTO dbo.PhieuNhap (MaPhieuNhap, NgayNhap, MaNhanVienNhap, GhiChu, TongTienNhap)
+				    VALUES (@MaPhieuNhap, '{ngayNhapSql}', '{function.EscapeSql(maNV)}', N'{function.EscapeSql(ghiChu)}', 0);
+
+				-- 5. Phụ tùng chưa có thì tạo mới từ phiếu nhập (tồn = 0, cộng ở bước 6)
+				INSERT INTO dbo.PhuTung (MaPhuTung, TenPhuTung, MaNhaCungCap, HanSuDung, DonGiaNhap, DonGiaBan, SoLuongTon, TrangThai)
+				SELECT M.MaPhuTung, M.TenPhuTung, NCC.MaNCC, M.HanSuDung, M.DonGiaNhap, M.DonGiaBan, 0, 1
+				FROM @Moi M
+				CROSS APPLY
+				(
+				    SELECT TOP 1 N.MaNhaCungCap AS MaNCC
+				    FROM dbo.NhaCungCap N
+				    WHERE N.TenNhaCungCap = M.TenNCC
+				) NCC
+				WHERE M.STT = (SELECT MIN(M2.STT) FROM @Moi M2 WHERE M2.MaPhuTung = M.MaPhuTung)
+				  AND NOT EXISTS (SELECT 1 FROM dbo.PhuTung PT WHERE PT.MaPhuTung = M.MaPhuTung);
+
+				-- 6. Cập nhật số lượng tồn theo chênh lệch mới - cũ
+				UPDATE PT
+				SET PT.SoLuongTon = PT.SoLuongTon + CL.SoLuongMoi - CL.SoLuongCu
+				FROM dbo.PhuTung PT
+				JOIN @ChenhLech CL ON CL.MaPhuTung = PT.MaPhuTung;
+
+				-- 7. Phụ tùng chỉ thuộc phiếu này thì cập nhật thông tin theo lưới
+				UPDATE PT
+				SET PT.TenPhuTung = M.TenPhuTung,
+				    PT.MaNhaCungCap = NCC.MaNCC,
+				    PT.HanSuDung = M.HanSuDung,
+				    PT.DonGiaNhap = M.DonGiaNhap,
+				    PT.DonGiaBan = M.DonGiaBan
+				FROM dbo.PhuTung PT
+				JOIN @Moi M ON M.MaPhuTung = PT.MaPhuTung
+				CROSS APPLY
+				(
+				    SELECT TOP 1 N.MaNhaCungCap AS MaNCC
+				    FROM dbo.NhaCungCap N
+				    WHERE N.TenNhaCungCap = M.TenNCC
+				) NCC
+				WHERE M.STT = (SELECT MAX(M2.STT) FROM @Moi M2 WHERE M2.MaPhuTung = M.MaPhuTung)
+				  AND NOT EXISTS
+				  (
+				      SELECT 1
+				      FROM dbo.ChiTietPhieuNhap CT
+				      WHERE CT.MaPhuTung = PT.MaPhuTung
+				        AND CT.MaPhieuNhap <> @MaPhieuNhap
+				  );
+
+				-- 8. Ghi lại chi tiết phiếu nhập
+				DELETE FROM dbo.ChiTietPhieuNhap
+				WHERE MaPhieuNhap = @MaPhieuNhap;
+
+				INSERT INTO dbo.ChiTietPhieuNhap (MaPhieuNhap, MaPhuTung, SoLuongNhap, ThanhTien)
+				SELECT @MaPhieuNhap, M.MaPhuTung, M.SoLuong, M.SoLuong * M.DonGiaNhap
+				FROM @Moi M
+				ORDER BY M.STT;
+
+				-- 9. Phụ tùng bị bỏ khỏi phiếu, không còn phiếu nhập/dịch vụ nào dùng và hết tồn thì xóa
+				DELETE PT
+				FROM dbo.PhuTung PT
+				JOIN @ChenhLech CL ON CL.MaPhuTung = PT.MaPhuTung
+				WHERE CL.SoLuongMoi = 0
+				  AND PT.SoLuongTon = 0
+				  AND NOT EXISTS (SELECT 1 FROM dbo.ChiTietPhieuNhap CT WHERE CT.MaPhuTung = PT.MaPhuTung)
+				  AND NOT EXISTS (SELECT 1 FROM dbo.ChiTietDichVu CTDV WHERE CTDV.MaPhuTung = PT.MaPhuTung)
+				  AND NOT EXISTS (SELECT 1 FROM dbo.DieuChinhTonKho DC WHERE DC.MaPhuTung = PT.MaPhuTung)
+				  AND NOT EXISTS (SELECT 1 FROM dbo.DieuChinhGiaBan DG WHERE DG.MaPhuTung = PT.MaPhuTung);
+
+				-- 10. Tính lại tổng tiền phiếu nhập
+				UPDATE PN
+				SET PN.TongTienNhap = ISNULL(Tong.TongTien, 0)
+				FROM dbo.PhieuNhap PN
+				OUTER APPLY
+				(
+				    SELECT SUM(CT.ThanhTien) AS TongTien
+				    FROM dbo.ChiTietPhieuNhap CT
+				    WHERE CT.MaPhieuNhap = PN.MaPhieuNhap
+				) Tong
+				WHERE PN.MaPhieuNhap = @MaPhieuNhap;
+				";
+
+			try
+			{
+				dtbase.ChangeDataTransaction(sqlLuuPhieu);
+
+				MessageBox.Show("Lưu phiếu nhập thành công!", "Thông báo");
+
+				this.DialogResult = DialogResult.OK;
+				this.Close();
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show("Lỗi khi lưu phiếu nhập: " + ex.Message, "Thông báo");
+			}
+		}
+
+		#endregion
+	}
 }

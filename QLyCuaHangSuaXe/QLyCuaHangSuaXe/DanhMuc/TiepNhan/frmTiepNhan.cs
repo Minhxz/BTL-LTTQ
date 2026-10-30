@@ -93,7 +93,7 @@ namespace QLyCuaHangSuaXe.DanhMuc.TiepNhan
                 (SELECT COUNT(*) FROM dbo.ChiTietPhieuTiepNhan d WHERE d.MaPhieuTiepNhan=p.MaPhieuTiepNhan) AS SoHangMuc,
                 COALESCE((SELECT SUM(d.ThanhTien) FROM dbo.ChiTietPhieuTiepNhan d WHERE d.MaPhieuTiepNhan=p.MaPhieuTiepNhan),0) AS TongDuKien
                 FROM dbo.PhieuTiepNhan p JOIN dbo.Xe x ON x.MaXe=p.MaXe JOIN dbo.KhachHang k ON k.MaKhachHang=x.MaKhachHang
-                OUTER APPLY(SELECT TOP(1) pc.MaNhanVien FROM dbo.ChiTietPhanCong pc JOIN dbo.NhanVien nv ON nv.MaNhanVien=pc.MaNhanVien WHERE pc.MaXe=p.MaXe ORDER BY CASE WHEN nv.MaChucVu='CV002' THEN 0 ELSE 1 END,pc.MaNhanVien) c
+                OUTER APPLY(SELECT TOP(1) pc.MaNhanVien FROM dbo.ChiTietPhanCong pc JOIN dbo.NhanVien nv ON nv.MaNhanVien=pc.MaNhanVien WHERE pc.MaXe=p.MaXe ORDER BY CASE WHEN nv.MaChucVu='CV02' THEN 0 ELSE 1 END,pc.MaNhanVien) c
                 LEFT JOIN dbo.NhanVien n ON n.MaNhanVien=c.MaNhanVien LEFT JOIN dbo.HoaDon h ON h.MaPhieuTiepNhan=p.MaPhieuTiepNhan ORDER BY p.NgayLap DESC,p.MaPhieuTiepNhan DESC");
             bangChiTiet = duLieu.DocBang(@"SELECT c.MaPhieuTiepNhan,N'Dịch vụ' AS Loai,d.TenDichVu AS NoiDung,c.SoLuong,c.ThanhTien/NULLIF(c.SoLuong,0) AS DonGia,c.ThanhTien FROM dbo.ChiTietPhieuTiepNhan c JOIN dbo.DichVu d ON d.MaDichVu=c.MaDichVu");
             LocPhieu();

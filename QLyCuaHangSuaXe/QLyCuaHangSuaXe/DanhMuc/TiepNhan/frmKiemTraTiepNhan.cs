@@ -94,8 +94,8 @@ namespace QLyCuaHangSuaXe.DanhMuc.TiepNhan
         public void TaiDuLieu()
         {
             PhienDangNhap.YeuCau("TIEP_NHAN");
-            bangDinhMuc = duLieu.DocBang("SELECT m.MaDichVu,p.MaPhuTung,p.TenPhuTung,m.SoLuong,p.SoLuongTon,p.DonGiaBan,p.TrangThai,p.HanSuDung FROM dbo.ChiTietDichVu m JOIN dbo.PhuTung p ON p.MaPhuTung=m.MaPhuTung");
-            GiaoDien.GanDuLieu(cboDichVu, duLieu.DocBang("SELECT MaDichVu,TenDichVu,ThanhTienDichVu FROM dbo.DichVu WHERE TrangThai=N'Đang áp dụng' ORDER BY TenDichVu"), "TenDichVu", "MaDichVu");
+            bangDinhMuc = duLieu.DocBang("SELECT m.MaDichVu,p.MaPhuTung,p.TenPhuTung,m.SoLuong,p.SoLuongTon,p.DonGiaBan,CASE WHEN p.TrangThai=1 THEN N'Đang kinh doanh' ELSE N'Ngừng kinh doanh' END AS TrangThai,p.HanSuDung FROM dbo.ChiTietDichVu m JOIN dbo.PhuTung p ON p.MaPhuTung=m.MaPhuTung");
+            GiaoDien.GanDuLieu(cboDichVu, duLieu.DocBang("SELECT MaDichVu,TenDichVu,ThanhTienDichVu FROM dbo.DichVu WHERE TrangThai=1 ORDER BY TenDichVu"), "TenDichVu", "MaDichVu");
             if (cboDichVu.Items.Count > 0)
                 cboDichVu.SelectedIndex = 0;
             HienThiDichVu();

@@ -100,8 +100,6 @@
     <Compile Include="Classes\ChamCong.cs" />
     <Compile Include="Classes\XuLyDuLieu.cs" />
     <Compile Include="Classes\GiaoDien.cs" />
-    <Compile Include="Classes\QuanLyKho.cs" />
-    <Compile Include="Classes\QuanLyDieuChinhKho.cs" />
     <Compile Include="Classes\NghiepVuSuaXe.cs" />
     <Compile Include="Classes\PhanQuyenNguoiDung.cs" />
     <Compile Include="Classes\TrangThietKe.cs">
@@ -235,18 +233,16 @@
     <Compile Include="DanhMuc\Kho\frmNhapPhieuNhap.Designer.cs">
       <DependentUpon>frmNhapPhieuNhap.cs</DependentUpon>
     </Compile>
-    <Compile Include="DanhMuc\Kho\frmKho.cs">
+    <Compile Include="DanhMuc\Kho\frmQuanLyKho.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="DanhMuc\Kho\frmKho.Designer.cs">
-      <DependentUpon>frmKho.cs</DependentUpon>
+    <Compile Include="DanhMuc\Kho\frmQuanLyKho.Designer.cs">
+      <DependentUpon>frmQuanLyKho.cs</DependentUpon>
     </Compile>
-    <Compile Include="DanhMuc\Kho\frmPhieuNhap.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="DanhMuc\Kho\frmPhieuNhap.Designer.cs">
-      <DependentUpon>frmPhieuNhap.cs</DependentUpon>
-    </Compile>
+    <Compile Include="DanhMuc\Kho\Classes\DatabaseProcessor.cs" />
+    <Compile Include="DanhMuc\Kho\Classes\Function.cs" />
+    <Compile Include="DanhMuc\Kho\Classes\GiaoDien.cs" />
+    <Compile Include="DanhMuc\Kho\Classes\XuatExcel.cs" />
     <Compile Include="DanhMuc\Kho\frmThemNCC.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -258,15 +254,10 @@
       <LogicalName>btl.frmNhapPhieuNhap.resources</LogicalName>
       <ManifestResourceName>btl.frmNhapPhieuNhap</ManifestResourceName>
     </EmbeddedResource>
-    <EmbeddedResource Include="DanhMuc\Kho\frmKho.resx">
-      <DependentUpon>frmKho.cs</DependentUpon>
-      <LogicalName>btl.frmKho.resources</LogicalName>
-      <ManifestResourceName>btl.frmKho</ManifestResourceName>
-    </EmbeddedResource>
-    <EmbeddedResource Include="DanhMuc\Kho\frmPhieuNhap.resx">
-      <DependentUpon>frmPhieuNhap.cs</DependentUpon>
-      <LogicalName>btl.frmPhieuNhap.resources</LogicalName>
-      <ManifestResourceName>btl.frmPhieuNhap</ManifestResourceName>
+    <EmbeddedResource Include="DanhMuc\Kho\frmQuanLyKho.resx">
+      <DependentUpon>frmQuanLyKho.cs</DependentUpon>
+      <LogicalName>btl.frmQuanLyKho.resources</LogicalName>
+      <ManifestResourceName>btl.frmQuanLyKho</ManifestResourceName>
     </EmbeddedResource>
     <EmbeddedResource Include="DanhMuc\Kho\frmThemNCC.resx">
       <DependentUpon>frmThemNCC.cs</DependentUpon>

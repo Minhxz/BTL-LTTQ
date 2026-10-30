@@ -47,7 +47,7 @@ namespace QLyCuaHangSuaXe.LopDungChung
             bool sua = !string.IsNullOrEmpty(maNhanVienCu) && ngayLamCu.HasValue && !string.IsNullOrEmpty(maCaLamCu);
             new XuLyDuLieu().TrongGiaoDich<int>((ketNoi, giaoDich) =>
             {
-                if (XuLyDuLieu.DocDuLieu(ketNoi, giaoDich, "SELECT 1 FROM dbo.NhanVien WITH(UPDLOCK) WHERE MaNhanVien=@nv AND TrangThai=N'Đang làm'", XuLyDuLieu.ThamSo("@nv", maNhanVien)).Rows.Count != 1)
+                if (XuLyDuLieu.DocDuLieu(ketNoi, giaoDich, "SELECT 1 FROM dbo.NhanVien WITH(UPDLOCK) WHERE MaNhanVien=@nv AND TrangThai=1", XuLyDuLieu.ThamSo("@nv", maNhanVien)).Rows.Count != 1)
                     throw new InvalidOperationException("Chọn nhân viên đang làm.");
                 if (XuLyDuLieu.DocDuLieu(ketNoi, giaoDich, "SELECT 1 FROM dbo.CaLam WHERE MaCaLam=@ca", XuLyDuLieu.ThamSo("@ca", maCaLam)).Rows.Count != 1)
                     throw new InvalidOperationException("Chọn ca làm.");

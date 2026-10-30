@@ -49,7 +49,7 @@ namespace QLyCuaHangSuaXe
             NoiNutCoSan(btnMoDanhMucDichVu, "DICH_VU", "Dịch vụ", () => new DanhMuc.DichVu.frmDanhMucDichVu());
             NoiNutCoSan(btnMoPhanCong, "PHAN_CONG", "Phân công sửa chữa", () => new DanhMuc.frmPhanCong());
             btnMoPhanCong.Visible = PhanQuyenNguoiDung.CoQuyen(VaiTro, "PHAN_CONG") && !PhanQuyenNguoiDung.CoQuyen(VaiTro, "NHAN_VIEN");
-            NoiNutCoSan(btnMoKho, "NHAP_KHO", "Kho phụ tùng", () => new btl.frmKho());
+            NoiNutCoSan(btnMoKho, "NHAP_KHO", "Kho phụ tùng", () => new btl.frmQuanLyKho());
             NoiNutCoSan(btnMoBaoCao, "BAO_CAO", "Thống kê", () => new DanhMuc.frmThongKe());
             NoiNutCoSan(btnMoNhanVien, "NHAN_SU", "Nhân viên", () => new DanhMuc.frmNhanVien(!PhanQuyenNguoiDung.CoQuyen(VaiTro, "NHAN_VIEN")));
             NoiNutCoSan(btnMoQuanLyTaiKhoan, "TAI_KHOAN_CA_NHAN", "Tài khoản", () => new DanhMuc.DangNhap.frmQuanLyTaiKhoan());
@@ -78,7 +78,7 @@ namespace QLyCuaHangSuaXe
                 else if (PhanQuyenNguoiDung.CoQuyen(VaiTro, "PHAN_CONG"))
                     MoTrang("PHAN_CONG", () => new DanhMuc.frmPhanCong());
                 else if (PhanQuyenNguoiDung.CoQuyen(VaiTro, "NHAP_KHO"))
-                    MoTrang("NHAP_KHO", () => new btl.frmKho());
+                    MoTrang("NHAP_KHO", () => new btl.frmQuanLyKho());
                 else
                     MoTrang("NHAN_SU", () => new DanhMuc.frmNhanVien(true));
             };

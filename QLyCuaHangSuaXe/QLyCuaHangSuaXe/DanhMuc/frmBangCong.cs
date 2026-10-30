@@ -63,7 +63,7 @@ namespace QLyCuaHangSuaXe.DanhMuc
             {
                 if (laQuanLy)
                 {
-                    GiaoDien.GanDuLieu(cboNhanVien, duLieu.DocBang("SELECT MaNhanVien,HoTen,Luong FROM dbo.NhanVien WHERE TrangThai=N'Đang làm' ORDER BY HoTen"), "HoTen", "MaNhanVien");
+                    GiaoDien.GanDuLieu(cboNhanVien, duLieu.DocBang("SELECT MaNhanVien,HoTen,Luong FROM dbo.NhanVien WHERE TrangThai=1 ORDER BY HoTen"), "HoTen", "MaNhanVien");
                     GiaoDien.GanDuLieu(cboCa, duLieu.DocBang("SELECT *,MaCaLam+N'  '+CONVERT(VARCHAR(5),ThoiGianBatDau,108)+N' – '+CONVERT(VARCHAR(5),ThoiGianKetThuc,108) AS TenCa FROM dbo.CaLam ORDER BY ThoiGianBatDau"), "TenCa", "MaCaLam");
                     var boLoc = duLieu.DocBang("SELECT MaNhanVien,HoTen FROM dbo.NhanVien ORDER BY HoTen");
                     var tatCa = boLoc.NewRow();

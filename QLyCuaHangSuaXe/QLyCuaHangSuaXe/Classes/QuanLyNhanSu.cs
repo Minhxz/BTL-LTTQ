@@ -26,7 +26,7 @@ namespace QLyCuaHangSuaXe.LopDungChung
         }
         static DataRow KhoaNhanVien(SqlConnection ketNoi, SqlTransaction giaoDich, string ma)
         {
-            var bang = XuLyDuLieu.DocDuLieu(ketNoi, giaoDich, "SELECT n.*,c.TenChucVu FROM dbo.NhanVien n WITH(UPDLOCK,HOLDLOCK) JOIN dbo.ChucVu c ON c.MaChucVu=n.MaChucVu WHERE n.MaNhanVien=@id", XuLyDuLieu.ThamSo("@id", ma));
+            var bang = XuLyDuLieu.DocDuLieu(ketNoi, giaoDich, "SELECT n.MaNhanVien,n.MaChucVu,n.HoTen,n.SoDienThoai,n.Luong,n.TenDangNhap,n.MatKhau,CASE WHEN n.TrangThai=1 THEN N'Đang làm' ELSE N'Nghỉ việc' END AS TrangThai,c.TenChucVu FROM dbo.NhanVien n WITH(UPDLOCK,HOLDLOCK) JOIN dbo.ChucVu c ON c.MaChucVu=n.MaChucVu WHERE n.MaNhanVien=@id", XuLyDuLieu.ThamSo("@id", ma));
             if (bang.Rows.Count != 1)
                 throw new InvalidOperationException("Nhân viên không còn tồn tại. Hãy tải lại danh sách.");
             return bang.Rows[0];
@@ -95,8 +95,8 @@ namespace QLyCuaHangSuaXe.LopDungChung
                 KiemTraCongViec(ketNoi, giaoDich, ma, chucVu, trangThai);
 
             string cauLenh = them
-                ? "INSERT dbo.NhanVien(MaNhanVien,MaChucVu,HoTen,SoDienThoai,Luong,TenDangNhap,MatKhau,TrangThai) VALUES(@id,@r,@n,@p,@l,@u,@h,@s)"
-                : "UPDATE dbo.NhanVien SET MaChucVu=@r,HoTen=@n,SoDienThoai=@p,Luong=@l,TrangThai=@s WHERE MaNhanVien=@id";
+                ? "INSERT dbo.NhanVien(MaNhanVien,MaChucVu,HoTen,SoDienThoai,Luong,TenDangNhap,MatKhau,TrangThai) VALUES(@id,@r,@n,@p,@l,@u,@h,CASE WHEN @s=N'Đang làm' THEN 1 ELSE 0 END)"
+                : "UPDATE dbo.NhanVien SET MaChucVu=@r,HoTen=@n,SoDienThoai=@p,Luong=@l,TrangThai=CASE WHEN @s=N'Đang làm' THEN 1 ELSE 0 END WHERE MaNhanVien=@id";
             XuLyDuLieu.ThucThi(ketNoi, giaoDich, cauLenh,
                 XuLyDuLieu.ThamSo("@id", ma),
                 XuLyDuLieu.ThamSo("@r", MaChucVu(ketNoi, giaoDich, chucVu)),
@@ -121,7 +121,7 @@ namespace QLyCuaHangSuaXe.LopDungChung
             {
                 string ma = string.IsNullOrEmpty(maDuKien) ? XuLyDuLieu.TaoMaMoi(ketNoi, giaoDich, "NV") : XuLyDuLieu.KiemTraMa(maDuKien, "NV");
                 KiemTraTrung(ketNoi, giaoDich, ma, tenDangNhap, dienThoai);
-                string cauLenh = "INSERT dbo.NhanVien(MaNhanVien,MaChucVu,HoTen,SoDienThoai,Luong,TenDangNhap,MatKhau,TrangThai) VALUES(@id,@r,@n,@p,@l,@u,@h,@s)";
+                string cauLenh = "INSERT dbo.NhanVien(MaNhanVien,MaChucVu,HoTen,SoDienThoai,Luong,TenDangNhap,MatKhau,TrangThai) VALUES(@id,@r,@n,@p,@l,@u,@h,CASE WHEN @s=N'Đang làm' THEN 1 ELSE 0 END)";
                 XuLyDuLieu.ThucThi(ketNoi, giaoDich, cauLenh,
                     XuLyDuLieu.ThamSo("@id", ma),
                     XuLyDuLieu.ThamSo("@r", MaChucVu(ketNoi, giaoDich, chucVu)),
@@ -150,7 +150,7 @@ namespace QLyCuaHangSuaXe.LopDungChung
                 var cu = KhoaNhanVien(ketNoi, giaoDich, ma);
                 KiemTraTrung(ketNoi, giaoDich, ma, tenDangNhap, cu["SoDienThoai"].ToString());
                 KiemTraCongViec(ketNoi, giaoDich, ma, chucVu, hoatDong ? "Đang làm" : "Nghỉ việc");
-                return XuLyDuLieu.ThucThi(ketNoi, giaoDich, "UPDATE dbo.NhanVien SET MaChucVu=@r,TenDangNhap=@u,TrangThai=@s WHERE MaNhanVien=@id", XuLyDuLieu.ThamSo("@r", MaChucVu(ketNoi, giaoDich, chucVu)), XuLyDuLieu.ThamSo("@u", tenDangNhap), XuLyDuLieu.ThamSo("@s", hoatDong ? "Đang làm" : "Nghỉ việc"), XuLyDuLieu.ThamSo("@id", ma));
+                return XuLyDuLieu.ThucThi(ketNoi, giaoDich, "UPDATE dbo.NhanVien SET MaChucVu=@r,TenDangNhap=@u,TrangThai=CASE WHEN @s=N'Đang làm' THEN 1 ELSE 0 END WHERE MaNhanVien=@id", XuLyDuLieu.ThamSo("@r", MaChucVu(ketNoi, giaoDich, chucVu)), XuLyDuLieu.ThamSo("@u", tenDangNhap), XuLyDuLieu.ThamSo("@s", hoatDong ? "Đang làm" : "Nghỉ việc"), XuLyDuLieu.ThamSo("@id", ma));
             });
         }
         public static void LuuThongTinTaiKhoan(string ma, string tenDangNhap, string chucVu)
@@ -191,7 +191,7 @@ namespace QLyCuaHangSuaXe.LopDungChung
             {
                 var cu = KhoaNhanVien(ketNoi, giaoDich, ma);
                 KiemTraCongViec(ketNoi, giaoDich, ma, cu["TenChucVu"].ToString(), "Nghỉ việc");
-                return XuLyDuLieu.ThucThi(ketNoi, giaoDich, "UPDATE dbo.NhanVien SET TrangThai=N'Nghỉ việc' WHERE MaNhanVien=@id", XuLyDuLieu.ThamSo("@id", ma));
+                return XuLyDuLieu.ThucThi(ketNoi, giaoDich, "UPDATE dbo.NhanVien SET TrangThai=0 WHERE MaNhanVien=@id", XuLyDuLieu.ThamSo("@id", ma));
             });
         }
     }
