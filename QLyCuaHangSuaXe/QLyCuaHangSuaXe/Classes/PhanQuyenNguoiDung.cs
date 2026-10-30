@@ -18,20 +18,39 @@ namespace QLyCuaHangSuaXe.LopDungChung
         {
             switch (vaiTro)
             {
-                case "Chủ cửa hàng": case "Chủ/Quản lý": case "Quản lý cửa hàng": return "Chủ";
-                case "Kỹ thuật viên chính": return "Thợ chính";
-                case "Thợ": case "Kỹ thuật viên": return "Thợ phụ";
-                case "Kế toán - Thu ngân": case "Lễ tân - Cố vấn dịch vụ": return "Thu ngân";
-                default: return vaiTro;
+                case "Chủ cửa hàng":
+                case "Chủ/Quản lý":
+                case "Quản lý cửa hàng":
+                    return "Chủ";
+                case "Kỹ thuật viên chính":
+                    return "Thợ chính";
+                case "Thợ":
+                case "Kỹ thuật viên":
+                    return "Thợ phụ";
+                case "Kế toán - Thu ngân":
+                case "Lễ tân - Cố vấn dịch vụ":
+                    return "Thu ngân";
+                default:
+                    return vaiTro;
             }
         }
-        public static bool CoVaiTro(string vaiTro) { return vaiTro != null && Quyen.ContainsKey(ChuanHoa(vaiTro)); }
+        public static bool CoVaiTro(string vaiTro)
+        {
+            return vaiTro != null && Quyen.ContainsKey(ChuanHoa(vaiTro));
+        }
         public static bool CoQuyen(string vaiTro, string maChucNang)
         {
             HashSet<string> quyen;
             return vaiTro != null && maChucNang != null && Quyen.TryGetValue(ChuanHoa(vaiTro), out quyen) && quyen.Contains(maChucNang);
         }
-        public static bool LaTho(string vaiTro) { string ten = ChuanHoa(vaiTro); return ten == "Thợ chính" || ten == "Thợ phụ"; }
-        public static int GioiHanXe(string vaiTro) { return ChuanHoa(vaiTro) == "Thợ chính" ? 3 : LaTho(vaiTro) ? 2 : 0; }
+        public static bool LaTho(string vaiTro)
+        {
+            string ten = ChuanHoa(vaiTro);
+            return ten == "Thợ chính" || ten == "Thợ phụ";
+        }
+        public static int GioiHanXe(string vaiTro)
+        {
+            return ChuanHoa(vaiTro) == "Thợ chính" ? 3 : LaTho(vaiTro) ? 2 : 0;
+        }
     }
 }

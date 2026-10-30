@@ -24,8 +24,10 @@ namespace QLyCuaHangSuaXe.LopDungChung
             else if (bang != null)
                 Controls.Add(lblThongBao);
             lblThongBao.AutoEllipsis = true;
-            if (thongBao != null && GetType().Name != "frmTiepNhan" && GetType().Name != "frmKiemTraTiepNhan") GiaoDien.AnHuongDan(thongBao);
-            if (thongBao == null) lblThongBao.Visible = false;
+            if (thongBao != null && GetType().Name != "frmTiepNhan" && GetType().Name != "frmKiemTraTiepNhan")
+                GiaoDien.AnHuongDan(thongBao);
+            if (thongBao == null)
+                lblThongBao.Visible = false;
             StartPosition = FormStartPosition.CenterParent;
             GiaoDien.ApDungMauTiepNhan(this);
             if (bang != null)

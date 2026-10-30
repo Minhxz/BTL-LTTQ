@@ -26,8 +26,10 @@ namespace QLyCuaHangSuaXe.LopDungChung
 
         public static string TaoMaMoi(string tienTo)
         {
-            if (System.ComponentModel.LicenseManager.UsageMode == System.ComponentModel.LicenseUsageMode.Designtime) return tienTo + "001";
-            using (var ketNoi = MoKetNoi()) return TaoMaMoi(ketNoi, null, tienTo);
+            if (System.ComponentModel.LicenseManager.UsageMode == System.ComponentModel.LicenseUsageMode.Designtime)
+                return tienTo + "001";
+            using (var ketNoi = MoKetNoi())
+                return TaoMaMoi(ketNoi, null, tienTo);
         }
 
         public static string TaoMaMoi(SqlConnection ketNoi, SqlTransaction giaoDich, string tienTo)
@@ -35,20 +37,62 @@ namespace QLyCuaHangSuaXe.LopDungChung
             string bang, cot;
             switch (tienTo)
             {
-                case "DV": bang="DichVu"; cot="MaDichVu"; break;
-                case "PT": bang="PhuTung"; cot="MaPhuTung"; break;
-                case "PN": bang="PhieuNhap"; cot="MaPhieuNhap"; break;
-                case "NC": tienTo="NCC"; bang="NhaCungCap"; cot="MaNhaCungCap"; break;
-                case "NCC": bang="NhaCungCap"; cot="MaNhaCungCap"; break;
-                case "NV": bang="NhanVien"; cot="MaNhanVien"; break;
-                case "KH": bang="KhachHang"; cot="MaKhachHang"; break;
-                case "XE": bang="Xe"; cot="MaXe"; break;
-                case "TN": tienTo="PTN"; bang="PhieuTiepNhan"; cot="MaPhieuTiepNhan"; break;
-                case "PTN": bang="PhieuTiepNhan"; cot="MaPhieuTiepNhan"; break;
-                case "HD": bang="HoaDon"; cot="MaHoaDon"; break;
-                case "DC": bang="DieuChinhTonKho"; cot="MaDieuChinh"; break;
-                case "DG": bang="DieuChinhGiaBan"; cot="MaDieuChinhGia"; break;
-                default: throw new ArgumentException("Loại mã không hợp lệ.");
+                case "DV":
+                    bang = "DichVu";
+                    cot = "MaDichVu";
+                    break;
+                case "PT":
+                    bang = "PhuTung";
+                    cot = "MaPhuTung";
+                    break;
+                case "PN":
+                    bang = "PhieuNhap";
+                    cot = "MaPhieuNhap";
+                    break;
+                case "NC":
+                    tienTo = "NCC";
+                    bang = "NhaCungCap";
+                    cot = "MaNhaCungCap";
+                    break;
+                case "NCC":
+                    bang = "NhaCungCap";
+                    cot = "MaNhaCungCap";
+                    break;
+                case "NV":
+                    bang = "NhanVien";
+                    cot = "MaNhanVien";
+                    break;
+                case "KH":
+                    bang = "KhachHang";
+                    cot = "MaKhachHang";
+                    break;
+                case "XE":
+                    bang = "Xe";
+                    cot = "MaXe";
+                    break;
+                case "TN":
+                    tienTo = "PTN";
+                    bang = "PhieuTiepNhan";
+                    cot = "MaPhieuTiepNhan";
+                    break;
+                case "PTN":
+                    bang = "PhieuTiepNhan";
+                    cot = "MaPhieuTiepNhan";
+                    break;
+                case "HD":
+                    bang = "HoaDon";
+                    cot = "MaHoaDon";
+                    break;
+                case "DC":
+                    bang = "DieuChinhTonKho";
+                    cot = "MaDieuChinh";
+                    break;
+                case "DG":
+                    bang = "DieuChinhGiaBan";
+                    cot = "MaDieuChinhGia";
+                    break;
+                default:
+                    throw new ArgumentException("Loại mã không hợp lệ.");
             }
             string khoa = giaoDich == null ? "" : " WITH(UPDLOCK,HOLDLOCK)";
             int viTri = tienTo.Length + 1;
@@ -62,16 +106,19 @@ namespace QLyCuaHangSuaXe.LopDungChung
                 ketQua = DocDuLieu(ketNoi, giaoDich, cauLenh, ThamSo("@xoa", "Xóa phiếu nhập PN"), ThamSo("@sua", "Sửa phiếu nhập PN"));
             }
             else
-                ketQua = DocDuLieu(ketNoi, giaoDich, "SELECT ISNULL(MAX(TRY_CONVERT(INT,SUBSTRING(["+cot+"],@v,10))),0)+1 FROM dbo.["+bang+"]"+khoa+" WHERE ["+cot+"] LIKE @p AND SUBSTRING(["+cot+"],@v,10) NOT LIKE '%[^0-9]%'", ThamSo("@p", tienTo+"%"), ThamSo("@v", viTri));
+                ketQua = DocDuLieu(ketNoi, giaoDich, "SELECT ISNULL(MAX(TRY_CONVERT(INT,SUBSTRING([" + cot + "],@v,10))),0)+1 FROM dbo.[" + bang + "]" + khoa + " WHERE [" + cot + "] LIKE @p AND SUBSTRING([" + cot + "],@v,10) NOT LIKE '%[^0-9]%'", ThamSo("@p", tienTo + "%"), ThamSo("@v", viTri));
             string ma = tienTo + Convert.ToInt32(ketQua.Rows[0][0]).ToString("D3");
-            if (ma.Length > 10) throw new InvalidOperationException("Đã hết dải mã. Hãy kiểm tra dữ liệu trước khi tạo mới.");
+            if (ma.Length > 10)
+                throw new InvalidOperationException("Đã hết dải mã. Hãy kiểm tra dữ liệu trước khi tạo mới.");
             return ma;
         }
 
         public static string KiemTraMa(string ma, string tienTo)
         {
-            if (tienTo == "NC") tienTo = "NCC";
-            if (tienTo == "TN") tienTo = "PTN";
+            if (tienTo == "NC")
+                tienTo = "NCC";
+            if (tienTo == "TN")
+                tienTo = "PTN";
             if (string.IsNullOrEmpty(ma) || ma.Length > 10 || !Regex.IsMatch(ma, "^" + Regex.Escape(tienTo) + "[0-9]{3,8}$"))
                 throw new InvalidOperationException("Mã không hợp lệ. Hãy bấm tạo mới để cấp lại mã.");
             return ma;

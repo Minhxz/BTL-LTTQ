@@ -413,7 +413,8 @@ namespace QLyCuaHangSuaXe.LopDungChung
         static bool TrongKhung(Control dieuKhien)
         {
             for (Control cha = dieuKhien.Parent; cha != null; cha = cha.Parent)
-                if (cha is GroupBox) return true;
+                if (cha is GroupBox)
+                    return true;
             return false;
         }
 
@@ -421,9 +422,12 @@ namespace QLyCuaHangSuaXe.LopDungChung
         {
             nhan.Visible = false;
             var bang = nhan.Parent as TableLayoutPanel;
-            if (bang == null) return;
+            if (bang == null)
+                return;
             int dong = bang.GetRow(nhan), soDieuKhien = 0;
-            foreach (Control con in bang.Controls) if (bang.GetRow(con) == dong) soDieuKhien++;
+            foreach (Control con in bang.Controls)
+            if (bang.GetRow(con) == dong)
+                soDieuKhien++;
             if (soDieuKhien == 1 && dong < bang.RowStyles.Count)
             {
                 bang.RowStyles[dong].SizeType = SizeType.Absolute;
@@ -448,7 +452,8 @@ namespace QLyCuaHangSuaXe.LopDungChung
                     dieuKhien.BackColor = Color.White;
                 if (dieuKhien is Label && dieuKhien.Font.Size >= 16)
                     dieuKhien.ForeColor = Xanh;
-                if (dieuKhien.Name == "lblHuongDan") AnHuongDan(dieuKhien);
+                if (dieuKhien.Name == "lblHuongDan")
+                    AnHuongDan(dieuKhien);
                 if (dieuKhien is GroupBox)
                 {
                     dieuKhien.ForeColor = Xanh;
@@ -502,7 +507,11 @@ namespace QLyCuaHangSuaXe.LopDungChung
         {
             var duong = new GraphicsPath();
             float duongKinh = Math.Min(banKinh * 2, Math.Min(khung.Width, khung.Height));
-            if (duongKinh < 1) { duong.AddRectangle(khung); return duong; }
+            if (duongKinh < 1)
+            {
+                duong.AddRectangle(khung);
+                return duong;
+            }
             duong.AddArc(khung.X, khung.Y, duongKinh, duongKinh, 180, 90);
             duong.AddArc(khung.Right - duongKinh, khung.Y, duongKinh, duongKinh, 270, 90);
             duong.AddArc(khung.Right - duongKinh, khung.Bottom - duongKinh, duongKinh, duongKinh, 0, 90);
@@ -518,19 +527,22 @@ namespace QLyCuaHangSuaXe.LopDungChung
 
         static void BoGocNut(Button nut, TrangThaiNut trangThai)
         {
-            if (nut.Width < 2 || nut.Height < 2 || System.ComponentModel.LicenseManager.UsageMode == System.ComponentModel.LicenseUsageMode.Designtime || nut.Site != null && nut.Site.DesignMode) return;
+            if (nut.Width < 2 || nut.Height < 2 || System.ComponentModel.LicenseManager.UsageMode == System.ComponentModel.LicenseUsageMode.Designtime || nut.Site != null && nut.Site.DesignMode)
+                return;
             using (var duong = DuongBoGoc(new RectangleF(0, 0, nut.Width, nut.Height), (trangThai.DieuHuong ? 8 : 6) * nut.DeviceDpi / 96F))
             {
                 var vungCu = nut.Region;
                 nut.Region = new Region(duong);
-                if (vungCu != null) vungCu.Dispose();
+                if (vungCu != null)
+                    vungCu.Dispose();
             }
         }
 
         static TrangThaiNut GanHieuUngNut(Button nut)
         {
             TrangThaiNut trangThai;
-            if (cacNut.TryGetValue(nut, out trangThai)) return trangThai;
+            if (cacNut.TryGetValue(nut, out trangThai))
+                return trangThai;
             trangThai = new TrangThaiNut();
             cacNut.Add(nut, trangThai);
             nut.MouseEnter += (nguoiGui, suKien) => { trangThai.DiChuot = true; nut.Invalidate(); };
@@ -550,7 +562,8 @@ namespace QLyCuaHangSuaXe.LopDungChung
 
         static void VeNut(Button nut, TrangThaiNut trangThai, Graphics ve)
         {
-            if (nut.Width < 2 || nut.Height < 2) return;
+            if (nut.Width < 2 || nut.Height < 2)
+                return;
             float tiLe = nut.DeviceDpi / 96F;
             Color nen = nut.BackColor, chu = nut.ForeColor;
             bool nenDam = nen.GetBrightness() < 0.65F;
@@ -587,8 +600,10 @@ namespace QLyCuaHangSuaXe.LopDungChung
             ve.Restore(trangThaiVe);
             var khungChu = new Rectangle(8, 0, Math.Max(1, nut.Width - 16), nut.Height);
             var canChu = TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter | TextFormatFlags.SingleLine | TextFormatFlags.EndEllipsis | TextFormatFlags.NoPadding | TextFormatFlags.PreserveGraphicsClipping;
-            if (!nut.UseMnemonic) canChu |= TextFormatFlags.NoPrefix;
-            else canChu |= TextFormatFlags.HidePrefix;
+            if (!nut.UseMnemonic)
+                canChu |= TextFormatFlags.NoPrefix;
+            else
+                canChu |= TextFormatFlags.HidePrefix;
             if (trangThai.DieuHuong)
             {
                 int leTrai = (int)(18 * tiLe);
@@ -603,11 +618,13 @@ namespace QLyCuaHangSuaXe.LopDungChung
         {
             khung.BackColor = Color.White;
             object daGan;
-            if (cacKhung.TryGetValue(khung, out daGan)) return;
+            if (cacKhung.TryGetValue(khung, out daGan))
+                return;
             cacKhung.Add(khung, new object());
             khung.Paint += (nguoiGui, suKien) =>
             {
-                if (khung.Width < 4 || khung.Height < 4) return;
+                if (khung.Width < 4 || khung.Height < 4)
+                    return;
                 var ve = suKien.Graphics;
                 var trangThaiVe = ve.Save();
                 ve.SmoothingMode = SmoothingMode.AntiAlias;
@@ -629,7 +646,8 @@ namespace QLyCuaHangSuaXe.LopDungChung
 
         static void DinhDangNgayTrong(object nguoiGui, DataGridViewCellFormattingEventArgs suKien)
         {
-            if (!(suKien.Value is DateTime)) return;
+            if (!(suKien.Value is DateTime))
+                return;
             var ngay = (DateTime)suKien.Value;
             if (ngay.Year == 1 || ngay.Year == 9999)
             {
@@ -681,7 +699,8 @@ namespace QLyCuaHangSuaXe.LopDungChung
                     cot.DefaultCellStyle.Format = soGio || ten == "DonGiaGio" ? "N2" : "N0";
                     cot.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
                 }
-                if (cot.ValueType == typeof(TimeSpan)) cot.DefaultCellStyle.Format = @"hh\:mm";
+                if (cot.ValueType == typeof(TimeSpan))
+                    cot.DefaultCellStyle.Format = @"hh\:mm";
                 if (cot.ValueType == typeof(DateTime))
                     cot.DefaultCellStyle.Format = ten.StartsWith("Ngay") || ten == "HanSuDung" || ten == "ThoiGianNhan" || ten == "HenTra" ? "dd/MM/yyyy" : "dd/MM/yyyy HH:mm";
             }

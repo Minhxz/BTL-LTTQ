@@ -7,8 +7,14 @@ namespace QLyCuaHangSuaXe.DanhMuc.DangNhap
 {
     public partial class frmDangNhap : Form
     {
-        public string TenDangNhap { get; private set; }
-        public string VaiTro { get; private set; }
+        public string TenDangNhap
+        {
+            get; private set;
+        }
+        public string VaiTro
+        {
+            get; private set;
+        }
 
         public event EventHandler DangNhapThanhCong;
         public frmDangNhap()
@@ -143,15 +149,21 @@ namespace QLyCuaHangSuaXe.DanhMuc.DangNhap
             }
             catch (System.Data.SqlClient.SqlException)
             {
-                if (!IsDisposed) HienLoiDangNhap("Không kết nối được QuanLySuaXe. Kiểm tra SQL Server và App.config.");
+                if (!IsDisposed)
+                    HienLoiDangNhap("Không kết nối được QuanLySuaXe. Kiểm tra SQL Server và App.config.");
                 return;
             }
             finally
             {
-                if (!IsDisposed) { UseWaitCursor = false; btnDangNhap.Enabled = true; }
+                if (!IsDisposed)
+                {
+                    UseWaitCursor = false;
+                    btnDangNhap.Enabled = true;
+                }
             }
 
-            if (IsDisposed || Disposing) return;
+            if (IsDisposed || Disposing)
+                return;
 
             if (!hopLe)
             {

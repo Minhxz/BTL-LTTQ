@@ -19,9 +19,24 @@ namespace QLyCuaHangSuaXe.LopDungChung
         readonly List<List<DongIn>> cacTrang = new List<List<DongIn>>();
         readonly string maPhieu;
         readonly decimal tongTien;
-        public int SoTrang { get { return cacTrang.Count; } }
-        public string MaPhieu { get { return maPhieu; } }
-        public bool LaPhieuNhapKho { get; set; }
+        public int SoTrang
+        {
+            get
+            {
+                return cacTrang.Count;
+            }
+        }
+        public string MaPhieu
+        {
+            get
+            {
+                return maPhieu;
+            }
+        }
+        public bool LaPhieuNhapKho
+        {
+            get; set;
+        }
 
         public MauInPhieu(string ma, DataTable chiTiet, params string[] thongTin)
         {

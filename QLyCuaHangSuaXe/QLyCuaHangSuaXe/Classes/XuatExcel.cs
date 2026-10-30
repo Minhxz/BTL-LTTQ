@@ -42,7 +42,8 @@ namespace QLyCuaHangSuaXe.LopDungChung
                 FileName = "KhoPhuTung_" + DateTime.Today.ToString("yyyyMMdd") + ".xlsx"
             })
             {
-                if (hopThoai.ShowDialog() != DialogResult.OK) return;
+                if (hopThoai.ShowDialog() != DialogResult.OK)
+                    return;
                 GhiNhieuBang(cacBang, hopThoai.FileName, tieuDe);
                 MessageBox.Show("Đã xuất Excel: " + hopThoai.FileName);
             }
@@ -53,7 +54,8 @@ namespace QLyCuaHangSuaXe.LopDungChung
             if (cacBang == null || tieuDe == null || cacBang.Length == 0 || cacBang.Length != tieuDe.Length)
                 throw new InvalidOperationException("Chọn đủ bảng dữ liệu và tiêu đề để xuất.");
             foreach (var bang in cacBang)
-                if (bang == null) throw new InvalidOperationException("Chưa có dữ liệu để xuất.");
+                if (bang == null)
+                    throw new InvalidOperationException("Chưa có dữ liệu để xuất.");
         }
 
         public static void GhiNhieuBang(DataTable[] cacBang, string duongDan, string[] tieuDe)
@@ -70,8 +72,10 @@ namespace QLyCuaHangSuaXe.LopDungChung
                 {
                     string so = (i + 1).ToString(CultureInfo.InvariantCulture);
                     string tenGoc = Regex.Replace(tieuDe[i] ?? "Báo cáo", @"[\[\]:*?/\\]", " ").Trim(' ', '\'');
-                    if (tenGoc.Length == 0) tenGoc = "Báo cáo";
-                    if (tenGoc.Length > 31) tenGoc = tenGoc.Substring(0, 31);
+                    if (tenGoc.Length == 0)
+                        tenGoc = "Báo cáo";
+                    if (tenGoc.Length > 31)
+                        tenGoc = tenGoc.Substring(0, 31);
                     string ten = tenGoc;
                     for (int trung = 2; !cacTen.Add(ten); trung++)
                     {
@@ -111,26 +115,34 @@ namespace QLyCuaHangSuaXe.LopDungChung
                 boGhiXml.WriteAttributeString("ySplit", "2");
                 boGhiXml.WriteAttributeString("topLeftCell", "A3");
                 boGhiXml.WriteAttributeString("state", "frozen");
-                boGhiXml.WriteEndElement(); boGhiXml.WriteEndElement(); boGhiXml.WriteEndElement();
+                boGhiXml.WriteEndElement();
+                boGhiXml.WriteEndElement();
+                boGhiXml.WriteEndElement();
                 boGhiXml.WriteStartElement("cols");
                 boGhiXml.WriteStartElement("col");
                 boGhiXml.WriteAttributeString("min", "1");
                 boGhiXml.WriteAttributeString("max", Math.Max(1, bangDuLieu.Columns.Count).ToString(CultureInfo.InvariantCulture));
                 boGhiXml.WriteAttributeString("width", "23");
                 boGhiXml.WriteAttributeString("customWidth", "1");
-                boGhiXml.WriteEndElement(); boGhiXml.WriteEndElement();
+                boGhiXml.WriteEndElement();
+                boGhiXml.WriteEndElement();
                 boGhiXml.WriteStartElement("sheetData");
-                boGhiXml.WriteStartElement("row"); GhiO(boGhiXml, tieuDe); boGhiXml.WriteEndElement();
                 boGhiXml.WriteStartElement("row");
-                foreach (DataColumn cot in bangDuLieu.Columns) GhiO(boGhiXml, GiaoDien.TenCot(cot.ColumnName));
+                GhiO(boGhiXml, tieuDe);
+                boGhiXml.WriteEndElement();
+                boGhiXml.WriteStartElement("row");
+                foreach (DataColumn cot in bangDuLieu.Columns)
+                    GhiO(boGhiXml, GiaoDien.TenCot(cot.ColumnName));
                 boGhiXml.WriteEndElement();
                 foreach (DataRow dong in bangDuLieu.Rows)
                 {
                     boGhiXml.WriteStartElement("row");
-                    foreach (object giaTri in dong.ItemArray) GhiO(boGhiXml, giaTri);
+                    foreach (object giaTri in dong.ItemArray)
+                        GhiO(boGhiXml, giaTri);
                     boGhiXml.WriteEndElement();
                 }
-                boGhiXml.WriteEndElement(); boGhiXml.WriteEndElement();
+                boGhiXml.WriteEndElement();
+                boGhiXml.WriteEndElement();
             }
         }
 

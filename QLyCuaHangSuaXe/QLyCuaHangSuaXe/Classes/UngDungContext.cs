@@ -32,7 +32,8 @@ namespace QLyCuaHangSuaXe.LopDungChung
         public void DangXuat()
         {
             var trangCu = MainForm as frmChinh;
-            if (trangCu == null) return;
+            if (trangCu == null)
+                return;
             MoDangNhap();
             MainForm.Show();
             trangCu.DongSauDangXuat();

@@ -36,10 +36,12 @@ namespace QLyCuaHangSuaXe.DanhMuc.TiepNhan
 
         void HienTrang(int soTrang)
         {
-            if (soTrang < 0 || soTrang >= phieu.SoTrang) return;
+            if (soTrang < 0 || soTrang >= phieu.SoTrang)
+                return;
             var anhCu = picPhieu.Image;
             picPhieu.Image = phieu.TaoAnh(soTrang);
-            if (anhCu != null) anhCu.Dispose();
+            if (anhCu != null)
+                anhCu.Dispose();
             trangHienTai = soTrang;
             lblTrang.Text = "Trang " + (soTrang + 1) + " / " + phieu.SoTrang + "    •    Khổ A4";
             btnTruoc.Enabled = soTrang > 0;
@@ -49,7 +51,8 @@ namespace QLyCuaHangSuaXe.DanhMuc.TiepNhan
 
         void In()
         {
-            if (phieu == null) return;
+            if (phieu == null)
+                return;
             using (var taiLieu = new PrintDocument())
             using (var chonMayIn = new PrintDialog { Document = taiLieu, UseEXDialog = true, AllowSomePages = true })
             {
@@ -60,7 +63,8 @@ namespace QLyCuaHangSuaXe.DanhMuc.TiepNhan
                 taiLieu.PrinterSettings.MaximumPage = phieu.SoTrang;
                 taiLieu.PrinterSettings.FromPage = 1;
                 taiLieu.PrinterSettings.ToPage = phieu.SoTrang;
-                if (chonMayIn.ShowDialog(this) != DialogResult.OK) return;
+                if (chonMayIn.ShowDialog(this) != DialogResult.OK)
+                    return;
                 int trang = taiLieu.PrinterSettings.PrintRange == PrintRange.SomePages ? taiLieu.PrinterSettings.FromPage - 1 : 0;
                 int cuoi = taiLieu.PrinterSettings.PrintRange == PrintRange.SomePages ? taiLieu.PrinterSettings.ToPage : phieu.SoTrang;
                 taiLieu.PrintPage += (nguoiGui, suKien) =>
@@ -80,7 +84,11 @@ namespace QLyCuaHangSuaXe.DanhMuc.TiepNhan
 
         protected override void OnFormClosed(FormClosedEventArgs suKien)
         {
-            if (picPhieu.Image != null) { picPhieu.Image.Dispose(); picPhieu.Image = null; }
+            if (picPhieu.Image != null)
+            {
+                picPhieu.Image.Dispose();
+                picPhieu.Image = null;
+            }
             base.OnFormClosed(suKien);
         }
     }

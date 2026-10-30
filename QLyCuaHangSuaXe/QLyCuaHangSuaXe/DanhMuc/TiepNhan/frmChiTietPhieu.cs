@@ -25,7 +25,8 @@ namespace QLyCuaHangSuaXe.DanhMuc.TiepNhan
         }
         public override void TaiDuLieu()
         {
-            if (string.IsNullOrEmpty(maPhieu)) return;
+            if (string.IsNullOrEmpty(maPhieu))
+                return;
             PhienDangNhap.YeuCau("TIEP_NHAN");
             DataTable bang = chiTiet ?? duLieu.DocBang("SELECT N'Dịch vụ' AS Loai,d.TenDichVu AS NoiDung,c.SoLuong,c.ThanhTien/NULLIF(c.SoLuong,0) AS DonGia,c.ThanhTien FROM dbo.ChiTietPhieuTiepNhan c JOIN dbo.DichVu d ON d.MaDichVu=c.MaDichVu WHERE c.MaPhieuTiepNhan=@ma", XuLyDuLieu.ThamSo("@ma", maPhieu));
             if (bang.Columns.Contains("TenDichVu"))
@@ -39,7 +40,8 @@ namespace QLyCuaHangSuaXe.DanhMuc.TiepNhan
                 foreach (DataRow dong in bang.Rows)
                 {
                     string noiDung = dong["TenDichVu"].ToString();
-                    if (bang.Columns.Contains("PhuTung") && dong["PhuTung"].ToString().Length > 0) noiDung += "\nPhụ tùng: " + dong["PhuTung"];
+                    if (bang.Columns.Contains("PhuTung") && dong["PhuTung"].ToString().Length > 0)
+                        noiDung += "\nPhụ tùng: " + dong["PhuTung"];
                     int soLuong = Convert.ToInt32(dong["SoLuong"]);
                     decimal thanhTien = Convert.ToDecimal(dong["ThanhTien"]);
                     bangHienThi.Rows.Add("Dịch vụ", noiDung, soLuong, soLuong == 0 ? 0 : thanhTien / soLuong, thanhTien);
@@ -49,6 +51,9 @@ namespace QLyCuaHangSuaXe.DanhMuc.TiepNhan
             dgvChiTietPhieu.DataSource = bang;
             lblTongTien.Text = bang.Rows.Count + " hạng mục  |  Tổng tiền: " + bang.AsEnumerable().Sum(d => Convert.ToDecimal(d["ThanhTien"])).ToString("N0") + " đ";
         }
-        void btnDong_Bam(object nguoiGui, EventArgs suKien) { Close(); }
+        void btnDong_Bam(object nguoiGui, EventArgs suKien)
+        {
+            Close();
+        }
     }
 }

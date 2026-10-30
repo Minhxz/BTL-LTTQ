@@ -30,16 +30,34 @@ namespace QLyCuaHangSuaXe.DanhMuc.TiepNhan
             btnXoa.Click += (nguoiGui, suKien) => GiaoDien.ThucHien(HuyPhieu);
             btnLuu.Click += (nguoiGui, suKien) => GiaoDien.ThucHien(Luu);
             btnChiTiet.Click += (nguoiGui, suKien) => GiaoDien.ThucHien(XemChiTiet);
-            btnHoaDon.Click += (nguoiGui, suKien) => GiaoDien.ThucHien(() => { using (var trang = new QLyCuaHangSuaXe.DanhMuc.frmHoaDon()) trang.ShowDialog(this); TaiDuLieu(); });
+            btnHoaDon.Click += (nguoiGui, suKien) => GiaoDien.ThucHien(MoHoaDon);
             btnInPhieu.Click += (nguoiGui, suKien) => GiaoDien.ThucHien(InPhieu);
             btnTimKiem.Click += (nguoiGui, suKien) => LocPhieu();
-            txtTimKiem.KeyDown += (nguoiGui, suKien) => { if (suKien.KeyCode == Keys.Enter) { LocPhieu(); suKien.SuppressKeyPress = true; } };
+            txtTimKiem.KeyDown += TimKiemKhiNhanEnter;
             cboLocTrangThai.SelectedIndexChanged += (nguoiGui, suKien) => LocPhieu();
             dgvPhieu.CurrentCellChanged += (nguoiGui, suKien) => HienThiPhieu();
             dgvPhieu.DataBindingComplete += (nguoiGui, suKien) => SapXepCot();
             dgvPhieu.CellFormatting += DinhDangPhieu;
             txtBienSoXe.Leave += (nguoiGui, suKien) => GiaoDien.ThucHien(TimXeCu);
             KhoaThongTin();
+        }
+
+        void MoHoaDon()
+        {
+            using (var trangHoaDon = new QLyCuaHangSuaXe.DanhMuc.frmHoaDon())
+            {
+                trangHoaDon.ShowDialog(this);
+            }
+            TaiDuLieu();
+        }
+
+        void TimKiemKhiNhanEnter(object nguoiGui, KeyEventArgs suKien)
+        {
+            if (suKien.KeyCode != Keys.Enter)
+                return;
+
+            LocPhieu();
+            suKien.SuppressKeyPress = true;
         }
 
         static void DinhDangNutHuy(Button nut)
@@ -55,7 +73,11 @@ namespace QLyCuaHangSuaXe.DanhMuc.TiepNhan
         {
             string trangThai = cboTrangThai.Text;
             Color nen = Color.FromArgb(235, 243, 251), chu = GiaoDien.Xanh;
-            if (trangThai == "Đã hủy") { nen = Color.FromArgb(255, 235, 233); chu = Color.FromArgb(166, 57, 57); }
+            if (trangThai == "Đã hủy")
+            {
+                nen = Color.FromArgb(255, 235, 233);
+                chu = Color.FromArgb(166, 57, 57);
+            }
             lblTrangThaiHen.BackColor = nen;
             lblTrangThaiHen.ForeColor = cboTrangThai.ForeColor = chu;
         }
@@ -64,7 +86,8 @@ namespace QLyCuaHangSuaXe.DanhMuc.TiepNhan
         {
             PhienDangNhap.YeuCau("TIEP_NHAN");
             cboLoaiXe.Items.Clear();
-            foreach (DataRow xe in duLieu.DocBang("SELECT DISTINCT LoaiXe FROM dbo.Xe ORDER BY LoaiXe").Rows) cboLoaiXe.Items.Add(xe[0].ToString());
+            foreach (DataRow xe in duLieu.DocBang("SELECT DISTINCT LoaiXe FROM dbo.Xe ORDER BY LoaiXe").Rows)
+                cboLoaiXe.Items.Add(xe[0].ToString());
             bangPhieuGoc = duLieu.DocBang(@"SELECT p.MaPhieuTiepNhan,p.MaXe,p.NgayLap AS ThoiGianNhan,p.NgayHen AS HenTra,p.TrangThai,k.TenKhachHang,k.SoDienThoai,x.BienXe AS BienSo,x.LoaiXe,x.HangSanXuat AS DongXe,x.MauSac,
                 COALESCE(n.HoTen,N'Chưa phân công') AS TenTho,COALESCE(c.MaNhanVien,'') AS MaTho,COALESCE(h.MaHoaDon,'') AS MaHoaDon,
                 (SELECT COUNT(*) FROM dbo.ChiTietPhieuTiepNhan d WHERE d.MaPhieuTiepNhan=p.MaPhieuTiepNhan) AS SoHangMuc,
@@ -78,8 +101,10 @@ namespace QLyCuaHangSuaXe.DanhMuc.TiepNhan
 
         void LocPhieu()
         {
-            if (bangPhieuGoc == null || dangThem || dangSua) return;
-            string tuKhoa = txtTimKiem.Text.Trim(); var ketQua = bangPhieuGoc.Clone();
+            if (bangPhieuGoc == null || dangThem || dangSua)
+                return;
+            string tuKhoa = txtTimKiem.Text.Trim();
+            var ketQua = bangPhieuGoc.Clone();
             foreach (DataRow dong in bangPhieuGoc.Rows)
             {
                 bool dungKhachHang = tuKhoa.Length == 0 || dong["TenKhachHang"].ToString().IndexOf(tuKhoa, StringComparison.CurrentCultureIgnoreCase) >= 0
@@ -87,17 +112,20 @@ namespace QLyCuaHangSuaXe.DanhMuc.TiepNhan
                 string trangThai = dong["TrangThai"].ToString();
                 bool dungTrangThai = cboLocTrangThai.Text == "Tất cả" || cboLocTrangThai.Text == "Chờ sửa" && (trangThai == "Chờ sửa" || trangThai == "Đang sửa")
                     || trangThai == cboLocTrangThai.Text;
-                if (dungKhachHang && dungTrangThai) ketQua.ImportRow(dong);
+                if (dungKhachHang && dungTrangThai)
+                    ketQua.ImportRow(dong);
             }
             dangTai = true;
             try
             {
                 dgvPhieu.DataSource = ketQua;
                 string[] hien = { "MaPhieuTiepNhan", "ThoiGianNhan", "BienSo", "TenKhachHang", "TenTho", "HenTra", "TrangThai" };
-                foreach (DataGridViewColumn cot in dgvPhieu.Columns) cot.Visible = hien.Contains(cot.Name);
+                foreach (DataGridViewColumn cot in dgvPhieu.Columns)
+                    cot.Visible = hien.Contains(cot.Name);
                 SapXepCot();
                 string[] ten = { "Mã phiếu", "Ngày nhận", "Biển số xe", "Khách hàng", "Thợ phụ trách", "Hẹn trả", "Trạng thái" };
-                for (int i = 0; i < hien.Length; i++) dgvPhieu.Columns[hien[i]].HeaderText = ten[i];
+                for (int i = 0; i < hien.Length; i++)
+                    dgvPhieu.Columns[hien[i]].HeaderText = ten[i];
                 dgvPhieu.Columns["ThoiGianNhan"].DefaultCellStyle.Format = dgvPhieu.Columns["HenTra"].DefaultCellStyle.Format = "dd/MM/yyyy";
                 lblTongPhieu.Text = "Hiển thị: " + ketQua.Rows.Count + " / " + bangPhieuGoc.Rows.Count + " phiếu";
             }
@@ -108,7 +136,9 @@ namespace QLyCuaHangSuaXe.DanhMuc.TiepNhan
         void SapXepCot()
         {
             string[] cot = { "MaPhieuTiepNhan", "ThoiGianNhan", "BienSo", "TenKhachHang", "TenTho", "HenTra", "TrangThai" };
-            for (int i = cot.Length - 1; i >= 0; i--) if (dgvPhieu.Columns.Contains(cot[i])) dgvPhieu.Columns[cot[i]].DisplayIndex = 0;
+            for (int i = cot.Length - 1; i >= 0; i--)
+            if (dgvPhieu.Columns.Contains(cot[i]))
+                dgvPhieu.Columns[cot[i]].DisplayIndex = 0;
         }
 
         void KhoaThongTin()
@@ -124,44 +154,88 @@ namespace QLyCuaHangSuaXe.DanhMuc.TiepNhan
 
         void TiepNhanMoi()
         {
-            if ((dangThem || dangSua) && MessageBox.Show(this, "Bỏ thay đổi đang nhập để tạo phiếu mới?", "Phiếu tiếp nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes) return;
-            using (var kiemTra = new frmKiemTraTiepNhan()) if (kiemTra.ShowDialog(this) == DialogResult.OK) NhanKetQuaKiemTra(kiemTra.DichVuDaChon, kiemTra.ChiTietDaChon, "");
+            if ((dangThem || dangSua) && MessageBox.Show(this, "Bỏ thay đổi đang nhập để tạo phiếu mới?", "Phiếu tiếp nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
+                return;
+            using (var kiemTra = new frmKiemTraTiepNhan())
+            if (kiemTra.ShowDialog(this) == DialogResult.OK)
+                NhanKetQuaKiemTra(kiemTra.DichVuDaChon, kiemTra.ChiTietDaChon, "");
         }
 
         public void NhanKetQuaKiemTra(List<DichVuChon> cacDichVu, DataTable chiTiet, string tinhTrang)
         {
             nghiepVu.KiemTraKho(cacDichVu);
-            if (chiTiet == null) throw new InvalidOperationException("Thiếu chi tiết hạng mục đã chọn.");
-            dichVuDaKiemTra = cacDichVu.Select(d => new DichVuChon { Ma = d.Ma, SoLuong = d.SoLuong }).ToList(); bangDuThao = chiTiet.Copy();
-            dangThem = true; dangSua = false; maPhieuDangChon = "";
+            if (chiTiet == null)
+                throw new InvalidOperationException("Thiếu chi tiết hạng mục đã chọn.");
+            dichVuDaKiemTra = cacDichVu.Select(d => new DichVuChon { Ma = d.Ma, SoLuong = d.SoLuong }).ToList();
+            bangDuThao = chiTiet.Copy();
+            dangThem = true;
+            dangSua = false;
+            maPhieuDangChon = "";
             dgvPhieu.Enabled = true;
-            txtKhachHang.Clear(); txtDienThoai.Clear(); txtBienSoXe.Clear(); txtDongXe.Clear(); txtMauSac.Clear();
-            txtMaPhieu.Text = XuLyDuLieu.TaoMaMoi("PTN"); txtNgayNhan.Text = DateTime.Today.ToString("dd/MM/yyyy"); dtpHenTra.Value = DateTime.Today.AddDays(1);
-            if (cboLoaiXe.Items.Count > 0) cboLoaiXe.SelectedIndex = 0; cboTrangThai.SelectedItem = "Chờ sửa";
+            txtKhachHang.Clear();
+            txtDienThoai.Clear();
+            txtBienSoXe.Clear();
+            txtDongXe.Clear();
+            txtMauSac.Clear();
+            txtMaPhieu.Text = XuLyDuLieu.TaoMaMoi("PTN");
+            txtNgayNhan.Text = DateTime.Today.ToString("dd/MM/yyyy");
+            dtpHenTra.Value = DateTime.Today.AddDays(1);
+            if (cboLoaiXe.Items.Count > 0)
+                cboLoaiXe.SelectedIndex = 0;
+            cboTrangThai.SelectedItem = "Chờ sửa";
             txtKhachHang.ReadOnly = txtDienThoai.ReadOnly = txtBienSoXe.ReadOnly = txtDongXe.ReadOnly = txtMauSac.ReadOnly = false;
-            cboLoaiXe.Enabled = dtpHenTra.Enabled = true; cboTrangThai.Enabled = false;
-            GiaoDien.GanDuLieu(cboThoPhuTrach, nghiepVu.ThoRanh(), "HienThi", "MaNhanVien"); cboThoPhuTrach.Enabled = true;
+            cboLoaiXe.Enabled = dtpHenTra.Enabled = true;
+            cboTrangThai.Enabled = false;
+            GiaoDien.GanDuLieu(cboThoPhuTrach, nghiepVu.ThoRanh(), "HienThi", "MaNhanVien");
+            cboThoPhuTrach.Enabled = true;
             btnLuu.Enabled = btnInPhieu.Enabled = btnChiTiet.Enabled = true;
             btnSua.Enabled = btnXoa.Enabled = false;
             lblHangMuc.Text = "Hạng mục: " + chiTiet.Rows.Count + "  |  Dự kiến: " + chiTiet.AsEnumerable().Sum(d => Convert.ToDecimal(d["ThanhTien"])).ToString("N0") + " đ";
-            lblTrangThaiHen.Text = "Phiếu mới"; lblTrangThaiPhieu.Text = ""; txtKhachHang.Focus();
+            lblTrangThaiHen.Text = "Phiếu mới";
+            lblTrangThaiPhieu.Text = "";
+            txtKhachHang.Focus();
         }
 
         void HienThiPhieu()
         {
-            if (dangTai || dangThem || dangSua) return;
-            KhoaThongTin(); btnSua.Enabled = btnInPhieu.Enabled = btnChiTiet.Enabled = dgvPhieu.CurrentRow != null;
+            if (dangTai || dangThem || dangSua)
+                return;
+            KhoaThongTin();
+            btnSua.Enabled = btnInPhieu.Enabled = btnChiTiet.Enabled = dgvPhieu.CurrentRow != null;
             if (dgvPhieu.CurrentRow == null)
             {
-                maPhieuDangChon = ""; txtMaPhieu.Text = XuLyDuLieu.TaoMaMoi("PTN"); txtKhachHang.Clear(); txtDienThoai.Clear(); txtBienSoXe.Clear(); txtDongXe.Clear(); txtMauSac.Clear(); txtNgayNhan.Text = DateTime.Today.ToString("dd/MM/yyyy");
-                cboThoPhuTrach.DataSource = null; cboThoPhuTrach.Items.Clear(); cboTrangThai.SelectedIndex = -1; cboLoaiXe.SelectedIndex = -1;
-                lblHangMuc.Text = "Hạng mục: 0"; lblTrangThaiHen.Text = ""; return;
+                maPhieuDangChon = "";
+                txtMaPhieu.Text = XuLyDuLieu.TaoMaMoi("PTN");
+                txtKhachHang.Clear();
+                txtDienThoai.Clear();
+                txtBienSoXe.Clear();
+                txtDongXe.Clear();
+                txtMauSac.Clear();
+                txtNgayNhan.Text = DateTime.Today.ToString("dd/MM/yyyy");
+                cboThoPhuTrach.DataSource = null;
+                cboThoPhuTrach.Items.Clear();
+                cboTrangThai.SelectedIndex = -1;
+                cboLoaiXe.SelectedIndex = -1;
+                lblHangMuc.Text = "Hạng mục: 0";
+                lblTrangThaiHen.Text = "";
+                return;
             }
             var dong = ((DataRowView)dgvPhieu.CurrentRow.DataBoundItem).Row;
-            maPhieuDangChon = dong["MaPhieuTiepNhan"].ToString(); txtMaPhieu.Text = maPhieuDangChon; txtNgayNhan.Text = Convert.ToDateTime(dong["ThoiGianNhan"]).ToString("dd/MM/yyyy");
-            txtKhachHang.Text = dong["TenKhachHang"].ToString(); txtDienThoai.Text = dong["SoDienThoai"].ToString(); txtBienSoXe.Text = dong["BienSo"].ToString(); txtDongXe.Text = dong["DongXe"].ToString(); txtMauSac.Text = dong["MauSac"].ToString();
-            cboLoaiXe.Text = dong["LoaiXe"].ToString(); cboTrangThai.SelectedItem = dong["TrangThai"].ToString(); dtpHenTra.Value = Convert.ToDateTime(dong["HenTra"]);
-            cboThoPhuTrach.DataSource = null; cboThoPhuTrach.Items.Clear(); cboThoPhuTrach.Items.Add(dong["TenTho"].ToString()); cboThoPhuTrach.SelectedIndex = 0;
+            maPhieuDangChon = dong["MaPhieuTiepNhan"].ToString();
+            txtMaPhieu.Text = maPhieuDangChon;
+            txtNgayNhan.Text = Convert.ToDateTime(dong["ThoiGianNhan"]).ToString("dd/MM/yyyy");
+            txtKhachHang.Text = dong["TenKhachHang"].ToString();
+            txtDienThoai.Text = dong["SoDienThoai"].ToString();
+            txtBienSoXe.Text = dong["BienSo"].ToString();
+            txtDongXe.Text = dong["DongXe"].ToString();
+            txtMauSac.Text = dong["MauSac"].ToString();
+            cboLoaiXe.Text = dong["LoaiXe"].ToString();
+            cboTrangThai.SelectedItem = dong["TrangThai"].ToString();
+            dtpHenTra.Value = Convert.ToDateTime(dong["HenTra"]);
+            cboThoPhuTrach.DataSource = null;
+            cboThoPhuTrach.Items.Clear();
+            cboThoPhuTrach.Items.Add(dong["TenTho"].ToString());
+            cboThoPhuTrach.SelectedIndex = 0;
             lblHangMuc.Text = "Hạng mục: " + dong["SoHangMuc"] + "  |  Tổng dự kiến: " + Convert.ToDecimal(dong["TongDuKien"]).ToString("N0") + " đ";
             lblTrangThaiHen.Text = dong["TrangThai"].ToString() == "Hoàn thành" ? "Đã xong" : dong["TrangThai"].ToString() == "Đã hủy" ? "Đã hủy" : LaQuaHen(dong) ? "Quá hẹn" : "Đúng hẹn";
             btnXoa.Enabled = btnXoa.Enabled && dong["TrangThai"].ToString() == "Chờ sửa";
@@ -169,10 +243,16 @@ namespace QLyCuaHangSuaXe.DanhMuc.TiepNhan
 
         void TimXeCu()
         {
-            if (!dangThem || txtBienSoXe.Text.Trim().Length == 0) return;
+            if (!dangThem || txtBienSoXe.Text.Trim().Length == 0)
+                return;
             var xe = duLieu.DocBang("SELECT TOP(1) k.TenKhachHang,k.SoDienThoai,x.HangSanXuat,x.LoaiXe,x.MauSac FROM dbo.Xe x JOIN dbo.KhachHang k ON k.MaKhachHang=x.MaKhachHang WHERE x.BienXe=@b ORDER BY x.MaXe DESC", XuLyDuLieu.ThamSo("@b", txtBienSoXe.Text.Trim().ToUpperInvariant()));
-            if (xe.Rows.Count == 0) return;
-            txtKhachHang.Text = xe.Rows[0][0].ToString(); txtDienThoai.Text = xe.Rows[0][1].ToString(); txtDongXe.Text = xe.Rows[0][2].ToString(); cboLoaiXe.Text = xe.Rows[0][3].ToString(); txtMauSac.Text = xe.Rows[0][4].ToString();
+            if (xe.Rows.Count == 0)
+                return;
+            txtKhachHang.Text = xe.Rows[0][0].ToString();
+            txtDienThoai.Text = xe.Rows[0][1].ToString();
+            txtDongXe.Text = xe.Rows[0][2].ToString();
+            cboLoaiXe.Text = xe.Rows[0][3].ToString();
+            txtMauSac.Text = xe.Rows[0][4].ToString();
         }
 
         void Luu()
@@ -182,35 +262,64 @@ namespace QLyCuaHangSuaXe.DanhMuc.TiepNhan
                 var dong = ((DataRowView)dgvPhieu.CurrentRow.DataBoundItem).Row;
                 string maDaSua = maPhieuDangChon;
                 nghiepVu.SuaPhieu(maDaSua, dtpHenTra.Value.Date, cboTrangThai.Text, dong["MaTho"].ToString());
-                dangSua = false; TaiDuLieu();
+                dangSua = false;
+                TaiDuLieu();
                 foreach (DataGridViewRow dongPhieu in dgvPhieu.Rows)
-                    if (Convert.ToString(dongPhieu.Cells["MaPhieuTiepNhan"].Value) == maDaSua) { dgvPhieu.CurrentCell = dongPhieu.Cells["MaPhieuTiepNhan"]; break; }
-                lblTrangThaiPhieu.Text = "Đã cập nhật " + maDaSua + "."; return;
+                    if (Convert.ToString(dongPhieu.Cells["MaPhieuTiepNhan"].Value) == maDaSua)
+                    {
+                        dgvPhieu.CurrentCell = dongPhieu.Cells["MaPhieuTiepNhan"];
+                        break;
+                    }
+                lblTrangThaiPhieu.Text = "Đã cập nhật " + maDaSua + ".";
+                return;
             }
-            if (!dangThem || dichVuDaKiemTra == null) throw new InvalidOperationException("Chọn dịch vụ và kiểm tra phụ tùng trước khi lưu phiếu.");
+            if (!dangThem || dichVuDaKiemTra == null)
+                throw new InvalidOperationException("Chọn dịch vụ và kiểm tra phụ tùng trước khi lưu phiếu.");
             var thongTin = new ThongTinNhanXe { TenKhach = GiaoDien.BatBuocNhap(txtKhachHang, "Tên khách", 100), DienThoai = GiaoDien.KiemTraDienThoai(txtDienThoai), BienSo = GiaoDien.BatBuocNhap(txtBienSoXe, "Biển số", 20).ToUpperInvariant(), DongXe = GiaoDien.BatBuocNhap(txtDongXe, "Hãng sản xuất", 50), MauSac = GiaoDien.BatBuocNhap(txtMauSac, "Màu sắc", 30), LoaiXe = cboLoaiXe.Text, MaPhieu = txtMaPhieu.Text, MaTho = GiaoDien.GiaTriDangChon(cboThoPhuTrach), HenTra = dtpHenTra.Value.Date };
-            string ma = nghiepVu.TiepNhan(dichVuDaKiemTra, thongTin); dangThem = false; dichVuDaKiemTra = null; bangDuThao = null; TaiDuLieu(); lblTrangThaiPhieu.Text = "Đã lưu " + ma + ".";
+            string ma = nghiepVu.TiepNhan(dichVuDaKiemTra, thongTin);
+            dangThem = false;
+            dichVuDaKiemTra = null;
+            bangDuThao = null;
+            TaiDuLieu();
+            lblTrangThaiPhieu.Text = "Đã lưu " + ma + ".";
         }
 
         void BatDauSua()
         {
-            if (dangThem || dgvPhieu.CurrentRow == null) throw new InvalidOperationException("Chọn phiếu đã lưu trước.");
+            if (dangThem || dgvPhieu.CurrentRow == null)
+                throw new InvalidOperationException("Chọn phiếu đã lưu trước.");
             var dong = ((DataRowView)dgvPhieu.CurrentRow.DataBoundItem).Row;
-            if (dong["TrangThai"].ToString() == "Hoàn thành" || dong["TrangThai"].ToString() == "Đã hủy") throw new InvalidOperationException("Phiếu đã hoàn thành hoặc đã hủy nên không thể sửa.");
-            dangSua = true; dgvPhieu.Enabled = false; dtpHenTra.Enabled = true; cboTrangThai.Enabled = PhanQuyenNguoiDung.CoQuyen(PhienDangNhap.VaiTro, "PHAN_CONG"); btnLuu.Enabled = true; btnThemMoi.Enabled = true;
+            if (dong["TrangThai"].ToString() == "Hoàn thành" || dong["TrangThai"].ToString() == "Đã hủy")
+                throw new InvalidOperationException("Phiếu đã hoàn thành hoặc đã hủy nên không thể sửa.");
+            dangSua = true;
+            dgvPhieu.Enabled = false;
+            dtpHenTra.Enabled = true;
+            cboTrangThai.Enabled = PhanQuyenNguoiDung.CoQuyen(PhienDangNhap.VaiTro, "PHAN_CONG");
+            btnLuu.Enabled = true;
+            btnThemMoi.Enabled = true;
         }
 
         void HuyPhieu()
         {
-            if (maPhieuDangChon.Length == 0 || dangThem) throw new InvalidOperationException("Chọn phiếu đã lưu cần hủy.");
-            if (MessageBox.Show(this, "Hủy phiếu chưa sửa và hoàn lại phụ tùng?", "Hủy phiếu", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes) return;
-            nghiepVu.HuyChuaSua(maPhieuDangChon); TaiDuLieu();
+            if (maPhieuDangChon.Length == 0 || dangThem)
+                throw new InvalidOperationException("Chọn phiếu đã lưu cần hủy.");
+            if (MessageBox.Show(this, "Hủy phiếu chưa sửa và hoàn lại phụ tùng?", "Hủy phiếu", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
+                return;
+            nghiepVu.HuyChuaSua(maPhieuDangChon);
+            TaiDuLieu();
         }
         DataTable LayChiTiet()
         {
-            if (dangThem) return bangDuThao.Copy();
-            if (maPhieuDangChon.Length == 0 || bangChiTiet == null) throw new InvalidOperationException("Chọn phiếu cần xem.");
-            var ketQua = bangChiTiet.Clone(); foreach (DataRow dong in bangChiTiet.Rows) if (dong["MaPhieuTiepNhan"].ToString() == maPhieuDangChon) ketQua.ImportRow(dong); ketQua.Columns.Remove("MaPhieuTiepNhan"); return ketQua;
+            if (dangThem)
+                return bangDuThao.Copy();
+            if (maPhieuDangChon.Length == 0 || bangChiTiet == null)
+                throw new InvalidOperationException("Chọn phiếu cần xem.");
+            var ketQua = bangChiTiet.Clone();
+            foreach (DataRow dong in bangChiTiet.Rows)
+            if (dong["MaPhieuTiepNhan"].ToString() == maPhieuDangChon)
+                ketQua.ImportRow(dong);
+            ketQua.Columns.Remove("MaPhieuTiepNhan");
+            return ketQua;
         }
 
         private void lblTieuDe_Click(object sender, EventArgs e)
@@ -218,11 +327,16 @@ namespace QLyCuaHangSuaXe.DanhMuc.TiepNhan
 
         }
 
-        void XemChiTiet() { using (var trang = new frmChiTietPhieu(txtMaPhieu.Text, LayChiTiet())) trang.ShowDialog(this); }
+        void XemChiTiet()
+        {
+            using (var trang = new frmChiTietPhieu(txtMaPhieu.Text, LayChiTiet()))
+                trang.ShowDialog(this);
+        }
         void InPhieu()
         {
             var phieu = new MauInPhieu(txtMaPhieu.Text, LayChiTiet(), "Khách hàng: " + txtKhachHang.Text + "    •    Điện thoại: " + txtDienThoai.Text, "Biển số: " + txtBienSoXe.Text + "    •    Loại xe: " + cboLoaiXe.Text, "Hãng sản xuất: " + txtDongXe.Text + "    •    Màu sắc: " + txtMauSac.Text, "Ngày nhận: " + txtNgayNhan.Text + "    •    Hẹn trả: " + dtpHenTra.Value.ToString("dd/MM/yyyy"), "Thợ phụ trách: " + cboThoPhuTrach.Text, dangThem ? "BẢN DỰ THẢO" : "Trạng thái: " + cboTrangThai.Text);
-            using (var trang = new frmXemBanInPhieu(phieu)) trang.ShowDialog(this);
+            using (var trang = new frmXemBanInPhieu(phieu))
+                trang.ShowDialog(this);
         }
         static bool LaQuaHen(DataRow dong)
         {
@@ -232,9 +346,11 @@ namespace QLyCuaHangSuaXe.DanhMuc.TiepNhan
 
         void DinhDangPhieu(object nguoiGui, DataGridViewCellFormattingEventArgs suKien)
         {
-            if (suKien.RowIndex < 0 || dgvPhieu.Rows[suKien.RowIndex].DataBoundItem == null) return;
+            if (suKien.RowIndex < 0 || dgvPhieu.Rows[suKien.RowIndex].DataBoundItem == null)
+                return;
             var dong = ((DataRowView)dgvPhieu.Rows[suKien.RowIndex].DataBoundItem).Row;
-            if (dong["TrangThai"].ToString() != "Đã hủy") return;
+            if (dong["TrangThai"].ToString() != "Đã hủy")
+                return;
             suKien.CellStyle.BackColor = Color.FromArgb(255, 235, 233);
             suKien.CellStyle.ForeColor = suKien.CellStyle.SelectionForeColor = Color.FromArgb(166, 57, 57);
             suKien.CellStyle.SelectionBackColor = Color.FromArgb(247, 205, 200);

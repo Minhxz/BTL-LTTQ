@@ -8,10 +8,16 @@ namespace QLyCuaHangSuaXe
 {
     public partial class frmChinh : System.Windows.Forms.Form
     {
-        public string TenDangNhap { get; private set; }
-        public string VaiTro { get; private set; }
+        public string TenDangNhap
+        {
+            get; private set;
+        }
+        public string VaiTro
+        {
+            get; private set;
+        }
         public event EventHandler DangXuatDuocYeuCau;
-        bool dangDangXuat;  
+        bool dangDangXuat;
 
         readonly Dictionary<string, Form> cacTrang = new Dictionary<string, Form>();
         readonly Dictionary<string, Button> cacNutMenu = new Dictionary<string, Button>();
@@ -56,7 +62,8 @@ namespace QLyCuaHangSuaXe
             foreach (Control dieuKhien in flpDieuHuong.Controls)
             {
                 var nut = dieuKhien as Button;
-                if (nut == null) continue;
+                if (nut == null)
+                    continue;
                 nut.BackColor = mauNutMenu;
                 string bieuTuong = nut == btnMoTiepNhan ? "\uE8A5" : nut == btnMoDanhMucDichVu ? "\uE90F" : nut == btnMoKho ? "\uE7B8" : nut == btnMoNhanVien ? "\uE716" : nut == btnMoQuanLyTaiKhoan ? "\uE77B" : nut == btnMoBaoCao ? "\uE9D9" : nut == btnDangXuat ? "\uE8BB" : "\uE787";
                 GiaoDien.DinhDangNutDieuHuong(nut, bieuTuong);

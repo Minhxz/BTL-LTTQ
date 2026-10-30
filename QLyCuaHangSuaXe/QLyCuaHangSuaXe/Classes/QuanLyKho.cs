@@ -70,7 +70,8 @@ namespace QLyCuaHangSuaXe.LopDungChung
             var phieu = new DataSet();
             var thongTin = XuLyDuLieu.DocDuLieu(ketNoi, giaoDich,
                 "SELECT MaPhieuNhap,MaNhanVienNhap,NgayNhap,GhiChu,TongTienNhap FROM dbo.PhieuNhap WITH(UPDLOCK,HOLDLOCK) WHERE MaPhieuNhap=@ma", XuLyDuLieu.ThamSo("@ma", maPhieu));
-            if (thongTin.Rows.Count != 1) throw new InvalidOperationException("Phiếu nhập không còn tồn tại. Tải lại danh sách.");
+            if (thongTin.Rows.Count != 1)
+                throw new InvalidOperationException("Phiếu nhập không còn tồn tại. Tải lại danh sách.");
             thongTin.TableName = "ThongTin";
             var chiTiet = XuLyDuLieu.DocDuLieu(ketNoi, giaoDich,
                 "SELECT c.MaPhuTung,p.TenPhuTung,p.MaNhaCungCap,n.TenNhaCungCap,c.SoLuongNhap,CAST(c.ThanhTien/c.SoLuongNhap AS decimal(18,0)) AS DonGiaNhap,p.DonGiaBan,c.ThanhTien,p.HanSuDung,CAST(0 AS bit) AS LaPhuTungMoi,p.DonGiaNhap AS GiaNhapGoc,p.DonGiaBan AS GiaBanGoc FROM dbo.ChiTietPhieuNhap c WITH(UPDLOCK,HOLDLOCK) JOIN dbo.PhuTung p ON p.MaPhuTung=c.MaPhuTung JOIN dbo.NhaCungCap n ON n.MaNhaCungCap=p.MaNhaCungCap WHERE c.MaPhieuNhap=@ma ORDER BY c.MaPhuTung", XuLyDuLieu.ThamSo("@ma", maPhieu));
@@ -95,7 +96,8 @@ namespace QLyCuaHangSuaXe.LopDungChung
                     string giaTri = Convert.ToString(dong[cot], CultureInfo.InvariantCulture);
                     chuoi.Append(giaTri.Length).Append(':').Append(giaTri);
                 }
-            using (var bam = SHA256.Create()) return Convert.ToBase64String(bam.ComputeHash(Encoding.UTF8.GetBytes(chuoi.ToString())));
+            using (var bam = SHA256.Create())
+                return Convert.ToBase64String(bam.ComputeHash(Encoding.UTF8.GetBytes(chuoi.ToString())));
         }
 
         public static void SuaPhieu(string maPhieu, DateTime ngayNhap, string ghiChu, DataTable chiTiet, string dauVetCu, bool chapNhanDuoiGiaNhap = false)
@@ -121,11 +123,14 @@ namespace QLyCuaHangSuaXe.LopDungChung
                         hienTai = XuLyDuLieu.DocDuLieu(ketNoi, giaoDich, "SELECT * FROM dbo.PhuTung WITH(UPDLOCK,HOLDLOCK) WHERE MaPhuTung=@ma", XuLyDuLieu.ThamSo("@ma", ma)).Rows[0];
                     }
                     int chenhLech = soMoi - soCu;
-                    if (chenhLech > 0) KiemTraNhapThem(hienTai, ngayNhap.Date);
-                    if (chenhLech != 0) DoiTon(ketNoi, giaoDich, hienTai, chenhLech, "Sửa phiếu nhập " + maPhieu);
+                    if (chenhLech > 0)
+                        KiemTraNhapThem(hienTai, ngayNhap.Date);
+                    if (chenhLech != 0)
+                        DoiTon(ketNoi, giaoDich, hienTai, chenhLech, "Sửa phiếu nhập " + maPhieu);
                 }
                 XuLyDuLieu.ThucThi(ketNoi, giaoDich, "DELETE dbo.ChiTietPhieuNhap WHERE MaPhieuNhap=@ma", XuLyDuLieu.ThamSo("@ma", maPhieu));
-                foreach (DataRow dong in cacDong.Rows) ThemChiTiet(ketNoi, giaoDich, maPhieu, dong);
+                foreach (DataRow dong in cacDong.Rows)
+                    ThemChiTiet(ketNoi, giaoDich, maPhieu, dong);
                 XuLyDuLieu.ThucThi(ketNoi, giaoDich, "UPDATE dbo.PhieuNhap SET NgayNhap=@ngay,GhiChu=@ghi,TongTienNhap=@tong WHERE MaPhieuNhap=@ma",
                     XuLyDuLieu.ThamSo("@ma", maPhieu), XuLyDuLieu.ThamSo("@ngay", ngayNhap.Date), XuLyDuLieu.ThamSo("@ghi", ghiChu ?? ""), XuLyDuLieu.ThamSo("@tong", TongTien(cacDong)));
                 return 0;
@@ -173,11 +178,15 @@ namespace QLyCuaHangSuaXe.LopDungChung
         static DataTable KiemTraPhieu(string maPhieu, DateTime ngayNhap, string ghiChu, DataTable chiTiet, bool chapNhanDuoiGiaNhap)
         {
             XuLyDuLieu.KiemTraMa(maPhieu, "PN");
-            if (ngayNhap.Date > DateTime.Today) throw new InvalidOperationException("Ngày nhập không được sau hôm nay.");
-            if (chiTiet == null || chiTiet.Rows.Count == 0) throw new InvalidOperationException("Thêm ít nhất một phụ tùng vào phiếu nhập.");
+            if (ngayNhap.Date > DateTime.Today)
+                throw new InvalidOperationException("Ngày nhập không được sau hôm nay.");
+            if (chiTiet == null || chiTiet.Rows.Count == 0)
+                throw new InvalidOperationException("Thêm ít nhất một phụ tùng vào phiếu nhập.");
             foreach (string cot in new[] { "MaPhuTung", "TenPhuTung", "MaNhaCungCap", "SoLuongNhap", "DonGiaNhap", "DonGiaBan", "HanSuDung", "LaPhuTungMoi" })
-                if (!chiTiet.Columns.Contains(cot)) throw new InvalidOperationException("Mở lại phiếu nhập để tải đúng thông tin phụ tùng.");
-            if ((ghiChu ?? "").Length > 255) throw new InvalidOperationException("Ghi chú tối đa 255 ký tự.");
+                if (!chiTiet.Columns.Contains(cot))
+                    throw new InvalidOperationException("Mở lại phiếu nhập để tải đúng thông tin phụ tùng.");
+            if ((ghiChu ?? "").Length > 255)
+                throw new InvalidOperationException("Ghi chú tối đa 255 ký tự.");
             var cacDong = chiTiet.Copy();
             if (cacDong.AsEnumerable().GroupBy(d => d["MaPhuTung"].ToString(), StringComparer.OrdinalIgnoreCase).Any(g => g.Count() > 1))
                 throw new InvalidOperationException("Mỗi phụ tùng chỉ được có một dòng trong phiếu nhập. Cập nhật số lượng của dòng đã có.");
@@ -189,8 +198,10 @@ namespace QLyCuaHangSuaXe.LopDungChung
                 decimal soLuong = Convert.ToDecimal(dong["SoLuongNhap"]), giaNhap = Convert.ToDecimal(dong["DonGiaNhap"]), giaBan = Convert.ToDecimal(dong["DonGiaBan"]);
                 if (soLuong < 1 || soLuong > 100000 || soLuong != decimal.Truncate(soLuong) || giaNhap <= 0 || giaBan <= 0 || giaNhap > GioiHanTien || giaBan > GioiHanTien || giaNhap != decimal.Truncate(giaNhap) || giaBan != decimal.Truncate(giaBan))
                     throw new InvalidOperationException("Số lượng từ 1 đến 100.000; giá nhập và giá bán là số nguyên dương theo đồng Việt Nam.");
-                if (giaBan < giaNhap && !chapNhanDuoiGiaNhap) throw new InvalidOperationException("Giá bán thấp hơn giá nhập. Cần xác nhận rõ trước khi ghi phiếu.");
-                if (Convert.ToDateTime(dong["HanSuDung"]).Date < ngayNhap.Date) throw new InvalidOperationException("Hạn sử dụng không được trước ngày nhập.");
+                if (giaBan < giaNhap && !chapNhanDuoiGiaNhap)
+                    throw new InvalidOperationException("Giá bán thấp hơn giá nhập. Cần xác nhận rõ trước khi ghi phiếu.");
+                if (Convert.ToDateTime(dong["HanSuDung"]).Date < ngayNhap.Date)
+                    throw new InvalidOperationException("Hạn sử dụng không được trước ngày nhập.");
             }
             TongTien(cacDong);
             return cacDong;
@@ -199,7 +210,8 @@ namespace QLyCuaHangSuaXe.LopDungChung
         static decimal TongTien(DataTable chiTiet)
         {
             decimal tong = chiTiet.AsEnumerable().Sum(d => Convert.ToInt32(d["SoLuongNhap"]) * Convert.ToDecimal(d["DonGiaNhap"]));
-            if (tong > GioiHanTien) throw new InvalidOperationException("Tổng tiền phiếu nhập vượt giới hạn cho phép.");
+            if (tong > GioiHanTien)
+                throw new InvalidOperationException("Tổng tiền phiếu nhập vượt giới hạn cho phép.");
             return tong;
         }
 
@@ -207,9 +219,12 @@ namespace QLyCuaHangSuaXe.LopDungChung
         {
             var daCo = XuLyDuLieu.DocDuLieu(ketNoi, giaoDich, "SELECT * FROM dbo.PhuTung WITH(UPDLOCK,HOLDLOCK) WHERE MaPhuTung=@ma", XuLyDuLieu.ThamSo("@ma", dong["MaPhuTung"]));
             bool laMoi = Convert.ToBoolean(dong["LaPhuTungMoi"]);
-            if (laMoi && daCo.Rows.Count > 0) throw new InvalidOperationException("Mã phụ tùng mới đã được sử dụng. Tạo lại phụ tùng để lấy mã khác.");
-            if (!laMoi && daCo.Rows.Count == 0) throw new InvalidOperationException("Phụ tùng không còn tồn tại. Tải lại danh mục trước khi nhập.");
-            if (daCo.Rows.Count == 0) return null;
+            if (laMoi && daCo.Rows.Count > 0)
+                throw new InvalidOperationException("Mã phụ tùng mới đã được sử dụng. Tạo lại phụ tùng để lấy mã khác.");
+            if (!laMoi && daCo.Rows.Count == 0)
+                throw new InvalidOperationException("Phụ tùng không còn tồn tại. Tải lại danh mục trước khi nhập.");
+            if (daCo.Rows.Count == 0)
+                return null;
             var hienTai = daCo.Rows[0];
             if (hienTai["MaNhaCungCap"].ToString() != dong["MaNhaCungCap"].ToString() || Convert.ToDateTime(hienTai["HanSuDung"]).Date != Convert.ToDateTime(dong["HanSuDung"]).Date || hienTai["TenPhuTung"].ToString() != dong["TenPhuTung"].ToString())
                 throw new InvalidOperationException("Nhà cung cấp, hạn sử dụng hoặc tên khác phải tạo mã phụ tùng mới.");
@@ -218,8 +233,10 @@ namespace QLyCuaHangSuaXe.LopDungChung
 
         static void KiemTraNhapThem(DataRow phuTung, DateTime ngayNhap)
         {
-            if (phuTung["TrangThai"].ToString() != "Đang kinh doanh") throw new InvalidOperationException("Phụ tùng đã ngừng kinh doanh.");
-            if (Convert.ToDateTime(phuTung["HanSuDung"]).Date < ngayNhap) throw new InvalidOperationException("Phụ tùng đã hết hạn tại ngày nhập.");
+            if (phuTung["TrangThai"].ToString() != "Đang kinh doanh")
+                throw new InvalidOperationException("Phụ tùng đã ngừng kinh doanh.");
+            if (Convert.ToDateTime(phuTung["HanSuDung"]).Date < ngayNhap)
+                throw new InvalidOperationException("Phụ tùng đã hết hạn tại ngày nhập.");
         }
 
         static void ThemPhuTung(SqlConnection ketNoi, SqlTransaction giaoDich, DataRow dong, int soLuong)
@@ -239,7 +256,8 @@ namespace QLyCuaHangSuaXe.LopDungChung
         {
             int soCu = Convert.ToInt32(hienTai["SoLuongTon"]);
             long soMoi = (long)soCu + chenhLech;
-            if (soMoi < 0 || soMoi > int.MaxValue) throw new InvalidOperationException("Tồn phụ tùng " + hienTai["MaPhuTung"] + " không đủ để điều chỉnh phiếu nhập. Chưa thay đổi dữ liệu.");
+            if (soMoi < 0 || soMoi > int.MaxValue)
+                throw new InvalidOperationException("Tồn phụ tùng " + hienTai["MaPhuTung"] + " không đủ để điều chỉnh phiếu nhập. Chưa thay đổi dữ liệu.");
             XuLyDuLieu.ThucThi(ketNoi, giaoDich, "UPDATE dbo.PhuTung SET SoLuongTon=@sl WHERE MaPhuTung=@ma", XuLyDuLieu.ThamSo("@ma", hienTai["MaPhuTung"]), XuLyDuLieu.ThamSo("@sl", (int)soMoi));
             XuLyDuLieu.ThucThi(ketNoi, giaoDich, "INSERT dbo.DieuChinhTonKho(MaDieuChinh,MaPhuTung,MaNhanVien,NgayDieuChinh,SoLuongCu,SoLuongMoi,DonGiaNhap,LyDo) VALUES(@dc,@pt,@nv,@ngay,@cu,@moi,@gia,@lyDo)",
                 XuLyDuLieu.ThamSo("@dc", XuLyDuLieu.TaoMaMoi(ketNoi, giaoDich, "DC")), XuLyDuLieu.ThamSo("@pt", hienTai["MaPhuTung"]), XuLyDuLieu.ThamSo("@nv", PhienDangNhap.MaNhanVien), XuLyDuLieu.ThamSo("@ngay", DateTime.Today), XuLyDuLieu.ThamSo("@cu", soCu), XuLyDuLieu.ThamSo("@moi", (int)soMoi), XuLyDuLieu.ThamSo("@gia", hienTai["DonGiaNhap"]), XuLyDuLieu.ThamSo("@lyDo", lyDo));

@@ -19,7 +19,8 @@ namespace QLyCuaHangSuaXe.LopDungChung
             var bang = XuLyDuLieu.DocDuLieu(ketNoi, giaoDich,
                 "SELECT MaPhuTung,TenPhuTung,SoLuongTon,DonGiaNhap,DonGiaBan FROM dbo.PhuTung WITH(UPDLOCK,HOLDLOCK) WHERE MaPhuTung=@ma",
                 XuLyDuLieu.ThamSo("@ma", maPhuTung));
-            if (bang.Rows.Count != 1) throw new InvalidOperationException("Phụ tùng không còn tồn tại. Tải lại kho trước khi điều chỉnh.");
+            if (bang.Rows.Count != 1)
+                throw new InvalidOperationException("Phụ tùng không còn tồn tại. Tải lại kho trước khi điều chỉnh.");
             return bang.Rows[0];
         }
         static string MaDieuChinh(SqlConnection ketNoi, SqlTransaction giaoDich, string tienTo, string maDuKien)
@@ -39,15 +40,20 @@ namespace QLyCuaHangSuaXe.LopDungChung
             PhienDangNhap.YeuCau("NHAP_KHO");
             maPhuTung = XuLyDuLieu.KiemTraMa(maPhuTung, "PT");
             lyDo = KiemTraLyDo(lyDo);
-            if (soLuongLech == 0) throw new InvalidOperationException("Số lượng điều chỉnh phải khác 0.");
+            if (soLuongLech == 0)
+                throw new InvalidOperationException("Số lượng điều chỉnh phải khác 0.");
             string maNhanVien = PhienDangNhap.MaNhanVien;
             return new XuLyDuLieu().TrongGiaoDich((ketNoi, giaoDich) =>
             {
                 var phuTung = KhoaPhuTung(ketNoi, giaoDich, maPhuTung);
                 int soLuongCu = Convert.ToInt32(phuTung["SoLuongTon"]), soLuongMoi;
-                try { soLuongMoi = checked(soLuongCu + soLuongLech); }
+                try
+                {
+                    soLuongMoi = checked(soLuongCu + soLuongLech);
+                }
                 catch (OverflowException) { throw new InvalidOperationException("Số lượng tồn vượt giới hạn số nguyên. Kiểm tra lại số lượng điều chỉnh."); }
-                if (soLuongMoi < 0) throw new InvalidOperationException("Số lượng tồn sau điều chỉnh không được âm.");
+                if (soLuongMoi < 0)
+                    throw new InvalidOperationException("Số lượng tồn sau điều chỉnh không được âm.");
                 string ma = MaDieuChinh(ketNoi, giaoDich, "DC", maDuKien);
                 XuLyDuLieu.ThucThi(ketNoi, giaoDich,
                     "INSERT dbo.DieuChinhTonKho(MaDieuChinh,MaPhuTung,MaNhanVien,NgayDieuChinh,SoLuongCu,SoLuongMoi,DonGiaNhap,LyDo) VALUES(@ma,@pt,@nv,@ngay,@cu,@moi,@gia,@lyDo)",
@@ -72,7 +78,8 @@ namespace QLyCuaHangSuaXe.LopDungChung
             {
                 var phuTung = KhoaPhuTung(ketNoi, giaoDich, maPhuTung);
                 decimal giaCu = Convert.ToDecimal(phuTung["DonGiaBan"]), giaNhap = Convert.ToDecimal(phuTung["DonGiaNhap"]);
-                if (giaMoi == giaCu) throw new InvalidOperationException("Giá bán mới trùng giá đang áp dụng.");
+                if (giaMoi == giaCu)
+                    throw new InvalidOperationException("Giá bán mới trùng giá đang áp dụng.");
                 if (giaMoi < giaNhap && !chapNhanDuoiGiaNhap)
                     throw new InvalidOperationException("Giá bán thấp hơn giá nhập hiện tại. Kiểm tra và xác nhận lại trước khi lưu.");
                 string ma = MaDieuChinh(ketNoi, giaoDich, "DG", maDuKien);

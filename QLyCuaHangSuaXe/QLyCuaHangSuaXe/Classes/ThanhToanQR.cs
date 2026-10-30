@@ -10,13 +10,32 @@ namespace QLyCuaHangSuaXe.LopDungChung
 {
     public static class ThanhToanQR
     {
-        public static string NganHang { get { return ConfigurationManager.AppSettings["NganHangQR"] ?? "MB Bank"; } }
-        public static string MaNganHang { get { return ConfigurationManager.AppSettings["MaNganHangQR"] ?? "970422"; } }
-        public static string SoTaiKhoan { get { return ConfigurationManager.AppSettings["SoTaiKhoanQR"] ?? "0965299505"; } }
+        public static string NganHang
+        {
+            get
+            {
+                return ConfigurationManager.AppSettings["NganHangQR"] ?? "MB Bank";
+            }
+        }
+        public static string MaNganHang
+        {
+            get
+            {
+                return ConfigurationManager.AppSettings["MaNganHangQR"] ?? "970422";
+            }
+        }
+        public static string SoTaiKhoan
+        {
+            get
+            {
+                return ConfigurationManager.AppSettings["SoTaiKhoanQR"] ?? "0965299505";
+            }
+        }
 
         static string Truong(string ma, string giaTri)
         {
-            if (giaTri.Length > 99) throw new InvalidOperationException("Nội dung QR quá dài.");
+            if (giaTri.Length > 99)
+                throw new InvalidOperationException("Nội dung QR quá dài.");
             return ma + giaTri.Length.ToString("D2") + giaTri;
         }
 
@@ -26,7 +45,8 @@ namespace QLyCuaHangSuaXe.LopDungChung
             foreach (byte kyTu in Encoding.ASCII.GetBytes(noiDung))
             {
                 crc ^= (ushort)(kyTu << 8);
-                for (int bit = 0; bit < 8; bit++) crc = (ushort)((crc & 0x8000) != 0 ? (crc << 1) ^ 0x1021 : crc << 1);
+                for (int bit = 0; bit < 8; bit++)
+                    crc = (ushort)((crc & 0x8000) != 0 ? (crc << 1) ^ 0x1021 : crc << 1);
             }
             return crc.ToString("X4");
         }

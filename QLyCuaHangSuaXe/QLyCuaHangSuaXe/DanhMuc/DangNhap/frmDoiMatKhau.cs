@@ -15,12 +15,17 @@ namespace QLyCuaHangSuaXe.DanhMuc.DangNhap
             InitializeComponent();
             GanThietKe(null);
             AcceptButton = btnDoiMatKhau;
-            if (nhungTrongTaiKhoan) { btnDong.Visible = false; CancelButton = null; }
+            if (nhungTrongTaiKhoan)
+            {
+                btnDong.Visible = false;
+                CancelButton = null;
+            }
             btnDong.Click += (nguoiGui, suKien) => Close();
             chkHienMatKhau.CheckedChanged += (nguoiGui, suKien) => txtMatKhauHienTai.UseSystemPasswordChar = txtMatKhauMoi.UseSystemPasswordChar = txtXacNhanMatKhauMoi.UseSystemPasswordChar = !chkHienMatKhau.Checked;
             btnDoiMatKhau.Click += async (nguoiGui, suKien) =>
             {
-                if (!btnDoiMatKhau.Enabled) return;
+                if (!btnDoiMatKhau.Enabled)
+                    return;
                 if (txtMatKhauMoi.Text != txtXacNhanMatKhauMoi.Text || string.IsNullOrWhiteSpace(txtMatKhauMoi.Text))
                 {
                     lblGhiChuMatKhau.ForeColor = Color.Firebrick;
@@ -33,7 +38,8 @@ namespace QLyCuaHangSuaXe.DanhMuc.DangNhap
                 try
                 {
                     await Task.Run(() => PhienDangNhap.DoiMatKhau(cu, moi));
-                    if (IsDisposed) return;
+                    if (IsDisposed)
+                        return;
                     txtMatKhauHienTai.Clear();
                     txtMatKhauMoi.Clear();
                     txtXacNhanMatKhauMoi.Clear();
@@ -60,7 +66,9 @@ namespace QLyCuaHangSuaXe.DanhMuc.DangNhap
 
         public void XoaNoiDung()
         {
-            txtMatKhauHienTai.Clear(); txtMatKhauMoi.Clear(); txtXacNhanMatKhauMoi.Clear();
+            txtMatKhauHienTai.Clear();
+            txtMatKhauMoi.Clear();
+            txtXacNhanMatKhauMoi.Clear();
             chkHienMatKhau.Checked = false;
             lblGhiChuMatKhau.ForeColor = Color.FromArgb(64, 82, 99);
             lblGhiChuMatKhau.Text = "";
